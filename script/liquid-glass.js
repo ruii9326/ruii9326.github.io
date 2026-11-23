@@ -11,7 +11,9 @@
   if (!/Chrome\//.test(ua) || /CriOS|FxiOS|EdgiOS/.test(ua)) return;
 
   const NS = 'http://www.w3.org/2000/svg';
-  const SEL = '.glass, [data-glass]';
+  // thêm selector riêng qua thuộc tính data-selector của thẻ <script>
+  const extra = document.currentScript && document.currentScript.dataset.selector;
+  const SEL = '.glass, [data-glass]' + (extra ? ', ' + extra : '');
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('width', '0'); svg.setAttribute('height', '0');
   svg.setAttribute('aria-hidden', 'true');
@@ -54,13 +56,13 @@
   }
 
   function apply(el) {
-    const b = el.getBoundingClientRect();
-    const w = Math.round(b.width), h = Math.round(b.height);
+    const w = el.offsetWidth, h = el.offsetHeight; // không bị ảnh hưởng bởi animation scale
     if (w < 8 || h < 8) return;
     const S = Math.min(parseFloat(el.dataset.refraction) || 120, Math.min(w, h) * 0.9);
     const disp = el.dataset.dispersion !== undefined ? parseFloat(el.dataset.dispersion) : 0.08;
     const bezel = Math.min(parseFloat(el.dataset.bezel) || Math.min(w, h) * 0.42, Math.min(w, h) / 2);
-    const rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+    const rs = getComputedStyle(el).borderTopLeftRadius;
+    const rad = rs.includes('%') ? parseFloat(rs) / 100 * Math.min(w, h) : (parseFloat(rs) || 0);
 
     let f = el._lg;
     if (!f) {
@@ -95,11 +97,15 @@
   }
 
   const ro = new ResizeObserver((es) => es.forEach((e) => apply(e.target)));
-  const seen = new WeakSet();
+  const live = new WeakSet(), seen = new WeakSet();
+  // chỉ tính khúc xạ cho phần tử gần màn hình → nhẹ máy
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting && !live.has(e.target)) { live.add(e.target); ro.observe(e.target); }
+  }), { rootMargin: '300px' });
   function scan() {
     document.querySelectorAll(SEL).forEach((el) => {
       if (seen.has(el)) return;
-      seen.add(el); ro.observe(el);
+      seen.add(el); io.observe(el);
     });
   }
 
