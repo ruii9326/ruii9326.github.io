@@ -34,70 +34,7 @@
 <link rel="stylesheet" href="../style/site.css">
 <style>
 html, body { overflow-x: clip; }
-
-body {
-  margin: 0;
-  min-height: 100%;
-  background:
-    radial-gradient(
-      ellipse 120% 80% at 50% -10%,
-      var(--bg-grad-top) 0%,
-      var(--bg-grad-mid) 45%,
-      var(--bg-grad-bottom) 100%
-    );
-  background-attachment: fixed;
-  background-size: 100% 100vh;
-  background-repeat: no-repeat;
-  color: var(--color-ink);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-  padding-inline: max(0px, env(safe-area-inset-left)) max(0px, env(safe-area-inset-right));
-}
-
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-
 main { display: block; position: relative; }
-
-/* ================= MASTHEAD ================= */
-.mast {
-  display: grid;
-  justify-items: center;
-  gap: var(--space-2xs);
-  padding: var(--space-lg) var(--page-gutter) 0;
-  text-align: center;
-}
-.mast-line {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin: 0;
-}
-.mast-line a { color: inherit; text-decoration: none; }
-.mast-line a:hover, .mast-line a:focus-visible { text-decoration: underline; }
-.mast-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.7rem, 4.2vw, 2.4rem);
-  line-height: 1;
-  letter-spacing: -0.01em;
-  margin: 0;
-  color: var(--color-ink);
-  overflow-wrap: anywhere;
-  min-width: 0;
-}
-.mast-rule {
-  width: 100%;
-  max-width: 640px;
-  height: 4px;
-  margin: var(--space-sm) 0 0;
-  border: 0;
-  border-top: var(--rule-hair) solid var(--color-rule);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
-}
 
 /* ================= HERO ================= */
 .hero {
@@ -122,45 +59,14 @@ h1 {
   margin: 0 0 var(--space-xs);
   overflow-wrap: anywhere;
   min-width: 0;
+  text-wrap: balance;
 }
-.tagline {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  color: var(--color-ink-soft);
-  margin: 0 0 var(--space-lg);
-}
-.hero-copy {
-  font-size: var(--text-base);
-  line-height: 1.7;
-  color: var(--color-ink-soft);
-  max-width: 62ch;
-  margin: 0 auto var(--space-md);
-}
-.strip {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-xs);
-  margin: var(--space-lg) 0 0;
-}
-.mini-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2xs);
-  padding: var(--space-2xs) var(--space-sm);
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--color-accent-gold-border);
-  background: linear-gradient(180deg, var(--card-sheen-top-strong), var(--card-sheen-bottom-strong));
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-ink-soft);
-  white-space: nowrap;
-}
+.tagline { font-family: var(--font-display); font-size: var(--text-lg); color: var(--color-ink-soft); margin: 0 0 var(--space-lg); }
+.hero-copy { font-size: var(--text-base); line-height: 1.7; color: var(--color-ink-soft); max-width: 62ch; margin: 0 auto var(--space-md); text-wrap: pretty; }
+.strip { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-xs); margin: var(--space-lg) 0 0; }
 .mini-pill .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
 .dot--done { background: var(--color-accent); }
-.dot--active { background: var(--color-accent); }
+.dot--active { background: var(--color-accent); box-shadow: 0 0 0 3px var(--color-accent-border); }
 .dot--seed { background: transparent; border: 1.5px solid var(--color-accent-gold); }
 
 /* ================= SECTIONS ================= */
@@ -168,6 +74,7 @@ h1 {
   padding: var(--space-2xl) var(--page-gutter);
   max-width: 1180px;
   margin: 0 auto;
+  scroll-margin-top: var(--nav-offset);
 }
 .section-head { max-width: 62ch; margin: 0 0 var(--space-xl); }
 .section-head h2 {
@@ -178,38 +85,12 @@ h1 {
   margin: 0 0 var(--space-sm);
   overflow-wrap: anywhere;
   min-width: 0;
+  text-wrap: balance;
 }
-.section-head p {
-  font-size: var(--text-base);
-  line-height: 1.7;
-  color: var(--color-ink-soft);
-  margin: 0 0 var(--space-sm);
-}
+.section-head p { font-size: var(--text-base); line-height: 1.7; color: var(--color-ink-soft); margin: 0 0 var(--space-sm); text-wrap: pretty; }
 .section-head p:last-child { margin-bottom: 0; }
 
-/* ================= CARDS (sáng hơn khi rê chuột, như trang chủ) ================= */
-.now-card {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(180deg, var(--card-sheen-top), var(--card-sheen-bottom));
-  border: 1px solid var(--color-paper-edge);
-  border-radius: var(--radius-card);
-  padding: var(--space-lg);
-  transition: border-color var(--dur-short) var(--ease-out);
-}
-.now-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle 220px at var(--mx, 50%) var(--my, 50%), var(--color-accent-border), transparent 72%);
-  opacity: 0;
-  transition: opacity var(--dur-long) var(--ease-out);
-  pointer-events: none;
-}
-.now-card:hover::before { opacity: 1; }
-.now-card:hover { border-color: var(--color-accent-gold-border); }
-.now-card > *:not(.ripple) { position: relative; z-index: 1; }
-
+/* ================= THẺ KÍNH ================= */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
@@ -217,38 +98,16 @@ h1 {
   align-items: stretch;
 }
 .now-card--full { grid-column: 1 / -1; }
-@media (min-width: 64rem) {
-  .now-card--span2 { grid-column: span 2; }
-}
-.card-kicker {
-  font-size: var(--text-xs);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--color-accent);
-  margin: 0 0 var(--space-xs);
-}
-.card-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-xl);
-  line-height: 1.15;
-  margin: 0 0 var(--space-sm);
-  overflow-wrap: anywhere;
-  min-width: 0;
-}
-.card-text {
-  font-size: var(--text-base);
-  line-height: 1.62;
-  color: var(--color-ink-soft);
-  margin: 0 0 var(--space-md);
-}
+@media (min-width: 64rem) { .now-card--span2 { grid-column: span 2; } }
+.card-kicker { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-accent); margin: 0 0 var(--space-xs); }
+.card-title { font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); line-height: 1.15; margin: 0 0 var(--space-sm); overflow-wrap: anywhere; min-width: 0; }
+.card-text { font-size: var(--text-base); line-height: 1.62; color: var(--color-ink-soft); margin: 0 0 var(--space-md); }
 .card-text:last-child { margin-bottom: 0; }
 .facts {
   list-style: none;
   margin: var(--space-md) 0 0;
   padding: var(--space-sm) 0 0;
-  border-top: 1px solid var(--color-rule);
+  border-top: 1px solid var(--glass-rim-lo);
   display: grid;
   gap: var(--space-2xs);
   font-size: var(--text-sm);
@@ -256,102 +115,42 @@ h1 {
   color: var(--color-ink-soft);
 }
 .facts strong { color: var(--color-ink); font-weight: 600; }
-.term-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-sm);
-  font-size: var(--text-base);
-  line-height: 1.6;
-  color: var(--color-ink-soft);
-}
+.term-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-sm); font-size: var(--text-base); line-height: 1.6; color: var(--color-ink-soft); }
 .term-list strong { color: var(--color-ink); font-weight: 600; }
 .block-gap { margin-top: var(--space-lg); }
-.rank-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
-  margin: var(--space-sm) 0 var(--space-md);
-  padding: 0;
-  list-style: none;
-}
+.rank-row { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin: var(--space-sm) 0 var(--space-md); padding: 0; list-style: none; }
 
-/* ================= MỤC LỤC (TOC) - kiểu mục lục sách ================= */
-.section[id] { scroll-margin-top: var(--space-lg); }
-#ranks { scroll-margin-top: 4rem; }
-#toc { scroll-margin-top: 3.75rem; }
-
-.toc {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 var(--page-gutter);
-}
+/* ================= MỤC LỤC: một trang sách bằng kính ================= */
+#ranks { scroll-margin-top: var(--nav-offset); }
+#toc { scroll-margin-top: var(--nav-offset); }
+.toc { max-width: 1180px; margin: 0 auto; padding: 0 var(--page-gutter); }
 .toc-card {
-  max-width: 30rem;
+  max-width: 32rem;
   margin: 0 auto;
+  padding: var(--space-xs) var(--space-lg);
+  border-radius: var(--radius-card);
+  background-color: var(--glass-fill-strong);
+  animation: pop-in 1s var(--spring) 0.3s backwards;
 }
-/* hai nét kẻ mảnh trên và dưới, cùng kiểu với đường kẻ đầu trang */
-.toc-rule {
-  display: block;
-  height: 4px;
-  border-top: var(--rule-hair) solid var(--color-accent-gold-border);
-  border-bottom: var(--rule-hair) solid var(--color-accent-gold-border);
-}
-.toc-head {
-  display: grid;
-  justify-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-lg) 0 var(--space-md);
-  text-align: center;
-}
-.toc-title {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 600;
-  font-size: var(--text-2xl);
-  line-height: 1;
-  letter-spacing: 0.01em;
-  margin: 0;
-  color: var(--color-ink);
-}
-.toc-orn {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  width: 7.5rem;
-  color: var(--color-accent-gold);
-}
-.toc-orn::before, .toc-orn::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.55;
-}
-.toc-orn i {
-  width: 6px;
-  height: 6px;
-  background: currentColor;
-  transform: rotate(45deg);
-}
-.toc-list {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 var(--space-md);
-}
+.toc-rule { display: block; height: 4px; border-top: var(--rule-hair) solid var(--color-accent-gold-border); border-bottom: var(--rule-hair) solid var(--color-accent-gold-border); }
+.toc-head { display: grid; justify-items: center; gap: var(--space-xs); padding: var(--space-lg) 0 var(--space-md); text-align: center; }
+.toc-title { font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: var(--text-2xl); line-height: 1; letter-spacing: 0.01em; margin: 0; color: var(--color-ink); }
+.toc-orn { display: flex; align-items: center; gap: var(--space-xs); width: 7.5rem; color: var(--color-accent-gold); }
+.toc-orn::before, .toc-orn::after { content: ""; flex: 1; height: 1px; background: currentColor; opacity: 0.55; }
+.toc-orn i { width: 6px; height: 6px; background: currentColor; transform: rotate(45deg); }
+.toc-list { list-style: none; margin: 0; padding: 0 0 var(--space-md); }
 .toc-link {
   display: flex;
   align-items: baseline;
   gap: var(--space-xs);
-  min-height: 2.75rem;
-  margin-inline: calc(var(--space-xs) * -1);
-  padding: var(--space-xs);
-  border-radius: 10px;
+  min-height: 2.9rem;
+  margin-inline: calc(var(--space-sm) * -1);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 16px;
   color: var(--color-ink);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
-  transition: background var(--dur-short) var(--ease-out);
+  transition: transform var(--dur-spring) var(--spring), background-color var(--dur-short) ease, box-shadow var(--dur-short) ease;
 }
 .toc-label {
   flex: 0 1 auto;
@@ -361,66 +160,42 @@ h1 {
   font-size: var(--text-lg);
   line-height: 1.25;
   overflow-wrap: anywhere;
-  transition: color var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out);
+  transition: color var(--dur-short) var(--ease-out), transform var(--dur-spring) var(--spring);
 }
-/* hàng chấm dẫn: nằm đúng đường cơ sở của chữ */
-.toc-dots {
-  flex: 1 1 1rem;
-  min-width: 1rem;
-  position: relative;
-  top: -0.2em;
-  border-bottom: 2px dotted var(--color-accent-gold-border);
-  transition: border-color var(--dur-short) var(--ease-out);
+.toc-dots { flex: 1 1 1rem; min-width: 1rem; position: relative; top: -0.2em; border-bottom: 2px dotted var(--color-accent-gold-border); transition: border-color var(--dur-short) var(--ease-out); }
+.toc-num { flex: none; min-width: 2.2rem; text-align: right; font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: var(--text-lg); line-height: 1.25; color: var(--color-accent); }
+/* rê chuột: một mảnh kính nhô lên sau dòng mục lục */
+@media (hover: hover) {
+  .toc-link:hover { background-color: var(--glass-fill-hover); box-shadow: inset 0 1px 0 var(--glass-rim-hi), inset 0 0 0 1px var(--glass-rim-mid), 0 8px 18px -10px oklch(32% 0.06 50 / 0.35); }
+  .toc-link:hover .toc-label { color: var(--color-accent); transform: translateX(4px); }
+  .toc-link:hover .toc-dots { border-bottom-color: var(--color-accent-gold); }
 }
-.toc-num {
-  flex: none;
-  min-width: 2.2rem;
-  text-align: right;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 600;
-  font-size: var(--text-lg);
-  line-height: 1.25;
-  color: var(--color-accent);
-}
-.toc-link:hover, .toc-link:focus-visible { background: var(--card-sheen-top); }
-.toc-link:hover .toc-label, .toc-link:focus-visible .toc-label { color: var(--color-accent); transform: translateX(3px); }
-.toc-link:hover .toc-dots, .toc-link:focus-visible .toc-dots { border-bottom-color: var(--color-accent-gold); }
-.toc-link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
-.toc-link:active { background: var(--card-sheen-bottom-strong); }
+.toc-link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; background-color: var(--glass-fill-hover); }
+.toc-link.is-pressed { transform: scale(0.972, 0.94); background-color: var(--glass-fill-hover); transition-duration: var(--dur-press), var(--dur-short), var(--dur-short); transition-timing-function: var(--ease-out), ease, ease; }
 
-/* ================= NÚT CUỘN LÊN ================= */
+/* ================= NÚT VỀ MỤC LỤC: giọt kính nổi góc phải dưới ================= */
 .to-top {
   position: fixed;
   right: max(1rem, env(safe-area-inset-right));
   bottom: max(1rem, env(safe-area-inset-bottom));
   z-index: 30;
-  width: 46px;
-  height: 46px;
+  width: 52px;
+  height: 52px;
   display: grid;
   place-items: center;
   padding: 0;
-  border: 1px solid var(--color-accent-gold-border);
+  border: 0;
   border-radius: 50%;
-  background: var(--surface-solid);
-  box-shadow: var(--menu-shadow);
   color: var(--color-accent);
   cursor: pointer;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(16px) scale(0.55);
   pointer-events: none;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out);
+  transition: transform var(--dur-spring) var(--spring), opacity 0.25s ease, box-shadow var(--dur-short) ease, background-color var(--dur-short) ease;
 }
 .to-top.show { opacity: 1; transform: none; pointer-events: auto; }
 .to-top svg { width: 20px; height: 20px; }
-.to-top:hover, .to-top:focus-visible { border-color: var(--color-accent); }
-.to-top:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.to-top:active { transform: scale(0.94); }
-@media (prefers-reduced-motion: reduce) {
-  .toc-link, .toc-label, .toc-dots, .to-top { transition: none; }
-  .toc-link:hover .toc-label, .toc-link:focus-visible .toc-label { transform: none; }
-}
 
 /* ================= TIMELINE ================= */
 .timeline {
@@ -436,93 +211,34 @@ h1 {
 .timeline li::before {
   content: "";
   position: absolute;
-  left: calc(-1 * var(--space-lg) - 6px);
-  top: 0.5rem;
-  width: 10px;
-  height: 10px;
+  left: calc(-1 * var(--space-lg) - 7px);
+  top: 0.45rem;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--color-accent-gold);
+  box-shadow: 0 0 0 4px oklch(71.4% 0.121 81 / 0.25), inset 0 1px 0 oklch(100% 0 0 / 0.6);
 }
-.tl-when {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--color-accent);
-  margin: 0 0 var(--space-3xs);
-}
-.tl-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-lg);
-  line-height: 1.2;
-  margin: 0 0 var(--space-2xs);
-}
-.tl-text {
-  font-size: var(--text-base);
-  line-height: 1.62;
-  color: var(--color-ink-soft);
-  margin: 0;
-}
+.tl-when { font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.06em; color: var(--color-accent); margin: 0 0 var(--space-3xs); }
+.tl-title { font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg); line-height: 1.2; margin: 0 0 var(--space-2xs); }
+.tl-text { font-size: var(--text-base); line-height: 1.62; color: var(--color-ink-soft); margin: 0; }
 
 /* ================= FOOTER ================= */
-.foot-letter {
-  padding: var(--space-2xl) var(--page-gutter) var(--space-xl);
-  max-width: 1180px;
-  margin: 0 auto;
-  display: grid;
-  gap: var(--space-lg);
-  text-align: center;
-}
-.foot-letter__close {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: var(--text-lg);
-  line-height: 1.4;
-  margin: 0 auto;
-  max-width: 60ch;
-}
+.foot-letter { padding: var(--space-2xl) var(--page-gutter) var(--space-xl); max-width: 1180px; margin: 0 auto; display: grid; gap: var(--space-lg); text-align: center; }
+.foot-letter__close { font-family: var(--font-display); font-style: italic; font-size: var(--text-lg); line-height: 1.4; margin: 0 auto; max-width: 60ch; }
 .foot-letter__sign { font-style: normal; font-weight: 600; }
-.foot-letter__row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-md);
-  align-items: center;
-  font-size: var(--text-sm);
-}
-.foot-letter__row a {
-  text-decoration: none;
-  color: var(--color-ink-soft);
-  display: flex;
-  align-items: center;
-  gap: var(--space-2xs);
-  transition: color var(--dur-short) var(--ease-out);
-}
-.foot-letter__row a:hover, .foot-letter__row a:focus-visible { color: var(--color-accent); }
+.foot-letter__row { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-md); align-items: center; font-size: var(--text-sm); }
+.foot-letter__row a { text-decoration: none; color: var(--color-ink-soft); display: flex; align-items: center; gap: var(--space-2xs); transition: color var(--dur-short) var(--ease-out), transform var(--dur-spring) var(--spring); }
+@media (hover: hover) { .foot-letter__row a:hover { color: var(--color-accent); transform: translateY(-3px) scale(1.12); } }
+.foot-letter__row a:focus-visible { color: var(--color-accent); outline: 2px solid var(--color-focus); outline-offset: 3px; border-radius: 4px; }
 .foot-letter__row svg { width: 16px; height: 16px; }
-.foot-letter__row .sep { color: var(--color-paper-edge); }
-.foot-letter__copyright {
-  text-align: center;
-  font-size: var(--text-xs);
-  line-height: 1.5;
-  color: var(--color-ink-soft);
-  opacity: 0.75;
-}
+.foot-letter__row .sep { color: var(--glass-rim-lo); }
+.foot-letter__copyright { text-align: center; font-size: var(--text-xs); line-height: 1.5; color: var(--color-ink-soft); opacity: 0.75; }
 
-/* ================= REVEAL ================= */
-.reveal {
-  opacity: 0;
-  transform: translateY(8px);
-  animation: reveal var(--dur-long) var(--ease-out) forwards;
-  animation-delay: calc(var(--i, 0) * 60ms);
-}
-@keyframes reveal { to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) {
-  .reveal { animation-duration: 150ms; transform: none; }
-}
 @media (max-width: 30rem) {
   .section { padding: var(--space-xl) var(--page-gutter); }
   .hero { padding-top: var(--space-xl); }
+  .toc-card { padding-inline: var(--space-md); }
 }
 </style>
 </head>
@@ -561,8 +277,6 @@ h1 {
     </div>
   </div>
 
-  <div class="cursor-glow" id="cursorGlow"></div>
-
   <button class="to-top" id="toTop" type="button" aria-label="Về mục lục" data-aria-vi="Về mục lục" data-aria-en="Back to contents">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
   </button>
@@ -571,11 +285,12 @@ h1 {
 <main id="main">
 
   <header class="mast">
-    <p class="mast-line">
-      <a href="https://ruii9326.github.io/" data-i18n data-vi="← Về Trang Chủ ruii9326" data-en="← Back to ruii9326 Home">← Về Trang Chủ ruii9326</a>
-    </p>
-    <p class="mast-name">The World of Nine Continents</p>
-    <hr class="mast-rule" aria-hidden="true">
+    <div class="mast-pill">
+      <p class="mast-line">
+        <a href="https://ruii9326.github.io/" data-i18n data-vi="← Về Trang Chủ ruii9326" data-en="← Back to ruii9326 Home">← Về Trang Chủ ruii9326</a>
+      </p>
+      <p class="mast-name">The World of Nine Continents</p>
+    </div>
   </header>
 
   <section class="hero" aria-labelledby="pageTitle">
@@ -591,7 +306,7 @@ h1 {
     </div>
   </section>
 
-  <nav class="toc reveal" style="--i:6" id="toc" aria-label="Mục lục" data-aria-vi="Mục lục" data-aria-en="Contents">
+  <nav class="toc" id="toc" aria-label="Mục lục" data-aria-vi="Mục lục" data-aria-en="Contents">
     <div class="toc-card">
       <span class="toc-rule" aria-hidden="true"></span>
       <div class="toc-head">
@@ -972,98 +687,29 @@ h1 {
 </script>
 <script src="../script/site.js"></script>
 <script>
-/* Mục lục + nút cuộn lên: tự cuộn mượt bằng JS, không phụ thuộc CSS scroll-behavior
-   (nhiều máy Windows bật "giảm chuyển động" khiến cuộn mượt của CSS bị tắt). */
+/* Nút giọt kính góc phải dưới: chỉ hiện khi đã cuộn qua mục lục, bấm thì trượt về mục lục.
+   Cuộn mượt dùng chung với mọi liên kết neo (script/site.js). */
 (function () {
-  var root = document.documentElement;
-  var rafId = null;
-
-  function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
-  function jump(y) {
-    try { window.scrollTo({ top: y, behavior: 'instant' }); }
-    catch (e) { window.scrollTo(0, y); }
-  }
-  function currentY() {
-    return window.pageYOffset || root.scrollTop || document.body.scrollTop || 0;
-  }
-  // tắt scroll-behavior của CSS trong lúc tự cuộn để hai cơ chế không giẫm chân nhau
-  function lockCss() { root.style.scrollBehavior = 'auto'; }
-  function unlockCss() { root.style.scrollBehavior = ''; }
-  function cancel() {
-    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
-    unlockCss();
-  }
-
-  function scrollToY(target, done) {
-    cancel();
-    var start = currentY();
-    var max = Math.max(0, root.scrollHeight - window.innerHeight);
-    target = Math.max(0, Math.min(target, max));
-    var dist = target - start;
-    if (Math.abs(dist) < 2) { if (done) done(); return; }
-    var dur = Math.min(1100, Math.max(450, Math.abs(dist) * 0.3));
-    var t0 = null;
-    lockCss();
-    function step(ts) {
-      if (t0 === null) t0 = ts;
-      var p = Math.min(1, (ts - t0) / dur);
-      jump(start + dist * ease(p));
-      if (p < 1) { rafId = requestAnimationFrame(step); return; }
-      rafId = null;
-      jump(target);               // chốt đúng vị trí đích
-      unlockCss();
-      if (done) done();
-    }
-    rafId = requestAnimationFrame(step);
-  }
-
-  // người dùng tự cuộn bằng chuột/chạm thì dừng hiệu ứng ngay
-  ['wheel', 'touchmove'].forEach(function (ev) {
-    window.addEventListener(ev, function () { if (rafId !== null) cancel(); }, { passive: true });
-  });
-
-  function setHash(hash) {
-    try {
-      history.replaceState(null, '', hash || (location.pathname + location.search));
-    } catch (e) {}
-  }
-
-  document.querySelectorAll('.toc-link').forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      var id = link.getAttribute('href').slice(1);
-      var el = document.getElementById(id);
-      if (!el) return;
-      e.preventDefault();
-      var offset = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
-      scrollToY(el.getBoundingClientRect().top + currentY() - offset, function () {
-        setHash('#' + id);
-      });
-    });
-  });
-
-  // Nút ở góc phải dưới: chỉ hiện khi đã cuộn xuống khỏi mục lục,
-  // bấm vào thì trượt về đúng mục lục.
   var toTop = document.getElementById('toTop');
   var tocEl = document.getElementById('toc');
-  if (toTop && tocEl) {
-    var ticking = false;
-    function update() {
-      ticking = false;
-      toTop.classList.toggle('show', tocEl.getBoundingClientRect().bottom < 0);
-    }
-    window.addEventListener('scroll', function () {
-      if (!ticking) { ticking = true; requestAnimationFrame(update); }
-    }, { passive: true });
-    window.addEventListener('resize', update);
-    update();
-    toTop.addEventListener('click', function () {
-      var offset = parseFloat(getComputedStyle(tocEl).scrollMarginTop) || 0;
-      scrollToY(tocEl.getBoundingClientRect().top + window.pageYOffset - offset, function () {
-        setHash('#toc');
-      });
-    });
+  if (!toTop || !tocEl) return;
+  var ticking = false;
+  function update() {
+    ticking = false;
+    toTop.classList.toggle('show', tocEl.getBoundingClientRect().bottom < 0);
   }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+  toTop.addEventListener('click', function () {
+    var R = window.RUII9326;
+    var offset = parseFloat(getComputedStyle(tocEl).scrollMarginTop) || 0;
+    var y = tocEl.getBoundingClientRect().top + window.pageYOffset - offset;
+    if (R && R.scrollToY) R.scrollToY(y, function () { R.setHash('#toc'); });
+    else window.scrollTo(0, y);
+  });
 })();
 </script>
 </body>
