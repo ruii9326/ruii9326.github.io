@@ -1,19 +1,29 @@
 /* ============================================================
-   ruii9326 — shared site script
-   Used by: index.html (Trang Chủ - cũng là trang tác giả),
-   theworldofninecontinents/, donate/
+   ruii9326 — shared site script · Liquid Glass
+   Dùng bởi: index.html (Trang Chủ) và theworldofninecontinents/
 
-   Each page sets window.RUII9326_PAGE = { titleVi, titleEn, descVi, descEn }
-   in an inline <script> BEFORE loading this file, so the language
-   switcher can update <title> / meta description correctly per page.
+   Mỗi trang đặt window.RUII9326_PAGE = { titleVi, titleEn, descVi, descEn }
+   trong <script> inline TRƯỚC khi nạp file này.
 
-   Back-link / home-link (id="gateLink", kept for backward compatibility)
-   logic below runs only if the corresponding element exists on the page
-   (harmless no-op on the homepage, which has neither).
+   Không có phần nào ở đây đi theo vị trí con trỏ: không vệt sáng, không điểm sáng trong thẻ.
    ============================================================ */
 
 (function () {
   var page = window.RUII9326_PAGE || {};
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  var langListeners = [];
+  window.RUII9326 = window.RUII9326 || {};
+
+  // công tắc ngôn ngữ / giao diện: thanh trượt co giãn như giọt kính khi chạy
+  function stretch(sw) {
+    if (!sw) return;
+    sw.classList.remove('sliding');
+    void sw.offsetWidth;
+    sw.classList.add('sliding');
+    setTimeout(function () { sw.classList.remove('sliding'); }, 700);
+  }
 
   // ===== LANGUAGE SWITCHER =====
   (function () {
@@ -56,6 +66,7 @@
       if (typeof page.onLanguageChange === 'function') {
         page.onLanguageChange(lang);
       }
+      langListeners.forEach(function (fn) { try { fn(lang); } catch (e) {} });
       if (save) {
         try { localStorage.setItem('ruii9326-language', lang); } catch (e) {}
       }
@@ -74,7 +85,7 @@
     buttons.forEach(function (button) {
       button.addEventListener('click', function () {
         var lang = button.getAttribute('data-lang');
-        if (document.documentElement.lang !== lang) window.setLanguage(lang, true);
+        if (document.documentElement.lang !== lang) { stretch(switcher); window.setLanguage(lang, true); }
       });
     });
 
@@ -117,6 +128,7 @@
       button.addEventListener('click', function () {
         var theme = button.getAttribute('data-theme-choice');
         if (document.documentElement.getAttribute('data-theme') !== theme) {
+          stretch(switcher);
           window.setTheme(theme, true);
         }
       });
@@ -239,88 +251,262 @@
   }
 })();
 
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var stage = document.getElementById('stage');
 
-  // gentle drifting sparks
-  if (!reduceMotion && stage) {
-    for (var i = 0; i < 14; i++) {
-      var s = document.createElement('span');
-      s.className = 'spark';
-      s.style.left = Math.random() * 100 + '%';
-      s.style.animationDelay = (Math.random() * 9) + 's';
-      s.style.animationDuration = (7 + Math.random() * 5) + 's';
-      stage.appendChild(s);
-    }
+  // ===== CUỘN MƯỢT BẰNG JS =====
+  // Không dựa vào CSS scroll-behavior: nhiều máy Windows bật "giảm chuyển động" làm cuộn mượt
+  // của CSS bị tắt, trong khi đây là chuyển động do chính người dùng bấm nên vẫn cần chạy.
+  var rafId = null;
+  function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function jump(y) {
+    try { window.scrollTo({ top: y, behavior: 'instant' }); } catch (e) { window.scrollTo(0, y); }
   }
-
-  // soft brown glow that follows the cursor anywhere on the page.
-  // Uses transform (GPU compositing) instead of left/top so it stays cheap
-  // even at a high mousemove rate.
-  // Giữ hoạt động cả khi hệ điều hành bật "giảm chuyển động": vệt sáng này
-  // chỉ di chuyển theo chính con trỏ của người dùng, không tự chạy.
-  {
-    var glow = document.getElementById('cursorGlow');
-    if (glow) {
-      var glowShown = false;
-      document.addEventListener('mousemove', function (e) {
-        glow.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
-        if (!glowShown) { glow.style.opacity = '1'; glowShown = true; }
-      }, { passive: true });
-      document.addEventListener('mouseleave', function () {
-        glow.style.opacity = '0';
-        glowShown = false;
-      });
-    }
+  function currentY() { return window.pageYOffset || root.scrollTop || document.body.scrollTop || 0; }
+  function cancelScroll() {
+    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+    root.style.scrollBehavior = '';
   }
+  function scrollToY(target, done) {
+    cancelScroll();
+    var start = currentY();
+    var max = Math.max(0, root.scrollHeight - window.innerHeight);
+    target = Math.max(0, Math.min(target, max));
+    var dist = target - start;
+    if (Math.abs(dist) < 2) { if (done) done(); return; }
+    var dur = Math.min(1100, Math.max(450, Math.abs(dist) * 0.3));
+    var t0 = null;
+    root.style.scrollBehavior = 'auto';
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min(1, (ts - t0) / dur);
+      jump(start + dist * ease(p));
+      if (p < 1) { rafId = requestAnimationFrame(step); return; }
+      rafId = null;
+      jump(target);
+      root.style.scrollBehavior = '';
+      if (done) done();
+    }
+    rafId = requestAnimationFrame(step);
+  }
+  ['wheel', 'touchmove'].forEach(function (ev) {
+    window.addEventListener(ev, function () { if (rafId !== null) cancelScroll(); }, { passive: true });
+  });
+  function setHash(hash) {
+    try { history.replaceState(null, '', hash || (location.pathname + location.search)); } catch (e) {}
+  }
+  window.RUII9326.scrollToY = scrollToY;
+  window.RUII9326.currentY = currentY;
+  window.RUII9326.setHash = setHash;
 
-  // brown blur that follows the cursor inside each card, stronger than the
-  // ambient page-wide glow above — this is the "climbs onto the card and
-  // gets darker" effect. Matches both the homepage/author page's .card and the
-  // volume/chapter pages' a.volume-card.
-  var interactiveCards = document.querySelectorAll('.card, a.volume-card, .split-row, .now-card');
-
-  interactiveCards.forEach(function (card) {
-    card.addEventListener('mousemove', function (e) {
-      var rect = card.getBoundingClientRect();
-      card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-      card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-    });
+  // mọi liên kết neo trong trang (thanh điều hướng, mục lục...) đều cuộn mượt, chừa chỗ cho thanh kính
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    var offset = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+    scrollToY(el.getBoundingClientRect().top + currentY() - offset, function () { setHash('#' + id); });
   });
 
-  // gentle ripple on tap/click, with a short delay before navigating
-  // so the ripple is visible even though the card is a real link
-  interactiveCards.forEach(function (card) {
-    card.addEventListener('click', function (e) {
-      // let modified clicks (open in new tab, middle click, etc.) behave natively
-      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  // ===== KÍNH LỎNG: NHẤN LÀ ÉP, THẢ LÀ NẢY =====
+  // Chỉ phần tử trong cùng được ép (không dùng :active vì :active lan lên cả các phần tử cha).
+  // Hiệu ứng nằm trọn trong CSS (.is-pressed); JS chỉ bật/tắt lớp này khi nhấn / thả / hủy.
+  var LIQUID = [
+    '.now-card', 'a.split-row__link', '.split-row--solo', '.haunt', '.btn-primary', '.btn-link',
+    '.menu-toggle', '.back-link-icon', '.to-top', '.toc-link', '.emblem', '.mast-line a'
+  ].join(',');
 
-      // Hầu hết card (a.volume-card, a.now-card, .card khi tự nó là <a>) có
-      // href ngay trên chính mình. Nhưng .split-row lại là <div> nằm BÊN
-      // TRONG <a class="split-row__link">, nên khi không tìm thấy href trên
-      // card, thử tìm ở thẻ <a> cha gần nhất trước khi bỏ cuộc.
-      var linkEl = card.hasAttribute('href') ? card : card.closest('a[href]');
-      var href = linkEl ? linkEl.getAttribute('href') : null;
+  var pressedEl = null;
+  function release() {
+    if (pressedEl) { pressedEl.classList.remove('is-pressed'); pressedEl = null; }
+  }
+  document.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    var el = e.target.closest && e.target.closest(LIQUID);
+    release();
+    if (!el) return;
+    pressedEl = el;
+    el.classList.add('is-pressed');
+  }, { passive: true });
+  window.addEventListener('pointerup', release, true);
+  window.addEventListener('pointercancel', release, true);
+  window.addEventListener('blur', release);
+  document.addEventListener('visibilitychange', release);
+  document.addEventListener('contextmenu', release);
+
+  // thẻ tác phẩm là liên kết thật: chờ một nhịp ngắn để thấy kính nảy lại rồi mới chuyển trang
+  document.querySelectorAll('a.split-row__link').forEach(function (card) {
+    card.addEventListener('click', function (e) {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var href = card.getAttribute('href');
       if (!href) return;
       e.preventDefault();
-
-      var rect = card.getBoundingClientRect();
-      var size = Math.max(rect.width, rect.height) * 2;
-      var cx = (typeof e.clientX === 'number' && e.clientX !== 0) ? e.clientX : rect.left + rect.width / 2;
-      var cy = (typeof e.clientY === 'number' && e.clientY !== 0) ? e.clientY : rect.top + rect.height / 2;
-
-      var ripple = document.createElement('span');
-      ripple.className = 'ripple';
-      ripple.style.width = size + 'px';
-      ripple.style.height = size + 'px';
-      ripple.style.left = (cx - rect.left - size / 2) + 'px';
-      ripple.style.top = (cy - rect.top - size / 2) + 'px';
-      card.appendChild(ripple);
-      ripple.addEventListener('animationend', function () { ripple.remove(); });
-
-      setTimeout(function () {
-        window.location.href = href;
-      }, 220);
+      card.classList.add('is-launch');
+      setTimeout(function () { window.location.href = href; }, 260);
     });
   });
+  // quay lại bằng nút Back của trình duyệt (bfcache): bỏ trạng thái đang chuyển trang
+  window.addEventListener('pageshow', function () {
+    document.querySelectorAll('.is-launch').forEach(function (el) { el.classList.remove('is-launch'); });
+    release();
+  });
+
+  // ===== THANH ĐIỀU HƯỚNG: "THẤU KÍNH" TRƯỢT GIỮA CÁC MỤC + THEO DÕI MỤC ĐANG ĐỌC =====
+  (function () {
+    var nav = document.querySelector('.mast-nav');
+    if (!nav) return;
+    var links = [].slice.call(nav.querySelectorAll('a[href^="#"]'));
+    if (!links.length) return;
+
+    var lens = document.createElement('span');
+    lens.className = 'mast-lens';
+    lens.setAttribute('aria-hidden', 'true');
+    nav.insertBefore(lens, nav.firstChild);
+
+    var active = null, hovered = null;
+
+    function place(el) {
+      if (!el) { lens.classList.remove('on'); return; }
+      var n = nav.getBoundingClientRect(), r = el.getBoundingClientRect();
+      var first = !lens.classList.contains('on');
+      if (first) lens.classList.add('snap');           // lần đầu hiện: đặt thẳng vào chỗ, không trượt từ góc
+      lens.style.setProperty('--lx', (r.left - n.left) + 'px');
+      lens.style.setProperty('--lw', r.width + 'px');
+      if (first) { void lens.offsetWidth; lens.classList.remove('snap'); lens.classList.add('on'); }
+    }
+    function rest() { place(hovered || active); }
+
+    links.forEach(function (l) {
+      l.addEventListener('pointerenter', function () { hovered = l; place(l); });
+      l.addEventListener('focus', function () { hovered = l; place(l); });
+      l.addEventListener('blur', function () { hovered = null; rest(); });
+    });
+    nav.addEventListener('pointerleave', function () { hovered = null; rest(); });
+    nav.addEventListener('pointerdown', function () { lens.classList.add('pressed'); }, { passive: true });
+    ['pointerup', 'pointercancel'].forEach(function (ev) {
+      window.addEventListener(ev, function () { lens.classList.remove('pressed'); }, true);
+    });
+
+    var ticking = false;
+    function updateActive() {
+      ticking = false;
+      var line = window.innerHeight * 0.38, cur = null;
+      links.forEach(function (l) {
+        var t = document.getElementById(l.getAttribute('href').slice(1));
+        if (t && t.getBoundingClientRect().top <= line) cur = l;
+      });
+      if (window.innerHeight + currentY() >= root.scrollHeight - 4) cur = links[links.length - 1];
+      if (cur !== active) {
+        active = cur;
+        links.forEach(function (l) {
+          l.classList.toggle('is-active', l === cur);
+          if (l === cur) l.setAttribute('aria-current', 'location'); else l.removeAttribute('aria-current');
+        });
+        if (!hovered) place(active);
+      }
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(updateActive); }
+    }, { passive: true });
+    window.addEventListener('resize', function () { rest(); updateActive(); });
+    langListeners.push(function () { requestAnimationFrame(function () { requestAnimationFrame(rest); }); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { rest(); });
+    window.addEventListener('load', function () { rest(); updateActive(); });
+    updateActive();
+  })();
+
+  // ===== KHÚC XẠ Ở MÉP KÍNH (chỉ Chrome / Edge / Opera / Brave) =====
+  // Bộ lọc SVG feDisplacementMap bẻ cong phần nền nhìn xuyên qua mép kính như một thấu kính lồi.
+  // Bản đồ độ dịch được vẽ bằng canvas theo đúng kích thước từng phần tử. Safari / Firefox không hỗ trợ
+  // url() trong backdrop-filter nên giữ nguyên bản kính CSS. Không phụ thuộc vị trí con trỏ.
+  (function () {
+    if (!/Chrome\/\d+/.test(navigator.userAgent)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
+    var SEL = '.mast-pill, .emblem, .btn-primary, .btn-link, .menu-toggle, .back-link-icon, .to-top, .settings-popover';
+    var NS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('width', '0'); svg.setAttribute('height', '0');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none';
+    var defs = document.createElementNS(NS, 'defs');
+    svg.appendChild(defs);
+    document.body.appendChild(svg);
+    var n = 0;
+
+    function makeMap(w, h, r, bezel) {
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      var ctx = c.getContext('2d');
+      var img = ctx.createImageData(w, h), d = img.data;
+      var hx = w / 2, hy = h / 2, rr = Math.min(r, hx, hy);
+      for (var y = 0; y < h; y++) {
+        for (var x = 0; x < w; x++) {
+          var px = x + 0.5 - hx, py = y + 0.5 - hy;
+          var qx = Math.abs(px) - (hx - rr), qy = Math.abs(py) - (hy - rr);
+          var ox = Math.max(qx, 0), oy = Math.max(qy, 0);
+          var sd = Math.sqrt(ox * ox + oy * oy) + Math.min(Math.max(qx, qy), 0) - rr; // <0 bên trong
+          var depth = -sd, i = (y * w + x) * 4, R = 128, G = 128;
+          if (depth < bezel && depth > -2) {
+            var t = Math.max(0, depth) / bezel, m = Math.pow(1 - t, 2.2);
+            // pháp tuyến hướng ra ngoài; điểm lấy mẫu dịch vào trong (thấu kính lồi)
+            var nx, ny;
+            if (qx > 0 || qy > 0) { var L = Math.sqrt(ox * ox + oy * oy) || 1; nx = ox / L * Math.sign(px); ny = oy / L * Math.sign(py); }
+            else if (qx > qy) { nx = Math.sign(px); ny = 0; } else { nx = 0; ny = Math.sign(py); }
+            R = Math.round(128 - nx * m * 127); G = Math.round(128 - ny * m * 127);
+          }
+          d[i] = R; d[i + 1] = G; d[i + 2] = 128; d[i + 3] = 255;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+      return c.toDataURL();
+    }
+
+    function setup(el) {
+      var w = Math.round(el.offsetWidth), h = Math.round(el.offsetHeight);
+      if (w < 8 || h < 8 || w * h > 260000) return;
+      var r = parseFloat(getComputedStyle(el).borderTopLeftRadius) || h / 2;
+      if (/%/.test(getComputedStyle(el).borderTopLeftRadius)) r = Math.min(w, h) / 2;
+      var key = w + 'x' + h;
+      if (el.__lgKey === key) return;
+      el.__lgKey = key;
+      var id = el.__lgId || (el.__lgId = 'lg-' + (++n));
+      var f = document.getElementById(id);
+      if (!f) {
+        f = document.createElementNS(NS, 'filter');
+        f.setAttribute('id', id);
+        f.setAttribute('filterUnits', 'userSpaceOnUse');
+        f.setAttribute('color-interpolation-filters', 'sRGB');
+        f.innerHTML = '<feImage result="map" preserveAspectRatio="none"/><feDisplacementMap in="SourceGraphic" in2="map" xChannelSelector="R" yChannelSelector="G"/>';
+        defs.appendChild(f);
+      }
+      var bezel = Math.max(6, Math.min(Math.min(w, h) * 0.32, 22));
+      f.setAttribute('x', '0'); f.setAttribute('y', '0'); f.setAttribute('width', w); f.setAttribute('height', h);
+      var im = f.firstChild;
+      im.setAttribute('x', '0'); im.setAttribute('y', '0'); im.setAttribute('width', w); im.setAttribute('height', h);
+      var url = makeMap(w, h, r, bezel);
+      im.setAttribute('href', url);
+      im.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', url);
+      f.lastChild.setAttribute('scale', String(Math.round(bezel * 1.6)));
+      var blur = getComputedStyle(el).getPropertyValue('--glass-blur-sm') || '12px';
+      el.style.setProperty('backdrop-filter', 'blur(' + (el.matches('.mast-pill, .emblem, .settings-popover') ? 'var(--glass-blur)' : 'var(--glass-blur-sm)') + ') url(#' + id + ') saturate(var(--glass-sat))');
+      el.style.setProperty('-webkit-backdrop-filter', el.style.getPropertyValue('backdrop-filter'));
+    }
+    function all() { document.querySelectorAll(SEL).forEach(function (el) { try { setup(el); } catch (e) {} }); }
+
+    var timer = null;
+    function later() { clearTimeout(timer); timer = setTimeout(all, 120); }
+    if (window.ResizeObserver) {
+      var ro = new ResizeObserver(later);
+      document.querySelectorAll(SEL).forEach(function (el) { ro.observe(el); });
+    }
+    window.addEventListener('resize', later);
+    langListeners.push(later);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(all);
+    window.addEventListener('load', all);
+    all();
+    root.classList.add('refract');
+  })();
 })();
