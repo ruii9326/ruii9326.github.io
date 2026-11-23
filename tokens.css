@@ -33,26 +33,26 @@
   --icon-circle-ring: transparent;
 
   /* ---- nền: các "vệt màu" mềm để kính có thứ mà khúc xạ ---- */
-  --bg-base: oklch(96.2% 0.02 82);
-  --orb-a: oklch(84% 0.135 58 / 0.85);    /* hổ phách */
-  --orb-b: oklch(86% 0.105 22 / 0.62);    /* hồng đào */
-  --orb-c: oklch(88% 0.085 182 / 0.60);   /* xanh ngọc nhạt, đối sắc lạnh */
-  --orb-d: oklch(89% 0.11 90 / 0.70);    /* vàng mật */
+  --bg-base: oklch(95.5% 0.035 85);
+  --orb-a: oklch(80% 0.16 68 / 0.95);    /* hổ phách */
+  --orb-b: oklch(84% 0.125 60 / 0.75);    /* hồng đào */
+  --orb-c: oklch(89% 0.115 88 / 0.75);   /* xanh ngọc nhạt, đối sắc lạnh */
+  --orb-d: oklch(82% 0.15 78 / 0.85);    /* vàng mật */
   --orb-ring: oklch(71.4% 0.121 81 / 0.34);
 
   /* ---- kính ---- */
-  --glass-fill:        oklch(99% 0.012 85 / 0.12);
-  --glass-fill-strong: oklch(99% 0.012 85 / 0.30);   /* khối chữ dài */
-  --glass-fill-lite:   oklch(99% 0.012 85 / 0.14);   /* kính lồng trong kính (không blur thêm) */
-  --glass-fill-hover:  oklch(99% 0.012 85 / 0.26);
+  --glass-fill:        oklch(99% 0.012 85 / 0.07);
+  --glass-fill-strong: oklch(99% 0.012 85 / 0.22);   /* khối chữ dài */
+  --glass-fill-lite:   oklch(99% 0.012 85 / 0.08);   /* kính lồng trong kính (không blur thêm) */
+  --glass-fill-hover:  oklch(99% 0.012 85 / 0.18);
   --glass-tint:        oklch(49% 0.125 45 / 0.94);   /* kính nhuộm màu gỉ đồng (đủ đặc để chữ sáng đọc rõ) */
-  --glass-blur: 22px;
-  --glass-blur-sm: 12px;
-  --glass-sat: 2.1;
+  --glass-blur: 9px;
+  --glass-blur-sm: 5px;
+  --glass-sat: 1.8;
   --glass-rim-hi:  oklch(100% 0 0 / 1);
   --glass-rim-mid: oklch(100% 0 0 / 0.14);
   --glass-rim-lo:  oklch(55% 0.07 65 / 0.30);
-  --glass-sheen:   oklch(100% 0 0 / 0.26);
+  --glass-sheen:   oklch(100% 0 0 / 0.30);
   --glass-shadow:  0 14px 34px -14px oklch(32% 0.06 50 / 0.34), 0 2px 8px oklch(32% 0.06 50 / 0.08);
   --glass-shadow-hover: 0 22px 44px -14px oklch(32% 0.06 50 / 0.40), 0 3px 10px oklch(32% 0.06 50 / 0.10);
   --glass-inner:   inset 0 1px 0 oklch(100% 0 0 / 0.85), inset 0 -1px 0 oklch(50% 0.06 60 / 0.16), inset 0 -10px 18px -10px oklch(50% 0.07 55 / 0.14), inset 0 0 14px oklch(100% 0 0 / 0.10);
@@ -153,18 +153,18 @@ html[data-theme="dark"] {
   --icon-circle-bg: linear-gradient(180deg, oklch(43% 0.086 52), oklch(37% 0.076 48));
   --icon-circle-ring: transparent;
 
-  --bg-base: oklch(15% 0.03 262);
-  --orb-a: oklch(44% 0.15 265 / 0.70);
-  --orb-b: oklch(40% 0.13 300 / 0.55);
-  --orb-c: oklch(46% 0.10 205 / 0.60);
-  --orb-d: oklch(40% 0.12 245 / 0.55);
+  --bg-base: oklch(14.5% 0.022 80);
+  --orb-a: oklch(58% 0.14 80 / 0.70);
+  --orb-b: oklch(52% 0.13 72 / 0.55);
+  --orb-c: oklch(60% 0.13 88 / 0.50);
+  --orb-d: oklch(52% 0.13 78 / 0.60);
   --orb-ring: oklch(80.5% 0.106 78 / 0.20);
 
-  --glass-fill:        oklch(98% 0.01 250 / 0.05);
-  --glass-fill-strong: oklch(98% 0.01 250 / 0.10);
-  --glass-fill-lite:   oklch(98% 0.01 250 / 0.045);
-  --glass-fill-hover:  oklch(98% 0.01 250 / 0.11);
-  --glass-tint:        oklch(44% 0.09 55 / 0.92);
+  --glass-fill:        oklch(98% 0.012 85 / 0.035);
+  --glass-fill-strong: oklch(98% 0.012 85 / 0.075);
+  --glass-fill-lite:   oklch(98% 0.012 85 / 0.03);
+  --glass-fill-hover:  oklch(98% 0.012 85 / 0.09);
+  --glass-tint:        oklch(48% 0.11 62 / 0.92);
   --glass-rim-hi:  oklch(100% 0 0 / 0.70);
   --glass-rim-mid: oklch(100% 0 0 / 0.05);
   --glass-rim-lo:  oklch(100% 0 0 / 0.20);
