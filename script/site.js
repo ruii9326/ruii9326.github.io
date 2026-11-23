@@ -489,7 +489,7 @@
       var url = makeMap(w, h, r, bezel);
       im.setAttribute('href', url);
       im.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', url);
-      f.lastChild.setAttribute('scale', String(Math.round(bezel * 1.6)));
+      f.lastChild.setAttribute('scale', String(Math.round(bezel * 2.6)));
       var blur = getComputedStyle(el).getPropertyValue('--glass-blur-sm') || '12px';
       el.style.setProperty('backdrop-filter', 'blur(' + (el.matches('.mast-pill, .emblem, .settings-popover') ? 'var(--glass-blur)' : 'var(--glass-blur-sm)') + ') url(#' + id + ') saturate(var(--glass-sat))');
       el.style.setProperty('-webkit-backdrop-filter', el.style.getPropertyValue('backdrop-filter'));
