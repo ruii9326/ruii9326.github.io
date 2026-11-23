@@ -1,58 +1,64 @@
-/* Hallmark · macrostructure: Split Studio · theme: custom (tuned) · genre: editorial
- * vibe: "vũ trụ hậu tận thế ấm áp như giấy da cũ, hy vọng cháy như than hồng"
- * paper: oklch(97.4% 0.014 85) · accent: oklch(53.9% 0.124 45) (giữ nguyên hex logo #A8532A)
- * display: Cormorant Garamond · body: Be Vietnam Pro · axes: light / classical-serif / warm-amber
- * nav: N6 (masthead, tùy biến) · footer: Ft6 (letter close) · studied: no
+/* ruii9326 · Liquid Glass
+ * Kính lỏng kiểu iOS / ColorOS trên nền giấy da cũ: lớp kính mờ + bão hòa màu phía sau,
+ * viền sáng gradient (sáng ở góc trên-trái và dưới-phải), ánh bóng bên trong, đổ bóng mềm.
+ * Chuyển động: nhấn thì kính ép lại, thả ra thì nảy lò xo; rê chuột thì kính nhô lên.
+ * KHÔNG có vệt sáng nào chạy theo con trỏ.
+ *
+ * display: Cormorant Garamond · body: Be Vietnam Pro · accent: rust oklch(53.9% 0.124 45) + gold
  */
 
 :root {
-  /* ---- paper / ink (bảo toàn palette gốc gắn với logo, OKLCH-hoá) ---- */
-  --color-paper:        oklch(97.4% 0.014 85);   /* #FBF6EC parchment */
-  --color-paper-2:      oklch(94.3% 0.017 84);   /* #F1E7D3 parchment-dim */
-  --color-paper-edge:   oklch(88.4% 0.028 78);   /* #E4D5B7 parchment-edge */
+  color-scheme: light;
+
+  /* ---- paper / ink (giữ nguyên palette gắn với logo) ---- */
+  --color-paper:        oklch(97.4% 0.014 85);   /* #FBF6EC */
+  --color-paper-2:      oklch(94.3% 0.017 84);
+  --color-paper-edge:   oklch(88.4% 0.028 78);
   --color-rule:         oklch(88.4% 0.028 78 / 0.6);
   --color-ink:          oklch(25.5% 0.021 67);   /* #2A2118 */
   --color-ink-soft:     oklch(41.2% 0.022 66);   /* #55493B */
   --color-muted:        oklch(41.2% 0.022 66 / 0.8);
 
-  --color-accent:       oklch(53.9% 0.124 45);   /* #A8532A rust — hex giữ nguyên cho logo */
+  --color-accent:       oklch(53.9% 0.124 45);   /* #A8532A rust */
   --color-accent-hex:   #A8532A;
   --color-accent-gold:  oklch(71.4% 0.121 81);   /* #C99A3E */
   --color-accent-soft:  oklch(82.3% 0.101 84);   /* #E4C077 */
   --color-focus:        oklch(53.9% 0.124 45);
   --color-accent-border:      oklch(53.9% 0.124 45 / 0.35);
-  --color-accent-gold-border: oklch(71.4% 0.121 81 / 0.42);
-  --color-sheen-ring:         oklch(100% 0 0 / 0.3);
-  --color-icon-on-accent:     oklch(97.4% 0.014 85);  /* #FFF6DE — icon trên nền accent tròn */
+  --color-accent-gold-border: oklch(71.4% 0.121 81 / 0.5);
+  --color-icon-on-accent:     oklch(97.4% 0.014 85);
 
-  /* ---- vòng tròn huy hiệu icon (trang chủ, thẻ quyển sách, thẻ ủng hộ) ----
-     Mảng phẳng ở CẢ HAI giao diện: không điểm sáng góc trên trái, không viền
-     trắng — kiểu khối cầu bóng trông giả nhựa. Tách riêng khỏi --color-accent*
-     vì chữ và link cần sáng lên ở chế độ tối để đủ tương phản, còn mảng tròn
-     đặc này thì phải tối đi mới không bị chói. */
+  /* vòng tròn icon: mảng phẳng, không điểm sáng góc (giữ nguyên quyết định cũ) */
   --icon-circle-bg:   linear-gradient(180deg, oklch(58% 0.126 48), oklch(51% 0.122 44));
   --icon-circle-ring: transparent;
 
-  /* Vệt sáng mờ đi theo con trỏ chuột. Đặt ở đây để trang chủ, các trang hub
-     và các trang đọc chương dùng chung đúng một kiểu. */
-  --cursor-glow-size: 150px;
-  --cursor-glow-bg: radial-gradient(circle, oklch(53.9% 0.124 45 / 0.14), oklch(53.9% 0.124 45 / 0.05) 45%, transparent 72%);
+  /* ---- nền: các "vệt màu" mềm để kính có thứ mà khúc xạ ---- */
+  --bg-base: oklch(96.2% 0.02 82);
+  --orb-a: oklch(84% 0.135 58 / 0.85);    /* hổ phách */
+  --orb-b: oklch(86% 0.105 22 / 0.62);    /* hồng đào */
+  --orb-c: oklch(88% 0.085 182 / 0.60);   /* xanh ngọc nhạt, đối sắc lạnh */
+  --orb-d: oklch(89% 0.11 90 / 0.70);    /* vàng mật */
+  --orb-ring: oklch(71.4% 0.121 81 / 0.34);
 
-  --bg-grad-top:    oklch(96.4% 0.021 84);  /* #F7EFDC */
-  --bg-grad-mid:    var(--color-paper);
-  --bg-grad-bottom: oklch(91.6% 0.030 80);  /* #EDE0C8 */
+  /* ---- kính ---- */
+  --glass-fill:        oklch(99% 0.012 85 / 0.24);
+  --glass-fill-strong: oklch(99% 0.012 85 / 0.50);   /* khối chữ dài */
+  --glass-fill-lite:   oklch(99% 0.012 85 / 0.26);   /* kính lồng trong kính (không blur thêm) */
+  --glass-fill-hover:  oklch(99% 0.012 85 / 0.44);
+  --glass-tint:        oklch(49% 0.125 45 / 0.94);   /* kính nhuộm màu gỉ đồng (đủ đặc để chữ sáng đọc rõ) */
+  --glass-blur: 18px;
+  --glass-blur-sm: 12px;
+  --glass-sat: 1.9;
+  --glass-rim-hi:  oklch(100% 0 0 / 0.95);
+  --glass-rim-mid: oklch(100% 0 0 / 0.14);
+  --glass-rim-lo:  oklch(55% 0.07 65 / 0.30);
+  --glass-sheen:   oklch(100% 0 0 / 0.34);
+  --glass-shadow:  0 14px 34px -14px oklch(32% 0.06 50 / 0.34), 0 2px 8px oklch(32% 0.06 50 / 0.08);
+  --glass-shadow-hover: 0 22px 44px -14px oklch(32% 0.06 50 / 0.40), 0 3px 10px oklch(32% 0.06 50 / 0.10);
+  --glass-inner:   inset 0 1px 0 oklch(100% 0 0 / 0.85), inset 0 -1px 0 oklch(50% 0.06 60 / 0.16), inset 0 -10px 18px -10px oklch(50% 0.07 55 / 0.14), inset 0 0 14px oklch(100% 0 0 / 0.10);
+  --rim-o: 0.9;
 
-  --surface:            oklch(97.4% 0.014 85 / 0.4);
-  --surface-solid:      var(--color-paper);
-  --surface-popover:    oklch(97.4% 0.014 85 / 0.55);
-  --surface-border:     oklch(71.4% 0.121 81 / 0.38);
-  --card-sheen-top:         oklch(100% 0 0 / 0.55);
-  --card-sheen-bottom:      oklch(100% 0 0 / 0.15);
-  --card-sheen-top-strong:  oklch(100% 0 0 / 0.5);
-  --card-sheen-bottom-strong: oklch(100% 0 0 / 0.12);
-  --menu-shadow: 0 8px 24px oklch(25.5% 0.021 67 / 0.08), inset 0 0 0 1px oklch(100% 0 0 / 0.45);
-
-  /* ---- dark mode anchors (giữ hue, chỉ đổi lightness/chroma theo color.md) ---- */
+  /* ---- dark-mode anchors ---- */
   --color-paper-dark:      oklch(15.8% 0.017 66);
   --color-paper-2-dark:    oklch(19.6% 0.020 66);
   --color-paper-edge-dark: oklch(28.9% 0.030 60);
@@ -89,24 +95,45 @@
   --space-3xl: 6rem;
   --space-4xl: 9rem;
 
-  /* ---- motion ---- */
+  /* ---- chuyển động: lò xo cho kính ---- */
   --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --spring:      cubic-bezier(0.34, 1.56, 0.64, 1);      /* dự phòng cho trình duyệt cũ */
+  --spring-soft: cubic-bezier(0.22, 1.2, 0.36, 1);
   --dur-micro: 120ms;
   --dur-short: 220ms;
   --dur-long:  420ms;
+  --dur-spring: 750ms;
+  --dur-press: 150ms;
+
+  /* độ ép khi nhấn (thẻ lớn ép nhẹ, nút nhỏ ép sâu hơn) */
+  --press-card:  0.985;
+  --press-small: 0.93;
+  --hover-lift-card: -4px;
 
   /* ---- misc ---- */
   --rule-hair: 1px;
-  --radius-card: 20px;
+  --radius-card: 28px;
+  --radius-md: 20px;
   --radius-pill: 999px;
   --page-gutter: 1.4rem;
+  --nav-offset: 5.5rem;
 
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
 }
 
+/* lò xo thật (linear()) khi trình duyệt hỗ trợ */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --spring: linear(0, 0.018, 0.067, 0.139, 0.229, 0.329, 0.435, 0.542, 0.645, 0.743, 0.832, 0.911, 0.979, 1.036, 1.081, 1.116, 1.14, 1.155, 1.162, 1.162, 1.157, 1.147, 1.134, 1.118, 1.101, 1.084, 1.067, 1.05, 1.035, 1.021, 1.009, 0.999, 0.99, 0.984, 0.979, 0.976, 0.974, 0.973, 0.974, 0.975, 0.977, 0.979, 0.982, 0.985, 0.988, 0.99, 0.993, 0.995, 1);
+    --spring-soft: linear(0, 0.008, 0.031, 0.065, 0.108, 0.157, 0.211, 0.268, 0.326, 0.384, 0.441, 0.497, 0.551, 0.602, 0.65, 0.695, 0.737, 0.775, 0.81, 0.841, 0.869, 0.894, 0.917, 0.936, 0.953, 0.968, 0.98, 0.991, 0.999, 1.006, 1.012, 1.017, 1.02, 1.022, 1.024, 1.025, 1.025, 1.025, 1.025, 1.024, 1.023, 1.022, 1.02, 1.019, 1.017, 1.016, 1.015, 1.013, 1);
+  }
+}
+
 html[data-theme="dark"] {
+  color-scheme: dark;
+
   --color-paper:      var(--color-paper-dark);
   --color-paper-2:    var(--color-paper-2-dark);
   --color-paper-edge: var(--color-paper-edge-dark);
@@ -119,23 +146,61 @@ html[data-theme="dark"] {
   --color-accent-gold: var(--color-accent-gold-dark);
   --color-accent-soft: var(--color-accent-soft-dark);
   --color-focus:       var(--color-accent-dark);
+  --color-accent-border:      oklch(69.4% 0.114 61 / 0.38);
+  --color-accent-gold-border: oklch(80.5% 0.106 78 / 0.38);
 
-  /* vòng tròn icon: tối lại thành đồng hun, không đi theo accent sáng ở trên */
   --color-icon-on-accent: oklch(88% 0.026 84);
   --icon-circle-bg: linear-gradient(180deg, oklch(43% 0.086 52), oklch(37% 0.076 48));
   --icon-circle-ring: transparent;
 
-  --bg-grad-top:    oklch(21.9% 0.023 66);
-  --bg-grad-mid:    var(--color-paper);
-  --bg-grad-bottom: oklch(13.4% 0.016 62);
+  --bg-base: oklch(14.6% 0.016 64);
+  --orb-a: oklch(46% 0.13 48 / 0.62);
+  --orb-b: oklch(36% 0.11 18 / 0.55);
+  --orb-c: oklch(38% 0.07 215 / 0.50);
+  --orb-d: oklch(50% 0.10 80 / 0.38);
+  --orb-ring: oklch(80.5% 0.106 78 / 0.20);
 
-  --surface:            oklch(21.9% 0.023 66 / 0.36);
-  --surface-solid:      oklch(19.9% 0.021 64);
-  --surface-popover:    oklch(19.9% 0.021 64 / 0.5);
-  --surface-border:     oklch(69.4% 0.114 61 / 0.32);
-  --card-sheen-top:         oklch(96% 0.02 84 / 0.07);
-  --card-sheen-bottom:      oklch(96% 0.02 84 / 0.015);
-  --card-sheen-top-strong:  oklch(96% 0.02 84 / 0.09);
-  --card-sheen-bottom-strong: oklch(96% 0.02 84 / 0.02);
-  --menu-shadow: 0 8px 26px oklch(8% 0.01 60 / 0.42), inset 0 0 0 1px oklch(96% 0.02 84 / 0.06);
+  --glass-fill:        oklch(98% 0.012 85 / 0.075);
+  --glass-fill-strong: oklch(98% 0.012 85 / 0.13);
+  --glass-fill-lite:   oklch(98% 0.012 85 / 0.06);
+  --glass-fill-hover:  oklch(98% 0.012 85 / 0.14);
+  --glass-tint:        oklch(40% 0.09 50 / 0.92);
+  --glass-rim-hi:  oklch(100% 0 0 / 0.55);
+  --glass-rim-mid: oklch(100% 0 0 / 0.05);
+  --glass-rim-lo:  oklch(100% 0 0 / 0.20);
+  --glass-sheen:   oklch(100% 0 0 / 0.13);
+  --glass-shadow:  0 16px 36px -14px oklch(5% 0.01 60 / 0.65), 0 2px 8px oklch(5% 0.01 60 / 0.30);
+  --glass-shadow-hover: 0 24px 48px -14px oklch(5% 0.01 60 / 0.72), 0 3px 10px oklch(5% 0.01 60 / 0.34);
+  --glass-inner:   inset 0 1px 0 oklch(100% 0 0 / 0.22), inset 0 -1px 0 oklch(0% 0 0 / 0.25), inset 0 0 26px oklch(100% 0 0 / 0.045);
+  --rim-o: 0.85;
+}
+
+/* người dùng bật "giảm độ trong suốt": đổi sang nền đặc, bỏ blur */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-fill:        oklch(97% 0.014 85 / 0.96);
+    --glass-fill-strong: oklch(97% 0.014 85 / 0.98);
+    --glass-fill-lite:   oklch(95% 0.016 84 / 0.9);
+    --glass-fill-hover:  oklch(98% 0.012 85 / 1);
+    --glass-blur: 0px; --glass-blur-sm: 0px; --glass-sat: 1;
+  }
+  html[data-theme="dark"] {
+    --glass-fill:        oklch(21% 0.02 64 / 0.97);
+    --glass-fill-strong: oklch(22% 0.02 64 / 0.99);
+    --glass-fill-lite:   oklch(25% 0.02 64 / 0.9);
+    --glass-fill-hover:  oklch(27% 0.022 64 / 1);
+  }
+}
+
+/* "giảm chuyển động": vẫn giữ phản hồi khi rê/nhấn (do chính người dùng kích hoạt)
+   nhưng bỏ nảy lò xo, ép nhẹ hơn, chuyển nhanh hơn. Chuyển động tự chạy thì tắt. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --spring: cubic-bezier(0.16, 1, 0.3, 1);
+    --spring-soft: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-spring: 260ms;
+    --press-card: 0.992;
+    --press-small: 0.96;
+    --hover-lift-card: -2px;
+  }
 }
