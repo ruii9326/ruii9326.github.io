@@ -473,10 +473,26 @@ footer { position: relative; z-index: 1; }
    html.lg-can  = trình duyệt có khúc xạ (đặt sớm bởi script ở <head>); chế độ lưu ở data-glass-mode.
    ============================================================ */
 html:not(.lg-can) .glass-opt { display: none; }               /* Safari / Firefox: không có gì để chuyển */
-html.lg-can[data-glass-mode="liquid"][data-theme] {           /* Liquid: kính trong hơn, để mép khúc xạ lộ rõ */
-  --glass-blur: 6px;
-  --glass-blur-sm: 3px;
+html.lg-can[data-glass-mode="liquid"][data-theme],
+html.lg-can[data-glass-mode="liquid"][data-theme] :is(.mast-pill, .settings-popover) {   /* Liquid: kính trong hơn, để mép khúc xạ lộ rõ */
+  --glass-blur: 4px;
+  --glass-blur-sm: 2px;
 }
+/* lớp nền sao + lưới mảnh: cho kính luôn có chi tiết để bẻ cong (đứng yên; chỉ hiện ở chế độ Liquid) */
+.lg-ambient {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  --lg-star: color-mix(in srgb, var(--color-ink, #999) 38%, transparent);
+  --lg-line: color-mix(in srgb, var(--color-ink, #999) 6%, transparent);
+  background:
+    radial-gradient(circle at 23px 41px, var(--lg-star) 1px, transparent 1.7px) 0 0 / 151px 163px,
+    radial-gradient(circle at 87px 109px, var(--lg-star) 1.3px, transparent 2px) 0 0 / 233px 197px,
+    radial-gradient(circle at 51px 17px, var(--lg-star) .8px, transparent 1.5px) 0 0 / 89px 107px,
+    linear-gradient(var(--lg-line) 1px, transparent 1px) 0 0 / 72px 72px,
+    linear-gradient(90deg, var(--lg-line) 1px, transparent 1px) 0 0 / 72px 72px;
+  transition: opacity .6s ease, visibility 0s;
+}
+html[data-glass-mode="classic"] .lg-ambient { opacity: 0; visibility: hidden; transition: opacity .6s ease, visibility 0s .6s; }
+html.lg-vt .lg-ambient { transition: none; }
 /* hiệu ứng loang khi chuyển chế độ (chỉ chạy lúc đang chuyển, không đụng tới nơi khác) */
 html.lg-vt::view-transition-old(root), html.lg-vt::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 html.lg-vt::view-transition-old(root) { z-index: 1; }
