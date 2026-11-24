@@ -58,8 +58,8 @@
   function apply(el) {
     const w = el.offsetWidth, h = el.offsetHeight; // không bị ảnh hưởng bởi animation scale
     if (w < 8 || h < 8) return;
-    const S = Math.min(parseFloat(el.dataset.refraction) || 120, Math.min(w, h) * 0.9);
-    const disp = el.dataset.dispersion !== undefined ? parseFloat(el.dataset.dispersion) : 0.08;
+    const S = Math.min(parseFloat(el.dataset.refraction) || 80, Math.min(w, h) * 0.9);
+    const disp = el.dataset.dispersion !== undefined ? parseFloat(el.dataset.dispersion) : 0.01;
     const bezel = Math.min(parseFloat(el.dataset.bezel) || Math.min(w, h) * 0.42, Math.min(w, h) / 2);
     const rs = getComputedStyle(el).borderTopLeftRadius;
     const rad = rs.includes('%') ? parseFloat(rs) / 100 * Math.min(w, h) : (parseFloat(rs) || 0);
