@@ -421,7 +421,8 @@
 
   // ===== NỀN SAO (cho kính có chi tiết để bẻ cong; kiểu dáng ở .lg-ambient trong site.css) =====
   (function () {
-    if (document.querySelector('.lg-ambient')) return;
+    var AMBIENT = true;    // true = bật lớp nền sao + lưới (cuộn cùng trang); false = tắt
+    if (!AMBIENT || document.querySelector('.lg-ambient')) return;
     var a = document.createElement('div');
     a.className = 'lg-ambient';
     a.setAttribute('aria-hidden', 'true');
@@ -441,6 +442,7 @@
     var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .btn-primary, .btn-link';
     var BIG = '.mast-pill, .emblem, .settings-popover';   // nhóm này dùng --glass-blur, còn lại --glass-blur-sm
     var DISP = '.mast-pill';                              // tán sắc màu nhẹ chỉ cho thanh điều hướng (tốn máy)
+    var DISP_AMOUNT = 0;                                  // 0 = tắt tán sắc (hết vệt cầu vồng); thử 0.02–0.06 để bật lại
     var REFRACT = 120;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
     var MAX_AREA = 600000;                                // bỏ qua phần tử quá lớn (px²)
 
@@ -529,7 +531,7 @@
       var r = /%/.test(rs) ? parseFloat(rs) / 100 * Math.min(w, h) : (parseFloat(rs) || h / 2);
       var bezel = Math.max(6, Math.min(Math.min(w, h) * 0.42, 64));
       var S = Math.min(parseFloat(el.getAttribute('data-refraction')) || REFRACT, Math.min(w, h) * 0.9);
-      var disp = el.matches(DISP) ? 0.06 : 0;
+      var disp = el.matches(DISP) ? DISP_AMOUNT : 0;
       var id = filterFor(w, h, r, bezel, S, disp);
       if (el.__lgId === id) return;
       el.__lgId = id;
