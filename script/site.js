@@ -419,6 +419,15 @@
     updateActive();
   })();
 
+  // ===== NỀN SAO (cho kính có chi tiết để bẻ cong; kiểu dáng ở .lg-ambient trong site.css) =====
+  (function () {
+    if (document.querySelector('.lg-ambient')) return;
+    var a = document.createElement('div');
+    a.className = 'lg-ambient';
+    a.setAttribute('aria-hidden', 'true');
+    document.body.insertBefore(a, document.body.firstChild);
+  })();
+
   // ===== KHÚC XẠ Ở MÉP KÍNH (chỉ Chrome / Edge / Opera / Brave / Samsung / ColorOS) =====
   // Bộ lọc SVG feDisplacementMap bẻ cong phần nền nhìn xuyên qua mép kính như một thấu kính lồi.
   // Bản đồ độ dịch được vẽ bằng canvas (độ phân giải thấp, mịn như nhau) theo kích thước từng phần tử;
@@ -524,7 +533,7 @@
       var id = filterFor(w, h, r, bezel, S, disp);
       if (el.__lgId === id) return;
       el.__lgId = id;
-      var v = 'blur(' + (el.matches(BIG) ? 'var(--glass-blur)' : 'var(--glass-blur-sm)') + ') url(#' + id + ') saturate(var(--glass-sat))';
+      var v = 'url(#' + id + ') blur(' + (el.matches(BIG) ? 'var(--glass-blur)' : 'var(--glass-blur-sm)') + ') saturate(var(--glass-sat))';
       el.style.setProperty('backdrop-filter', v);
       el.style.setProperty('-webkit-backdrop-filter', v);
     }
