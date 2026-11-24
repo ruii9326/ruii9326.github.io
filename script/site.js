@@ -423,10 +423,20 @@
   (function () {
     var AMBIENT = true;    // true = bật lớp nền sao + lưới (cuộn cùng trang); false = tắt
     if (!AMBIENT || document.querySelector('.lg-ambient')) return;
+    var PARALLAX = 0.5;    // nền trượt bằng 0.5 lần tốc độ cuộn trang (0 = đứng yên, 1 = dính vào trang)
     var a = document.createElement('div');
     a.className = 'lg-ambient';
     a.setAttribute('aria-hidden', 'true');
     document.body.insertBefore(a, document.body.firstChild);
+    var queued = false;
+    function move() {
+      queued = false;
+      a.style.setProperty('--lg-y', (-window.pageYOffset * PARALLAX) + 'px');
+    }
+    window.addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(move); }
+    }, { passive: true });
+    move();
   })();
 
   // ===== KHÚC XẠ Ở MÉP KÍNH (chỉ Chrome / Edge / Opera / Brave / Samsung / ColorOS) =====
@@ -627,3 +637,4 @@
     setGlass(root.getAttribute('data-glass-mode') === 'classic' ? 'classic' : 'liquid', false);
   })();
 })();
+
