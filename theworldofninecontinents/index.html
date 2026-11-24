@@ -8,8 +8,9 @@
     var theme = saved === 'dark' || saved === 'light'
       ? saved
       : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme); document.documentElement.setAttribute('data-glass-mode', localStorage.getItem('rui9326-glass') === 'classic' ? 'classic' : 'liquid');
+    document.documentElement.setAttribute('data-theme', theme); document.documentElement.setAttribute('data-glass-mode', localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid');
   } catch (e) {}
+  if (/Chrome\/\d+/.test(navigator.userAgent)) document.documentElement.classList.add('lg-can');
 })();
 </script>
 <meta charset="UTF-8">
@@ -700,7 +701,6 @@ h1 {
   };
 </script>
 <script src="../script/site.js"></script>
-<script src="../script/liquid-glass.js" defer data-selector=".mast-pill, .toc-card, .to-top, .now-card, .settings-popover, .menu-toggle" data-dispersion-selector=".mast-pill"></script>
 <script>
 /* Nút giọt kính góc phải dưới: chỉ hiện khi đã cuộn qua mục lục, bấm thì trượt về mục lục.
    Cuộn mượt dùng chung với mọi liên kết neo (script/site.js). */
