@@ -8,8 +8,9 @@
     var theme = saved === 'dark' || saved === 'light'
       ? saved
       : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme); document.documentElement.setAttribute('data-glass-mode', localStorage.getItem('rui9326-glass') === 'classic' ? 'classic' : 'liquid');
+    document.documentElement.setAttribute('data-theme', theme); document.documentElement.setAttribute('data-glass-mode', localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid');
   } catch (e) {}
+  if (/Chrome\/\d+/.test(navigator.userAgent)) document.documentElement.classList.add('lg-can');
 })();
 </script>
 <meta charset="UTF-8">
@@ -625,6 +626,5 @@ a.split-row__link.is-launch { transform: scale(1.025); }
   };
 </script>
 <script src="script/site.js"></script>
-<script src="script/liquid-glass.js" defer data-selector=".mast-pill, .btn-primary, .btn-link, .emblem, .split-row, .now-card, .about__text, .haunt, .settings-popover, .menu-toggle" data-dispersion-selector=".mast-pill"></script>
 </body>
 </html>
