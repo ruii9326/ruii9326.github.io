@@ -475,8 +475,8 @@ footer { position: relative; z-index: 1; }
 html:not(.lg-can) .glass-opt { display: none; }               /* Safari / Firefox: không có gì để chuyển */
 html.lg-can[data-glass-mode="liquid"][data-theme],
 html.lg-can[data-glass-mode="liquid"][data-theme] :is(.mast-pill, .settings-popover) {   /* Liquid: kính trong hơn, để mép khúc xạ lộ rõ */
-  --glass-blur: 0.5px;
-  --glass-blur-sm: 0.1px;
+  --glass-blur: 0.1px;
+  --glass-blur-sm: 0.08px;
 }
 /* lớp nền sao + lưới mảnh: cho kính luôn có chi tiết để bẻ cong (đứng yên; chỉ hiện ở chế độ Liquid) */
 .lg-ambient {
