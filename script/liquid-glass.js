@@ -40,7 +40,16 @@
     radial-gradient(circle at 51px 17px,var(--lg-star) .8px,transparent 1.5px) 0 0/89px 107px,
     linear-gradient(var(--lg-line) 1px,transparent 1px) 0 0/72px 72px,
     linear-gradient(90deg,var(--lg-line) 1px,transparent 1px) 0 0/72px 72px}
-html[data-glass-mode="classic"] .lg-ambient{display:none}
+.lg-ambient{transition:opacity .6s ease,visibility 0s}
+html[data-glass-mode="classic"] .lg-ambient{opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s .6s}
+html.lg-vt .lg-ambient{transition:none}
+html.lg-vt::view-transition-old(root),html.lg-vt::view-transition-new(root){animation:none;mix-blend-mode:normal}
+html.lg-vt::view-transition-old(root){z-index:1}
+html.lg-vt::view-transition-new(root){z-index:2}
+#glassSwitcher{position:relative}
+#glassSwitcher .theme-btn{position:relative;z-index:1;transition:color .35s ease !important}
+#glassSwitcher .theme-btn.active{background:none !important;box-shadow:none !important;border-color:transparent !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
+#glassSwitcher .lg-thumb{position:absolute;top:0;left:0;z-index:0;pointer-events:none;box-sizing:border-box;will-change:transform}
 html[data-glass-mode="liquid"][data-theme]{--glass-blur:3px;--glass-blur-sm:3px;--glass-blur-md:4px;--glass-blur-lg:5px}`;
   document.head.appendChild(css);
 
@@ -52,23 +61,78 @@ html[data-glass-mode="liquid"][data-theme]{--glass-blur:3px;--glass-blur-sm:3px;
     }
     const sw = document.getElementById('glassSwitcher');
     if (!sw) return;
-    const sync = () => sw.querySelectorAll('[data-glass-choice]').forEach((b) => {
-      const on = b.getAttribute('data-glass-choice') === root.getAttribute('data-glass-mode');
-      b.classList.toggle('active', on); b.setAttribute('aria-pressed', on);
-    });
+    // thanh trượt: ô nền của nút đang chọn trượt qua lại giữa hai nút, nảy nhẹ như giọt kính
+    const thumb = document.createElement('span');
+    thumb.className = 'lg-thumb'; thumb.setAttribute('aria-hidden', 'true');
+    sw.insertBefore(thumb, sw.firstChild);
+    const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function place(animate) {
+      const b = sw.querySelector('[data-glass-choice].active');
+      if (!b || !b.offsetWidth) return;
+      animate = animate && !calm();
+      const ease = 'cubic-bezier(.34,1.45,.64,1)';
+      thumb.style.transition = animate ? `transform .55s ${ease},width .55s ${ease},height .55s ease` : 'none';
+      thumb.style.width = b.offsetWidth + 'px'; thumb.style.height = b.offsetHeight + 'px';
+      thumb.style.transform = `translate(${b.offsetLeft}px,${b.offsetTop}px)`;
+      if (animate) thumb.animate([{ scale: '1 1' }, { scale: '1.22 .86', offset: .4 }, { scale: '1 1' }],
+        { duration: 550, easing: 'ease-out' });
+    }
+    // lấy đúng màu/viền/bóng của nút "đang chọn" bên nhóm Sáng/Tối để ô trượt giống hệt
+    function skin() {
+      const ref = document.querySelector('#themeSwitcher .theme-btn.active') ||
+        document.querySelector('.theme-btn.active:not([data-glass-choice])');
+      const t = thumb.style;
+      if (!ref) { t.background = 'var(--color-accent,#c8963e)'; t.borderRadius = '999px'; return; }
+      const c = getComputedStyle(ref);
+      t.backgroundColor = c.backgroundColor; t.backgroundImage = c.backgroundImage;
+      t.boxShadow = c.boxShadow; t.borderRadius = c.borderTopLeftRadius;
+      t.borderStyle = c.borderTopStyle; t.borderWidth = c.borderTopWidth; t.borderColor = c.borderTopColor;
+    }
+    const sync = (animate) => {
+      sw.querySelectorAll('[data-glass-choice]').forEach((b) => {
+        const on = b.getAttribute('data-glass-choice') === root.getAttribute('data-glass-mode');
+        b.classList.toggle('active', on); b.setAttribute('aria-pressed', on);
+      });
+      place(animate === true);
+    };
+    function setMode(mode, btn) {
+      if (mode === root.getAttribute('data-glass-mode')) return;
+      const change = () => {
+        root.setAttribute('data-glass-mode', mode);
+        store.set(mode); sync(true);
+        if (engine) engine.refresh();
+      };
+      // nút nảy nhẹ khi bấm
+      btn.animate([{ transform: 'scale(.88)' }, { transform: 'scale(1.07)', offset: .55 }, { transform: 'scale(1)' }],
+        { duration: 450, easing: 'cubic-bezier(.34,1.56,.64,1)' });
+      if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return change();
+      // hiệu ứng: trạng thái mới loang ra như giọt nước từ chính nút vừa bấm
+      const r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+      const rad = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      root.classList.add('lg-vt');
+      const vt = document.startViewTransition(change);
+      vt.ready.then(() => root.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${rad}px at ${x}px ${y}px)`] },
+        { duration: 750, easing: 'cubic-bezier(.22,1,.36,1)', pseudoElement: '::view-transition-new(root)' }
+      )).catch(() => {});
+      vt.finished.finally(() => root.classList.remove('lg-vt'));
+    }
     // pha capture: chặn mọi trình xử lý nút giao diện sáng/tối có sẵn của site
     sw.addEventListener('click', (e) => {
       const b = e.target.closest('[data-glass-choice]');
       if (!b) return;
       e.stopPropagation();
-      root.setAttribute('data-glass-mode', b.getAttribute('data-glass-choice'));
-      store.set(root.getAttribute('data-glass-mode'));
-      sync();
-      if (engine) engine.refresh();
+      setMode(b.getAttribute('data-glass-choice'), b);
     }, true);
     // site.js có thể tô lại class .active của .theme-btn khi đổi sáng/tối hoặc ngôn ngữ
-    new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-theme', 'lang'] });
-    sync();
+    new MutationObserver(() => {
+      sync(false); skin();
+      setTimeout(() => { skin(); place(false); }, 450); // chờ site chạy xong hiệu ứng đổi màu
+    }).observe(root, { attributes: true, attributeFilter: ['data-theme', 'lang'] });
+    // menu vừa mở / đổi ngôn ngữ làm nút đổi kích thước → đặt lại ô trượt, không hoạt ảnh
+    const ro = new ResizeObserver(() => { skin(); place(false); });
+    ro.observe(sw); sw.querySelectorAll('[data-glass-choice]').forEach((b) => ro.observe(b));
+    sync(false); skin();
   }
 
   /* ---------- Engine khúc xạ (Chromium) ---------- */
