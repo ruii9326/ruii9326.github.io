@@ -422,4 +422,48 @@
     window.addEventListener('load', function () { rest(); updateActive(); });
     updateActive();
   })();
+
+  // ===== GLASS SWITCHER (Liquid / Cổ điển) =====
+  // Cùng cơ chế với công tắc Sáng/Tối: lớp .classic dời thanh trượt, .sliding chạy hiệu ứng co giãn.
+  // Chuyển chế độ: trạng thái mới loang ra như giọt nước từ chính nút vừa bấm (View Transitions, nếu có).
+  (function () {
+    var switcher = document.getElementById('glassSwitcher');
+    if (!switcher) return;
+    var buttons = switcher.querySelectorAll('.glass-btn');
+
+    function setGlass(mode, save) {
+      root.setAttribute('data-glass-mode', mode);
+      buttons.forEach(function (button) {
+        var active = button.getAttribute('data-glass-choice') === mode;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      switcher.classList.toggle('classic', mode === 'classic');
+      if (window.RUII9326.glassEngine) window.RUII9326.glassEngine.refresh();
+      if (save) { try { localStorage.setItem('ruii9326-glass', mode); } catch (e) {} }
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        var mode = button.getAttribute('data-glass-choice');
+        if (root.getAttribute('data-glass-mode') === mode) return;
+        stretch(switcher);
+        var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!document.startViewTransition || still) { setGlass(mode, true); return; }
+        var r = button.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+        var rad = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+        root.classList.add('lg-vt');
+        var vt = document.startViewTransition(function () { setGlass(mode, true); });
+        vt.ready.then(function () {
+          root.animate(
+            { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + rad + 'px at ' + x + 'px ' + y + 'px)'] },
+            { duration: 750, easing: 'cubic-bezier(.22,1,.36,1)', pseudoElement: '::view-transition-new(root)' }
+          );
+        }).catch(function () {});
+        vt.finished.then(function () { root.classList.remove('lg-vt'); }, function () { root.classList.remove('lg-vt'); });
+      });
+    });
+
+    setGlass(root.getAttribute('data-glass-mode') === 'classic' ? 'classic' : 'liquid', false);
+  })();
 })();
