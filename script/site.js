@@ -435,7 +435,7 @@
     var DISP_AMOUNT = 0.3;                                  // 0 = tắt tán sắc (hết vệt cầu vồng); thử 0.02–0.06 để bật lại
     var REFRACT = 80;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
     var MAX_AREA = 900000;                                // bỏ qua phần tử quá lớn (px²)
-    var MAP_PX = 350000;                                  // ngân sách điểm ảnh tối đa của bản đồ dịch (cao hơn = nét hơn, tốn hơn)
+    var MAP_PX = 400000;                                  // ngân sách điểm ảnh tối đa của bản đồ dịch (cao hơn = nét hơn, tốn hơn)
     var AA_BLUR = 0.5;                                    // khử răng cưa cho nền sau khi bẻ cong (px CSS); 0 = tắt, 0.4–0.9 là hợp lý
     var MAP_BLUR = 0.5;                                   // làm mịn bản đồ (px CSS): xóa bậc thang 8-bit; 0 = tắt
     function dprNow() { return Math.min(window.devicePixelRatio || 1, 3); }
@@ -526,7 +526,7 @@
       if (w < 8 || h < 8 || w * h > MAX_AREA) return;
       var rs = getComputedStyle(el).borderTopLeftRadius;
       var r = /%/.test(rs) ? parseFloat(rs) / 100 * Math.min(w, h) : (parseFloat(rs) || h / 2);
-      var bezel = Math.max(6, Math.min(Math.min(w, h) * 0.32, 32));
+      var bezel = Math.max(3.2, Math.min(Math.min(w, h) * 0.32, 32));
       var S = Math.min(parseFloat(el.getAttribute('data-refraction')) || REFRACT, Math.min(w, h) * 0.9);
       var disp = el.matches(DISP) ? DISP_AMOUNT : 0;
       var id = filterFor(w, h, r, bezel, S, disp);
