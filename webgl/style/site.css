@@ -1,0 +1,489 @@
+/* ruii9326 · Liquid Glass · stylesheet dùng chung
+ * Dùng bởi: index.html (Trang Chủ), theworldofninecontinents/
+ * Nạp SAU tokens.css. Phần riêng của từng trang nằm trong <style> của trang đó.
+ *
+ * Quy tắc quan trọng: KHÔNG lồng backdrop-filter trong backdrop-filter. Phần tử kính bên ngoài
+ * (nhóm A) có blur; phần tử nằm trong nó (nhóm B) chỉ dùng nền mờ + viền sáng, không blur thêm,
+ * vì trình duyệt chỉ lấy mẫu nền bên trong khối cha nên blur lồng sẽ không có tác dụng.
+ * ============================================================ */
+
+/* màu nền chuyển mượt khi đổi sáng/tối (gradient không tự chuyển được, nên đăng ký kiểu <color>) */
+@property --bg-base { syntax: '<color>'; inherits: true; initial-value: #F7F0E1; }
+@property --orb-a   { syntax: '<color>'; inherits: true; initial-value: #F6C28A; }
+@property --orb-b   { syntax: '<color>'; inherits: true; initial-value: #F6CFC4; }
+@property --orb-c   { syntax: '<color>'; inherits: true; initial-value: #C9EBE2; }
+@property --orb-d   { syntax: '<color>'; inherits: true; initial-value: #F3DE9A; }
+
+* { box-sizing: border-box; }
+
+html {
+  min-height: 100%;
+  background: var(--bg-base);
+  scroll-padding-top: var(--nav-offset);
+  transition: --bg-base .45s ease, --orb-a .45s ease, --orb-b .45s ease, --orb-c .45s ease, --orb-d .45s ease;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  padding-inline: max(0px, env(safe-area-inset-left)) max(0px, env(safe-area-inset-right));
+  transition: color .35s ease;
+}
+
+a { color: inherit; }
+
+/* ---- nền: bốn vệt màu mềm + vài vòng mảnh để kính có thứ mà khúc xạ (đứng yên, không chạy) ---- */
+body::before, body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+body::before {
+  background:
+    radial-gradient(46vmax 46vmax at 10% 6%,  var(--orb-a), transparent 70%),
+    radial-gradient(40vmax 40vmax at 92% 12%, var(--orb-b), transparent 70%),
+    radial-gradient(50vmax 50vmax at 84% 96%, var(--orb-c), transparent 72%),
+    radial-gradient(44vmax 44vmax at 6% 90%,  var(--orb-d), transparent 70%),
+    radial-gradient(30vmax 26vmax at 34% 50%, var(--orb-b), transparent 72%),
+    radial-gradient(28vmax 28vmax at 66% 58%, var(--orb-c), transparent 72%),
+    var(--bg-base);
+}
+body::after {
+  background:
+    repeating-radial-gradient(circle at 82% 34%, transparent 0 58px, var(--orb-ring) 58px 59px),
+    repeating-radial-gradient(circle at 12% 78%, transparent 0 76px, var(--orb-ring) 76px 77px);
+  -webkit-mask-image: radial-gradient(60vmax 60vmax at 82% 34%, #000, transparent 70%), radial-gradient(50vmax 50vmax at 12% 78%, #000, transparent 70%);
+  mask-image: radial-gradient(60vmax 60vmax at 82% 34%, #000, transparent 70%), radial-gradient(50vmax 50vmax at 12% 78%, #000, transparent 70%);
+  opacity: .8;
+}
+
+/* ============================================================
+   1. KÍNH — nhóm A (có blur nền) và nhóm B (kính lồng, không blur)
+   ============================================================ */
+:is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .btn-primary, .btn-link) {
+  position: relative;
+  background-color: var(--glass-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow: var(--glass-shadow), var(--glass-inner);
+  transition: transform var(--dur-spring) var(--spring), box-shadow var(--dur-short) ease, background-color var(--dur-short) ease;
+}
+:is(.haunt, .contact-row, .mini-pill, .about__quote) {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--glass-fill-lite);
+  box-shadow: inset 0 1px 0 var(--glass-rim-hi), inset 0 -1px 0 var(--glass-rim-lo), inset 0 0 12px oklch(100% 0 0 / .08);
+  transition: transform var(--dur-spring) var(--spring), box-shadow var(--dur-short) ease, background-color var(--dur-short) ease;
+}
+
+/* ánh bóng chéo bên trong kính */
+:is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .btn-primary, .btn-link, .haunt, .contact-row, .mini-pill, .about__quote)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(165deg, var(--glass-sheen) 0%, transparent 42%);
+}
+/* viền sáng: sáng ở góc trên-trái và dưới-phải, mờ ở giữa — dấu hiệu của kính lỏng */
+:is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .btn-primary, .btn-link, .haunt, .contact-row, .mini-pill, .about__quote)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1.25px;
+  pointer-events: none;
+  background: linear-gradient(135deg, var(--glass-rim-hi) 0%, var(--glass-rim-mid) 30%, var(--glass-rim-mid) 62%, var(--glass-rim-lo) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: var(--rim-o);
+  transition: opacity var(--dur-short) ease;
+}
+
+/* trình duyệt không có backdrop-filter: tăng độ đặc để chữ vẫn đọc được */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root { --glass-fill: oklch(97.5% 0.014 85 / .86); --glass-fill-strong: oklch(97.5% 0.014 85 / .92); }
+  html[data-theme="dark"] { --glass-fill: oklch(22% 0.02 64 / .88); --glass-fill-strong: oklch(24% 0.02 64 / .93); }
+}
+
+/* ============================================================
+   2. CHUYỂN ĐỘNG CỦA KÍNH
+   Rê chuột: kính nhô lên, viền sáng rõ hơn.
+   Nhấn: kính ép lại (JS thêm .is-pressed vào phần tử trong cùng); thả ra: nảy lò xo.
+   Không có gì đi theo vị trí con trỏ.
+   ============================================================ */
+@media (hover: hover) {
+  .now-card:hover, .split-row--solo:hover {
+    transform: translateY(var(--hover-lift-card));
+    box-shadow: var(--glass-shadow-hover), var(--glass-inner);
+    background-color: var(--glass-fill-hover);
+    --rim-o: 1;
+  }
+  .menu-toggle:hover, .back-link-icon:hover, .to-top.show:hover { transform: scale(1.09); --rim-o: 1; background-color: var(--glass-fill-hover); }
+  .btn-primary:hover, .btn-link:hover { transform: translateY(-2px) scale(1.035); --rim-o: 1; }
+  .btn-link:hover { background-color: var(--glass-fill-hover); }
+  .haunt:hover { transform: translateX(5px) scale(1.01); background-color: var(--glass-fill-hover); }
+  .emblem:hover { transform: scale(1.035); --rim-o: 1; }
+}
+.now-card.is-pressed, .split-row--solo.is-pressed { transform: scale(var(--press-card)); --rim-o: 1; }
+.menu-toggle.is-pressed, .back-link-icon.is-pressed, .to-top.is-pressed { transform: scale(var(--press-small)); --rim-o: 1; background-color: var(--glass-fill-hover); }
+.btn-primary.is-pressed, .btn-link.is-pressed { transform: scale(var(--press-small), calc(var(--press-small) + .03)); --rim-o: 1; }
+.haunt.is-pressed { transform: scale(.97); }
+.emblem.is-pressed { transform: scale(.95); --rim-o: 1; }
+/* lúc ép xuống thì nhanh, lúc thả mới nảy lò xo */
+:is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .btn-primary, .btn-link, .haunt, .contact-row, .mini-pill, .about__quote).is-pressed {
+  transition-duration: var(--dur-press), var(--dur-short), var(--dur-short);
+  transition-timing-function: var(--ease-out), ease, ease;
+}
+
+/* ============================================================
+   3. NÚT TRÒN: cài đặt (phải) và quay lại (trái)
+   ============================================================ */
+.settings-menu {
+  position: fixed;
+  top: calc(var(--bar-top, .8rem) + 3px);
+  right: 1.2rem;
+  z-index: 50;
+}
+.menu-toggle {
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--color-ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.menu-toggle:focus-visible, .back-link-icon:focus-visible, .to-top:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.menu-toggle-bars { position: relative; width: 16px; height: 12px; }
+.menu-toggle-bars span {
+  position: absolute; left: 0; width: 100%; height: 2px; border-radius: 2px;
+  background: currentColor;
+  transition: transform .45s var(--spring), opacity .2s ease, top .45s var(--spring);
+}
+.menu-toggle-bars span:nth-child(1) { top: 0; }
+.menu-toggle-bars span:nth-child(2) { top: 5px; }
+.menu-toggle-bars span:nth-child(3) { top: 10px; }
+.settings-menu.open .menu-toggle-bars span:nth-child(1) { top: 5px; transform: rotate(45deg); }
+.settings-menu.open .menu-toggle-bars span:nth-child(2) { opacity: 0; }
+.settings-menu.open .menu-toggle-bars span:nth-child(3) { top: 5px; transform: rotate(-45deg); }
+
+.back-link-icon {
+  position: fixed;
+  top: calc(var(--bar-top, .8rem) + 3px);
+  left: 1.2rem;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  color: var(--color-ink);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.back-link-icon svg { width: 18px; height: 18px; flex: none; transition: transform .4s var(--spring); }
+.back-link-icon:hover svg { transform: translateX(-2px); }
+
+/* hộp cài đặt: mở ra như một giọt kính bung từ nút */
+.settings-popover {
+  --glass-blur: 18px;
+  position: absolute;
+  top: calc(100% + .6rem);
+  right: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  width: 204px;
+  max-width: calc(100vw - 2.4rem);
+  padding: .85rem;
+  border-radius: 26px;
+  background-color: var(--glass-fill-strong);
+  transform-origin: top right;
+  transform: scale(.5) translateY(-12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform var(--dur-spring) var(--spring), opacity .18s ease;
+}
+.settings-menu.open .settings-popover { transform: none; opacity: 1; pointer-events: auto; }
+
+.settings-group { display: flex; flex-direction: column; gap: .45rem; width: 100%; min-width: 0; }
+.settings-group-label {
+  margin: 0;
+  padding: 0 .2rem;
+  font: 700 .55rem/1 var(--font-body);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  opacity: .8;
+}
+.settings-divider { height: 1px; background: var(--glass-rim-lo); opacity: .5; margin: .05rem 0; }
+
+/* công tắc kính: thanh trượt là một "thấu kính" co giãn khi chạy */
+.language-switcher, .theme-switcher, .glass-switcher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--glass-track);
+  box-shadow: inset 0 1px 3px oklch(20% .04 60 / .22), inset 0 0 0 1px var(--glass-rim-mid);
+  overflow: hidden;
+}
+.language-switcher::before, .theme-switcher::before, .glass-switcher::before {
+  content: "";
+  position: absolute;
+  top: 3px; bottom: 3px; left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 999px;
+  translate: 0 0;
+  transition: translate var(--dur-spring) var(--spring);
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 oklch(100% 0 0 / .6), inset 0 -1px 0 oklch(0% 0 0 / .18), 0 4px 12px var(--thumb-glow, oklch(45% .12 45 / .35));
+}
+.language-switcher::before { background: linear-gradient(135deg, #A8532A, #C99A3E); }
+.theme-switcher::before    { background: linear-gradient(135deg, #2A2118, #55493B); --thumb-glow: oklch(20% .03 60 / .4); }
+.language-switcher.en::before { translate: 100% 0; }
+.theme-switcher.dark::before  { translate: 100% 0; background: linear-gradient(135deg, #D9AE5C, #E9C783); --thumb-glow: oklch(75% .12 80 / .4); }
+.glass-switcher::before { background: linear-gradient(135deg, #A8532A, #C99A3E); }            /* Liquid */
+.glass-switcher.classic::before { translate: 100% 0; background: linear-gradient(135deg, #2A2118, #55493B); --thumb-glow: oklch(20% .03 60 / .4); }   /* Cổ điển */
+html[data-theme="dark"] .glass-switcher.classic::before { background: linear-gradient(135deg, #5C4F3F, #8A7860); }
+.language-switcher.sliding::before, .theme-switcher.sliding::before, .glass-switcher.sliding::before { animation: lens-stretch .6s var(--ease-out); }
+@keyframes lens-stretch {
+  0%   { scale: 1 1; }
+  35%  { scale: 1.34 .84; }
+  100% { scale: 1 1; }
+}
+
+.lang-btn, .theme-btn, .glass-btn {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 50%;
+  min-width: 0;
+  height: 28px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-ink-soft);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color .22s ease;
+}
+.lang-btn { padding: 0 .55rem; font: 700 .6rem/1 var(--font-body); letter-spacing: .1em; text-align: center; }
+.theme-btn, .glass-btn { display: inline-flex; align-items: center; justify-content: center; gap: .3rem; font: 700 .58rem/1 var(--font-body); letter-spacing: .05em; }
+.theme-btn svg, .glass-btn svg { width: 12px; height: 12px; flex: none; }
+.lang-btn.active { color: #FFF9EE; }
+.theme-switcher:not(.dark) .theme-btn[data-theme-choice="light"] { color: #FFF9EE; }
+.theme-switcher.dark .theme-btn[data-theme-choice="dark"] { color: #241B0F; }
+.glass-switcher:not(.classic) .glass-btn[data-glass-choice="liquid"] { color: #FFF9EE; }
+.glass-switcher.classic .glass-btn[data-glass-choice="classic"] { color: #FFF9EE; }
+.lang-btn:focus-visible, .theme-btn:focus-visible, .glass-btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+
+/* ============================================================
+   4. THANH ĐIỀU HƯỚNG: viên thuốc kính nổi, dính ở đầu trang
+   ============================================================ */
+:root { --bar-top: .8rem; --bar-h: 46px; }
+.mast {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  padding: var(--bar-top) var(--page-gutter) 0;
+  pointer-events: none;
+}
+.mast-pill {
+  --glass-blur: 16px;
+  background-color: var(--glass-fill-nav);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: var(--bar-h);
+  max-width: calc(100vw - 7.5rem);
+  padding: .3rem .35rem .3rem 1.15rem;
+  border-radius: 999px;
+  pointer-events: auto;
+  animation: pill-in .9s var(--spring) backwards;
+}
+@keyframes pill-in {
+  from { opacity: 0; transform: translateY(-24px) scale(.88); }
+}
+.mast-name {
+  margin: 0;
+  padding-right: .35rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1;
+  letter-spacing: -.01em;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+.mast-nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-left: .35rem;
+  border-left: 1px solid var(--glass-rim-lo);
+}
+.mast-nav a {
+  position: relative;
+  z-index: 1;
+  padding: .6rem 1.05rem;
+  border-radius: 999px;
+  font-size: .82rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--color-ink-soft);
+  -webkit-tap-highlight-color: transparent;
+  transition: color .25s ease;
+}
+.mast-nav a:hover, .mast-nav a.is-active, .mast-nav a:focus-visible { color: var(--color-ink); }
+.mast-nav a:focus-visible, .mast-line a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+
+/* "thấu kính" trượt giữa các mục: kính nhỏ có viền sáng, giãn ra khi nhấn */
+.mast-lens {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  z-index: 0;
+  width: var(--lw, 0px);
+  border-radius: 999px;
+  translate: var(--lx, 0px) 0;
+  opacity: 0;
+  pointer-events: none;
+  background: var(--lens-fill);
+  box-shadow: var(--lens-shadow);
+  transition: translate .6s var(--spring-soft), width .6s var(--spring-soft), scale .5s var(--spring), opacity .22s ease;
+}
+.mast-lens.on { opacity: 1; }
+.mast-lens.snap { transition: none; }
+.mast-lens.pressed { scale: 1.12 .9; transition-duration: .6s, .6s, .14s, .22s; }
+
+/* trang con: liên kết "Về Trang Chủ" trong viên thuốc */
+.mast-line { margin: 0; }
+.mast-line + .mast-name { margin-left: .2rem; padding: 0 1rem 0 .9rem; border-left: 1px solid var(--glass-rim-lo); }
+.mast-line a {
+  display: inline-flex;
+  align-items: center;
+  padding: .6rem 1rem;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--color-accent);
+  transition: background-color .25s ease, transform var(--dur-spring) var(--spring);
+}
+@media (hover: hover) { .mast-line a:hover { background-color: var(--lens-fill); } }
+.mast-line a.is-pressed { transform: scale(.94, .9); }
+
+/* màu "thấu kính" và rãnh công tắc theo giao diện */
+:root {
+  --lens-fill: oklch(100% 0 0 / .66);
+  --lens-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 oklch(50% .05 60 / .12), inset 0 0 12px oklch(100% 0 0 / .55), 0 5px 14px -4px oklch(45% .09 50 / .30);
+  --glass-track: oklch(40% .04 60 / .13);
+  --glass-fill-nav: oklch(99% .012 85 / .30);
+}
+html[data-theme="dark"] {
+  --lens-fill: oklch(100% 0 0 / .16);
+  --lens-shadow: inset 0 1px 0 oklch(100% 0 0 / .38), inset 0 -1px 0 oklch(0% 0 0 / .3), inset 0 0 12px oklch(100% 0 0 / .08), 0 5px 14px -4px oklch(0% 0 0 / .5);
+  --glass-track: oklch(0% 0 0 / .32);
+  --glass-fill-nav: oklch(98% .012 85 / .10);
+}
+
+/* ============================================================
+   5. THÀNH PHẦN DÙNG CHUNG: thẻ, nhãn, hiện dần, chân trang
+   ============================================================ */
+.now-card {
+  display: block;
+  padding: var(--space-lg);
+  border-radius: var(--radius-card);
+}
+
+.mini-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  white-space: nowrap;
+}
+
+/* vào trang một lần; dùng fill-mode "backwards" để SAU khi chạy xong phần tử trở về
+   trạng thái bình thường (animation còn giữ transform/opacity sẽ làm hỏng blur nền của kính con) */
+.reveal {
+  animation: reveal .8s var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+@keyframes reveal { from { opacity: 0; transform: translateY(12px); } }
+@keyframes pop-in { from { opacity: 0; transform: scale(.78); } }
+
+[data-i18n] { transition: opacity .16s ease, transform .16s ease; }
+.language-changing [data-i18n] { opacity: 0; transform: translateY(2px); }
+
+footer { position: relative; z-index: 1; }
+
+/* ---- nhỏ gọn trên điện thoại ---- */
+@media (max-width: 40rem) {
+  .mast-name { display: none; }
+  .mast-pill { padding-left: .35rem; }
+  .mast-nav { border-left: 0; padding-left: 0; }
+  .mast-nav a { padding: .6rem .8rem; }
+  .settings-menu { right: .8rem; }
+  .back-link-icon { left: .8rem; }
+  .settings-popover { width: 188px; }
+}
+@media (max-width: 30rem) {
+  .mast-nav a { padding: .6rem .65rem; font-size: .78rem; }
+}
+
+/* ---- giảm chuyển động: bỏ phần tự chạy, giữ phản hồi khi rê/nhấn ---- */
+@media (prefers-reduced-motion: reduce) {
+  .mast-pill, .reveal { animation: reveal .25s ease backwards; animation-delay: 0s; }
+  .language-switcher.sliding::before, .theme-switcher.sliding::before, .glass-switcher.sliding::before { animation: none; }
+}
+
+/* ============================================================
+   CHẾ ĐỘ KÍNH: Liquid (khúc xạ, ít mờ) / Cổ điển (kính CSS như trước)
+   html.lg-can  = trình duyệt có khúc xạ (đặt sớm bởi script ở <head>); chế độ lưu ở data-glass-mode.
+   ============================================================ */
+html:not(.lg-can) .glass-opt { display: none; }               /* Safari / Firefox: không có gì để chuyển */
+html.lg-can[data-glass-mode="liquid"][data-theme],
+html.lg-can[data-glass-mode="liquid"][data-theme] :is(.mast-pill, .settings-popover) {   /* Liquid: kính trong hơn, để mép khúc xạ lộ rõ */
+  --glass-blur: 0.1px;
+  --glass-blur-sm: 0.1px;
+}
+/* hiệu ứng loang khi chuyển chế độ (chỉ chạy lúc đang chuyển, không đụng tới nơi khác) */
+html.lg-vt::view-transition-old(root), html.lg-vt::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+html.lg-vt::view-transition-old(root) { z-index: 1; }
+html.lg-vt::view-transition-new(root) { z-index: 2; }
+
+/* ===== Công tắc đổi phiên bản (glass <-> webgl) ===== */
+.version-link { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; padding: .35rem .8rem; border-radius: 999px; text-align: center; text-decoration: none; color: inherit; font: 700 .62rem/1.25 var(--font-body); letter-spacing: .05em; border: 1px solid var(--glass-rim-lo); background: color-mix(in oklab, currentColor 7%, transparent); }
+.version-link:hover { background: color-mix(in oklab, currentColor 13%, transparent); }
+.version-link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
