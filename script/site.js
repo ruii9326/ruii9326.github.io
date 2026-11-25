@@ -435,6 +435,9 @@
     var DISP_AMOUNT = 0;                                  // 0 = tắt tán sắc (hết vệt cầu vồng); thử 0.02–0.06 để bật lại
     var REFRACT = 120;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
     var MAX_AREA = 900000;                                // bỏ qua phần tử quá lớn (px²)
+    var MAP_PX = 260000;                                  // ngân sách điểm ảnh tối đa của bản đồ dịch (cao hơn = nét hơn, tốn hơn)
+    var MAP_BLUR = 0.7;                                   // làm mịn bản đồ (px CSS): xóa bậc thang 8-bit; 0 = tắt
+    function dprNow() { return Math.min(window.devicePixelRatio || 1, 3); }
 
     var NS = 'http://www.w3.org/2000/svg';
     var svg = document.createElementNS(NS, 'svg');
@@ -450,7 +453,7 @@
     function isOn() { return root.getAttribute('data-glass-mode') !== 'classic'; }
 
     function makeMap(w, h, r, bezel) {
-      var k = Math.min(1, Math.sqrt(28000 / (w * h)));
+      var k = Math.min(dprNow(), Math.sqrt(MAP_PX / (w * h)));   // theo devicePixelRatio, không còn bị ép ~28k điểm ảnh
       var cw = Math.max(2, Math.round(w * k)), ch = Math.max(2, Math.round(h * k));
       var c = document.createElement('canvas');
       c.width = cw; c.height = ch;
@@ -476,7 +479,7 @@
     }
 
     function dm(s, id) {
-      return '<feDisplacementMap in="SourceGraphic" in2="map" scale="' + s + '" xChannelSelector="R" yChannelSelector="G" result="' + id + '"/>';
+      return '<feDisplacementMap in="SourceGraphic" in2="mapS" scale="' + s + '" xChannelSelector="R" yChannelSelector="G" result="' + id + '"/>';
     }
     function only(inp, vals, id) {
       return '<feColorMatrix in="' + inp + '" type="matrix" values="' + vals + '" result="' + id + '"/>';
@@ -484,7 +487,7 @@
 
     // phần tử cùng kích thước / thông số dùng chung một bộ lọc
     function filterFor(w, h, r, bezel, S, disp) {
-      var key = [w, h, Math.round(r), Math.round(bezel), Math.round(S), disp].join('|');
+      var key = [w, h, Math.round(r), Math.round(bezel), Math.round(S), disp, dprNow()].join('|');
       if (cache[key]) return cache[key].id;
       if (count > 60) prune();
       var id = 'lg-' + (++uid), f = document.createElementNS(NS, 'filter');
@@ -494,6 +497,8 @@
       f.setAttribute('x', '0'); f.setAttribute('y', '0'); f.setAttribute('width', w); f.setAttribute('height', h);
       f.innerHTML =
         '<feImage href="' + makeMap(w, h, r, bezel) + '" x="0" y="0" width="' + w + '" height="' + h + '" preserveAspectRatio="none" result="map"/>' +
+        (MAP_BLUR > 0 ? '<feGaussianBlur in="map" stdDeviation="' + MAP_BLUR + '" result="mapS"/>'
+                      : '<feOffset in="map" dx="0" dy="0" result="mapS"/>') +
         (disp > 0
           ? dm(S * (1 + disp), 'r0') + dm(S, 'g0') + dm(S * (1 - disp), 'b0') +
             only('r0', '1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0', 'r') +
@@ -617,4 +622,3 @@
     setGlass(root.getAttribute('data-glass-mode') === 'classic' ? 'classic' : 'liquid', false);
   })();
 })();
-
