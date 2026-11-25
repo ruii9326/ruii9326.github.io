@@ -429,12 +429,12 @@
     if (!/Chrome\/\d+/.test(navigator.userAgent)) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
 
-    var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .btn-primary, .btn-link';
+    var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link';
     var BIG = '.mast-pill, .emblem, .settings-popover';   // nhóm này dùng --glass-blur, còn lại --glass-blur-sm
     var DISP = '.mast-pill';                              // tán sắc màu nhẹ chỉ cho thanh điều hướng (tốn máy)
     var DISP_AMOUNT = 0;                                  // 0 = tắt tán sắc (hết vệt cầu vồng); thử 0.02–0.06 để bật lại
     var REFRACT = 120;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
-    var MAX_AREA = 600000;                                // bỏ qua phần tử quá lớn (px²)
+    var MAX_AREA = 900000;                                // bỏ qua phần tử quá lớn (px²)
 
     var NS = 'http://www.w3.org/2000/svg';
     var svg = document.createElementNS(NS, 'svg');
