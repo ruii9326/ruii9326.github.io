@@ -419,26 +419,6 @@
     updateActive();
   })();
 
-  // ===== NỀN SAO (cho kính có chi tiết để bẻ cong; kiểu dáng ở .lg-ambient trong site.css) =====
-  (function () {
-    var AMBIENT = true;    // true = bật lớp nền sao + lưới (cuộn cùng trang); false = tắt
-    if (!AMBIENT || document.querySelector('.lg-ambient')) return;
-    var PARALLAX = 0.5;    // nền trượt bằng 0.5 lần tốc độ cuộn trang (0 = đứng yên, 1 = dính vào trang)
-    var a = document.createElement('div');
-    a.className = 'lg-ambient';
-    a.setAttribute('aria-hidden', 'true');
-    document.body.insertBefore(a, document.body.firstChild);
-    var queued = false;
-    function move() {
-      queued = false;
-      a.style.setProperty('--lg-y', (-window.pageYOffset * PARALLAX) + 'px');
-    }
-    window.addEventListener('scroll', function () {
-      if (!queued) { queued = true; requestAnimationFrame(move); }
-    }, { passive: true });
-    move();
-  })();
-
   // ===== KHÚC XẠ Ở MÉP KÍNH (chỉ Chrome / Edge / Opera / Brave / Samsung / ColorOS) =====
   // Bộ lọc SVG feDisplacementMap bẻ cong phần nền nhìn xuyên qua mép kính như một thấu kính lồi.
   // Bản đồ độ dịch được vẽ bằng canvas (độ phân giải thấp, mịn như nhau) theo kích thước từng phần tử;
