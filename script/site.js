@@ -436,6 +436,7 @@
     var REFRACT = 120;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
     var MAX_AREA = 900000;                                // bỏ qua phần tử quá lớn (px²)
     var MAP_PX = 260000;                                  // ngân sách điểm ảnh tối đa của bản đồ dịch (cao hơn = nét hơn, tốn hơn)
+    var AA_BLUR = 0.6;                                    // khử răng cưa cho nền sau khi bẻ cong (px CSS); 0 = tắt, 0.4–0.9 là hợp lý
     var MAP_BLUR = 0.7;                                   // làm mịn bản đồ (px CSS): xóa bậc thang 8-bit; 0 = tắt
     function dprNow() { return Math.min(window.devicePixelRatio || 1, 3); }
 
@@ -505,7 +506,8 @@
             only('g0', '0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0', 'g') +
             only('b0', '0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0', 'b') +
             '<feBlend in="r" in2="g" mode="screen" result="rg"/><feBlend in="rg" in2="b" mode="screen"/>'
-          : dm(S, 'out'));
+          : dm(S, 'out')) +
+        (AA_BLUR > 0 ? '<feGaussianBlur stdDeviation="' + AA_BLUR + '" edgeMode="duplicate"/>' : '');   // khử răng cưa sau khi dịch
       defs.appendChild(f);
       cache[key] = { id: id, node: f }; count++;
       return id;
