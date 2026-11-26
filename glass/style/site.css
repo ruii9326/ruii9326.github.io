@@ -487,3 +487,7 @@ html.lg-vt::view-transition-new(root) { z-index: 2; }
 .version-link { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; padding: .35rem .8rem; border-radius: 999px; text-align: center; text-decoration: none; color: inherit; font: 700 .62rem/1.25 var(--font-body); letter-spacing: .05em; border: 1px solid var(--glass-rim-lo); background: color-mix(in oklab, currentColor 7%, transparent); }
 .version-link:hover { background: color-mix(in oklab, currentColor 13%, transparent); }
 .version-link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+
+/* ===== Liquid: kính trong hơn — không khuếch đại màu nền phía sau kính (gốc: --glass-sat 1.8 làm ô kính ngả cam, đục). Chỉnh số này: 1 = trong nhất, 1.8 = như cũ ===== */
+html.lg-can[data-glass-mode="liquid"][data-theme],
+html.lg-can[data-glass-mode="liquid"][data-theme] :is(.mast-pill, .settings-popover) { --glass-sat: 1.05; }

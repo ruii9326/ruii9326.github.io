@@ -487,3 +487,14 @@ html.lg-vt::view-transition-new(root) { z-index: 2; }
 .version-link { display: flex; align-items: center; justify-content: center; min-height: 2.1rem; padding: .35rem .8rem; border-radius: 999px; text-align: center; text-decoration: none; color: inherit; font: 700 .62rem/1.25 var(--font-body); letter-spacing: .05em; border: 1px solid var(--glass-rim-lo); background: color-mix(in oklab, currentColor 7%, transparent); }
 .version-link:hover { background: color-mix(in oklab, currentColor 13%, transparent); }
 .version-link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+
+/* ============================================================
+   BẢN WEBGL: khi webgl/script/webgl.js chạy được (html.wgl-live) thì canvas vẽ nền + khúc xạ ở mép kính.
+   CSS chỉ cần: ẩn nền CSS cũ, bỏ blur của ô kính (canvas đã lo), kính trong như chế độ Liquid của bản glass.
+   Chế độ "Cổ điển" / không có WebGL: html không có class này -> giữ nguyên kính CSS (backdrop-filter: blur), chạy được trên Safari.
+   ============================================================ */
+html.wgl-live { --glass-sat: 1.05; }
+html.wgl-live body::before, html.wgl-live body::after { display: none; }
+html.wgl-live :is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link) { -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* Menu cài đặt nằm đè lên nội dung (quả cầu, chữ) nên làm mờ nhẹ phía sau cho dễ đọc; muốn trong hẳn thì xóa dòng này */
+html.wgl-live .settings-popover { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }

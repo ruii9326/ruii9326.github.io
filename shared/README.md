@@ -6,4 +6,4 @@
   - `tokens.css`: biến màu, chế độ sáng/tối
   - `core.js`: ngôn ngữ, sáng/tối, menu cài đặt, nút Quay lại, cuộn mượt, hiệu ứng nhấn
 - `glass/`: bản Chromium (khúc xạ thật bằng bộ lọc SVG)
-- `webgl/`: bản Safari / Firefox / iPhone / iPad (đang làm)
+- `webgl/`: bản Safari / Firefox / iPhone / iPad: `webgl/script/webgl.js` vẽ nền + khúc xạ bằng WebGL 1 (xem chú thích đầu file); Cổ điển / không có WebGL thì dùng kính CSS
