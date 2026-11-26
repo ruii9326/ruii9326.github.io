@@ -21,6 +21,8 @@
   var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link, ' +
             '.haunt, .contact-row, .mini-pill, .split-row__tag, .language-switcher, .theme-switcher, .glass-switcher, .version-link';   // dòng 2: ô kính nhỏ / lồng bên trong — bản glass không khúc xạ, bản WebGL có
   var FIXED = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .to-top';   // nằm trên mọi thứ: vẽ sau cùng (cả các phần tử con bên trong, ví dụ công tắc trong menu)
+  var LENS_SEL = '.mast-pill, .menu-toggle, .back-link-icon, .to-top, .settings-popover';   // kính cố định đè lên nội dung: dùng "lớp kính" (bản sao nội dung + bộ lọc SVG) để bẻ cong cả chữ/hình HTML phía sau
+  var USE_LENS = true;       // lớp kính cho ô cố định (bẻ cong cả chữ/hình phía sau). Nếu thấy giật trên máy yếu: đặt false -> các ô đó chỉ bẻ cong nền như các thẻ
   var DISP = '.mast-pill, .menu-toggle, .settings-popover, .btn-primary';                // có tán sắc
   var DISP_AMOUNT = 0.1;     // 0 = tắt tán sắc
   var REFRACT = 40;          // độ khúc xạ (px); mỗi phần tử có thể đặt data-refraction riêng
@@ -45,12 +47,12 @@
 
   // nền: lặp lại đúng body::before (6 vệt màu trên nền --bg-base) và body::after (2 bộ vòng tròn + mặt nạ + opacity .8)
   var FS_BG = PREC +
-    'uniform vec2 uPx; uniform float uDpr; uniform vec3 uBase; uniform vec4 uO0, uO1, uO2, uO3, uRing;' +
+    'uniform vec2 uPx; uniform float uDpr, uVm; uniform vec3 uBase; uniform vec4 uO0, uO1, uO2, uO3, uRing;' +
     'vec3 over(vec3 d, vec3 c, float a){ return d * (1.0 - a) + c * a; }' +
     'float rad(vec2 p, vec2 c, vec2 r, float stop){ return clamp(1.0 - length((p - c) / r) / stop, 0.0, 1.0); }' +
     'float ring(vec2 p, vec2 c, float per){ float r = length(p - c); float d = mod(r - (per - 0.5) + per * 0.5, per) - per * 0.5; float aa = 1.0 / uDpr; return clamp((0.5 + 0.5 * aa - abs(d)) / aa, 0.0, 1.0); }' +
     'void main(){' +
-    '  vec2 res = uPx / uDpr; vec2 p = vec2(gl_FragCoord.x, uPx.y - gl_FragCoord.y) / uDpr; float vm = max(res.x, res.y);' +
+    '  vec2 res = uPx / uDpr; vec2 p = vec2(gl_FragCoord.x, uPx.y - gl_FragCoord.y) / uDpr; float vm = uVm;' +
     '  vec3 col = uBase;' +
     '  col = over(col, uO2.rgb, uO2.a * rad(p, vec2(0.66, 0.58) * res, vec2(0.28 * vm), 0.72));' +
     '  col = over(col, uO1.rgb, uO1.a * rad(p, vec2(0.34, 0.50) * res, vec2(0.30, 0.26) * vm, 0.72));' +
@@ -167,11 +169,117 @@
     if (!colors) readColors();
     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo); gl.viewport(0, 0, Wp, Hp); gl.disable(gl.BLEND);
     use('bg');
-    gl.uniform2f(U('uPx'), Wp, Hp); gl.uniform1f(U('uDpr'), dpr); gl.uniform3f(U('uBase'), colors.base[0], colors.base[1], colors.base[2]);
+    gl.uniform2f(U('uPx'), Wp, Hp); gl.uniform1f(U('uDpr'), dpr); gl.uniform1f(U('uVm'), Math.max(window.innerWidth, window.innerHeight)); gl.uniform3f(U('uBase'), colors.base[0], colors.base[1], colors.base[2]);
     ['uO0', 'uO1', 'uO2', 'uO3'].forEach(function (n, i) { var c = colors.o[i]; gl.uniform4f(U(n), c[0], c[1], c[2], c[3]); });
     gl.uniform4f(U('uRing'), colors.ring[0], colors.ring[1], colors.ring[2], colors.ring[3]);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  }
+
+  // ---- LỚP KÍNH cho ô kính cố định (thanh điều hướng, nút menu, nút quay lại, nút lên đầu trang, menu) ----
+  // WebGL chỉ bẻ cong được thứ nó tự vẽ (nền). Chữ và hình HTML nằm sau các ô này thì phải bẻ cong bằng cách khác, giống bản glass:
+  // mỗi ô có một lớp con chứa [nền CSS + bản sao nội dung trang cuộn theo trang], bẻ bằng bộ lọc SVG feDisplacementMap
+  // (cùng công thức bản đồ độ dịch với glass/script/glass.js). Lớp này đục (có cả nền) nên che luôn nội dung thật bên dưới.
+  var SRC = document.querySelector('main') || document.body;   // nguồn sao chép: chốt từ đầu (sau này querySelector('main') có thể trúng chính bản sao trong lớp kính)
+  var NSV = 'http://www.w3.org/2000/svg', fdefs = null, fcache = {}, fuid = 0, tpl = null, lensReady = false;
+  var LMAP_PX = 300000, LAA_BLUR = 0.5, LMAP_BLUR = 0.5;
+  function ldpr() { return Math.min(window.devicePixelRatio || 1, 3); }
+  function lensSvg() {
+    if (fdefs) return;
+    var svg = document.createElementNS(NSV, 'svg'); svg.setAttribute('width', '0'); svg.setAttribute('height', '0'); svg.setAttribute('aria-hidden', 'true');
+    svg.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none';
+    fdefs = document.createElementNS(NSV, 'defs'); svg.appendChild(fdefs); document.body.appendChild(svg);
+  }
+  function makeMap(w, h, r, bezel) {
+    var k = Math.min(ldpr(), Math.sqrt(LMAP_PX / (w * h))), cw = Math.max(2, Math.round(w * k)), ch = Math.max(2, Math.round(h * k));
+    var c = document.createElement('canvas'); c.width = cw; c.height = ch;
+    var ctx = c.getContext('2d'), img = ctx.createImageData(cw, ch), d = img.data, hx = w / 2, hy = h / 2, rr = Math.min(r, hx, hy);
+    for (var y = 0; y < ch; y++) for (var x = 0; x < cw; x++) {
+      var px = (x + 0.5) / k - hx, py = (y + 0.5) / k - hy, qx = Math.abs(px) - (hx - rr), qy = Math.abs(py) - (hy - rr);
+      var ox = Math.max(qx, 0), oy = Math.max(qy, 0), len = Math.sqrt(ox * ox + oy * oy), depth = -(len + Math.min(Math.max(qx, qy), 0) - rr), nx = 0, ny = 0, m = 0;
+      if (len > 0) { nx = ox / len * Math.sign(px); ny = oy / len * Math.sign(py); } else if (qx > qy) nx = Math.sign(px); else ny = Math.sign(py);
+      if (depth < bezel) m = Math.pow(1 - Math.max(depth, 0) / bezel, 1.5);
+      var i = (y * cw + x) * 4; d[i] = 128 - nx * m * 127; d[i + 1] = 128 - ny * m * 127; d[i + 2] = 128; d[i + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0); return c.toDataURL();
+  }
+  function dm(s, id) { return '<feDisplacementMap in="SourceGraphic" in2="mapS" scale="' + s + '" xChannelSelector="R" yChannelSelector="G" result="' + id + '"/>'; }
+  function only(inp, vals, id) { return '<feColorMatrix in="' + inp + '" type="matrix" values="' + vals + '" result="' + id + '"/>'; }
+  function filterFor(w, h, r, bezel, S, disp) {
+    var key = [w, h, Math.round(r), Math.round(bezel), Math.round(S), disp, ldpr()].join('|');
+    if (fcache[key]) return fcache[key];
+    lensSvg();
+    var id = 'wgl-lf-' + (++fuid), f = document.createElementNS(NSV, 'filter'), url = makeMap(w, h, r, bezel);
+    f.setAttribute('id', id); f.setAttribute('filterUnits', 'userSpaceOnUse'); f.setAttribute('color-interpolation-filters', 'sRGB');
+    f.setAttribute('x', '0'); f.setAttribute('y', '0'); f.setAttribute('width', w); f.setAttribute('height', h);
+    f.innerHTML =
+      '<feImage href="' + url + '" xlink:href="' + url + '" x="0" y="0" width="' + w + '" height="' + h + '" preserveAspectRatio="none" result="map"/>' +
+      '<feGaussianBlur in="map" stdDeviation="' + LMAP_BLUR + '" result="mapS"/>' +
+      (disp > 0
+        ? dm(S * (1 + disp), 'r0') + dm(S, 'g0') + dm(S * (1 - disp), 'b0') +
+          only('r0', '1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0', 'r') + only('g0', '0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0', 'g') + only('b0', '0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0', 'b') +
+          '<feBlend in="r" in2="g" mode="screen" result="rg"/><feBlend in="rg" in2="b" mode="screen"/>'
+        : dm(S, 'out')) +
+      '<feGaussianBlur stdDeviation="' + LAA_BLUR + '" edgeMode="duplicate"/>';
+    fdefs.appendChild(f); fcache[key] = id; return id;
+  }
+  function clearFilters() { if (fdefs) while (fdefs.firstChild) fdefs.removeChild(fdefs.firstChild); fcache = {}; }
+
+  function buildTemplate() {                             // bản sao "sạch" của nội dung trang (không id, không tương tác, không chrome cố định)
+    var src = SRC, stash = [];
+    Array.prototype.forEach.call(src.querySelectorAll('.wgl-lens'), function (l) { stash.push([l, l.parentNode, l.nextSibling]); l.parentNode.removeChild(l); });
+    var t = src.cloneNode(true);
+    stash.forEach(function (x) { x[1].insertBefore(x[0], x[2]); });
+    Array.prototype.forEach.call(t.querySelectorAll('[id]'), function (e) { if (!e.closest('svg')) e.removeAttribute('id'); });
+    Array.prototype.forEach.call(t.querySelectorAll('script, style, canvas, iframe, video, audio, .to-top, .back-link-icon, .settings-menu'), function (e) { e.parentNode.removeChild(e); });
+    Array.prototype.forEach.call(t.querySelectorAll('a, button, input, select, textarea, [tabindex]'), function (e) { e.setAttribute('tabindex', '-1'); });
+    t.removeAttribute('id'); t.setAttribute('aria-hidden', 'true'); t.inert = true; t.setAttribute('inert', '');
+    return t;
+  }
+  function lensMetrics() {                               // kích thước "khung nhìn" để nền CSS trong lớp kính khớp nền thật
+    var cs = getComputedStyle(root);
+    return { w: root.clientWidth, h: root.clientHeight, fs: cs.fontSize, bs: getComputedStyle(document.body) };
+  }
+  function sizeLens(it) {
+    var m = lensMetrics(), L = it.lens, bs = m.bs;
+    L.vp.style.width = m.w + 'px'; L.vp.style.height = m.h + 'px';
+    L.pg.style.width = m.w + 'px'; L.pg.style.fontSize = m.fs; L.pg.style.lineHeight = bs.lineHeight;
+    L.pg.style.paddingLeft = bs.paddingLeft; L.pg.style.paddingRight = bs.paddingRight;
+  }
+  function layoutBox(el) {                               // vị trí của ô trong khung nhìn, bỏ qua transform (animation scale / hover)
+    var r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+    if (cs.transform === 'none') return [r.left, r.top];
+    var mt = new DOMMatrix(cs.transform), o = cs.transformOrigin.split(' '), ox = parseFloat(o[0]) || 0, oy = parseFloat(o[1]) || 0;
+    return [r.left - ox * (1 - mt.a) - mt.e, r.top - oy * (1 - mt.d) - mt.f];
+  }
+  function placeLens(it) {
+    var p = layoutBox(it.el), key = Math.round(p[0] * 10) + ',' + Math.round(p[1] * 10);
+    if (it.lensPos !== key) { it.lensPos = key; it.lens.vp.style.transform = 'translate3d(' + (-p[0]) + 'px,' + (-p[1]) + 'px,0)'; }
+  }
+  function buildLens(it) {
+    try {
+      if (!tpl) tpl = buildTemplate();
+      var id = filterFor(it.w0, it.h0, it.r, it.bezel, it.S, it.disp), el = document.createElement('div');
+      el.className = 'wgl-lens'; el.setAttribute('aria-hidden', 'true');
+      el.innerHTML = '<div class="wgl-lens__f"><div class="wgl-lens__vp"><div class="wgl-lens__bg"></div><div class="wgl-lens__pg"></div></div></div>';
+      var L = { el: el, f: el.firstChild, vp: el.firstChild.firstChild, pg: el.firstChild.firstChild.lastChild };
+      L.f.style.filter = L.f.style.webkitFilter = 'url(#' + id + ') saturate(' + it.sat + ')';
+      L.pg.appendChild(tpl.cloneNode(true));
+      it.lens = L; it.lensSY = null; it.lensPos = null; it.fid = id;
+      it.el.insertBefore(el, it.el.firstChild); it.el.classList.add('wgl-lensed');
+      sizeLens(it); placeLens(it); return true;
+    } catch (e) { if (window.console) console.warn('[webgl] không dựng được lớp kính, dùng nền WebGL:', e.message); it.lensFail = true; return false; }
+  }
+  function refreshLens(it) {                             // đổi kích thước / thông số: dựng lại bộ lọc + căn lại
+    if (!it.lens) return;
+    it.fid = filterFor(it.w0, it.h0, it.r, it.bezel, it.S, it.disp);
+    it.lens.f.style.filter = it.lens.f.style.webkitFilter = 'url(#' + it.fid + ') saturate(' + it.sat + ')';
+    sizeLens(it); it.lensPos = null; placeLens(it);
+  }
+  function resyncLenses() {                              // nội dung trang đổi (ngôn ngữ, font tải xong): sao chép lại
+    tpl = null; if (!lensReady) return;
+    items.forEach(function (it) { if (it.lens) { tpl = tpl || buildTemplate(); it.lens.pg.replaceChildren(tpl.cloneNode(true)); sizeLens(it); } });
+    wake();
   }
 
   // ---- các ô kính ----
@@ -181,10 +289,11 @@
     it.ok = !(w < 8 || h < 8 || w * h > MAX_AREA); if (!it.ok) return;
     var cs = getComputedStyle(el), rs = cs.borderTopLeftRadius;
     var r = /%/.test(rs) ? parseFloat(rs) / 100 * Math.min(w, h) : (parseFloat(rs) || 0);
-    it.w0 = w; it.r = Math.min(r, w / 2, h / 2);
+    it.w0 = w; it.h0 = h; it.r = Math.min(r, w / 2, h / 2);
     it.bezel = Math.max(3, Math.min(Math.min(w, h) * 0.18, 18));
     it.S = Math.min(parseFloat(el.getAttribute('data-refraction')) || REFRACT, Math.min(w, h) * 0.9);
     it.sat = parseFloat(cs.getPropertyValue('--glass-sat')) || 1;
+    if (it.lens) refreshLens(it);
   }
   function opacityOf(el) {                               // độ trong suốt thực tế (kể cả do tổ tiên): ô kính ẩn / đang hiện dần thì không vẽ
     var o = 1, n = el, i = 0;
@@ -204,7 +313,7 @@
     wake();
   }) : null;
   Array.prototype.forEach.call(document.querySelectorAll(SEL), function (el) {
-    var it = { el: el, vis: !io, ok: false, fixed: !!el.closest(FIXED), disp: el.matches(DISP) ? DISP_AMOUNT : 0, x: 0, y: 0, w: 0, h: 0, op: 0, on: false };
+    var it = { el: el, vis: !io, ok: false, fixed: !!el.closest(FIXED), disp: el.matches(DISP) ? DISP_AMOUNT : 0, isLens: el.matches(LENS_SEL), lens: null, lensOn: false, lensSY: null, x: 0, y: 0, w: 0, h: 0, op: 0, on: false };
     items.push(it); measure(it); if (io) io.observe(el); if (ro) ro.observe(el);
   });
 
@@ -223,7 +332,7 @@
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     use('glass'); gl.uniform1i(U('uBg'), 0); gl.uniform2f(U('uRes'), W, H); gl.uniform1f(U('uDpr'), dpr);
     for (var pass = 0; pass < 2; pass++)
-      for (var i = 0; i < items.length; i++) if (items[i].on && items[i].fixed === (pass === 1)) drawGlass(items[i]);
+      for (var i = 0; i < items.length; i++) if (items[i].on && !items[i].lens && items[i].fixed === (pass === 1)) drawGlass(items[i]);
   }
 
   var running = false, idle = 0;
@@ -244,10 +353,18 @@
         r = it.el.getBoundingClientRect();
         if (r.width >= 1 && r.height >= 1) { op = opacityOf(it.el); on = op > 0.002; }
       }
+      if (on && it.isLens && lensReady && !it.lensFail) {
+        if (!it.lens && it.ok && op > 0.02) { if (buildLens(it)) changed = true; }
+        if (it.lens) {
+          var sy = window.pageYOffset || 0;
+          if (it.lensSY !== sy) { it.lensSY = sy; it.lens.pg.style.transform = 'translate3d(0,' + (-sy) + 'px,0)'; idle = 0; }
+          if (r.left !== it.x || r.top !== it.y || r.width !== it.w || r.height !== it.h) placeLens(it);
+        }
+      }
       if (on) {
         if (!it.on || r.left !== it.x || r.top !== it.y || r.width !== it.w || r.height !== it.h || op !== it.op) { changed = true; it.x = r.left; it.y = r.top; it.w = r.width; it.h = r.height; it.op = op; }
       } else if (it.on) changed = true;
-      it.on = on;
+      it.on = on; it.lensOn = on && !!it.lens;
     }
     if (changed) {
       idle = 0; draw();
@@ -272,15 +389,18 @@
   }
 
   // ---- đồng bộ với trang ----
-  R.glassEngine = { kind: 'webgl', refresh: function () { setLive(isOn()); if (live) { items.forEach(measure); startColors(); bgDirty = true; wake(); } } };
+  R.glassEngine = { kind: 'webgl', refresh: function () { setLive(isOn()); if (live) { if (!lensReady) setTimeout(startLenses, 200); else resyncLenses(); items.forEach(measure); startColors(); bgDirty = true; wake(); } } };
   new MutationObserver(function () { if (!live) return; startColors(); bgDirty = true; wake(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
   ['scroll', 'resize', 'orientationchange', 'pointerdown', 'pointerup', 'pointermove', 'touchstart', 'touchmove', 'keydown', 'transitionrun', 'transitionend', 'animationstart', 'animationend', 'load']
     .forEach(function (t) { window.addEventListener(t, wake, { capture: true, passive: true }); });
   if (window.visualViewport) { window.visualViewport.addEventListener('resize', wake); window.visualViewport.addEventListener('scroll', wake); }
   document.addEventListener('visibilitychange', wake);
   window.addEventListener('pageshow', wake);
-  if (R.onLanguage) R.onLanguage(function () { setTimeout(function () { items.forEach(measure); wake(); }, 60); });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { items.forEach(measure); wake(); });
+  if (R.onLanguage) R.onLanguage(function () { setTimeout(function () { items.forEach(measure); resyncLenses(); wake(); }, 80); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { items.forEach(measure); resyncLenses(); wake(); });
+  function startLenses() { if (!USE_LENS || lensReady || !live) return; lensReady = true; wake(); }
+  if (document.readyState === 'complete') setTimeout(startLenses, 900); else window.addEventListener('load', function () { setTimeout(startLenses, 900); });
+  window.addEventListener('resize', function () { clearFilters(); items.forEach(function (it) { it.lensSY = null; }); setTimeout(function () { items.forEach(function (it) { measure(it); }); wake(); }, 120); });
   canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); lost = true; ready = false; setLive(false); }, false);
   canvas.addEventListener('webglcontextrestored', function () { lost = false; if (build()) { setLive(isOn()); } }, false);
 
