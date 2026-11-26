@@ -496,5 +496,37 @@ html.lg-vt::view-transition-new(root) { z-index: 2; }
 html.wgl-live { --glass-sat: 1.05; }
 html.wgl-live body::before, html.wgl-live body::after { display: none; }
 html.wgl-live :is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link) { -webkit-backdrop-filter: none; backdrop-filter: none; }
-/* Menu cài đặt nằm đè lên nội dung (quả cầu, chữ) nên làm mờ nhẹ phía sau cho dễ đọc; muốn trong hẳn thì xóa dòng này */
-html.wgl-live .settings-popover { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+
+/* ============================================================
+   LỚP KÍNH (webgl.js): trong mỗi ô kính cố định đè lên nội dung (thanh điều hướng, nút menu, nút quay lại, nút lên đầu trang, menu)
+   có một lớp con chứa nền CSS + bản sao nội dung trang, bẻ cong bằng bộ lọc SVG như bản glass. Lớp đục nên che nội dung thật bên dưới.
+   ============================================================ */
+.wgl-lensed { isolation: isolate; }
+.wgl-lens { position: absolute; inset: 0; z-index: -1; overflow: hidden; border-radius: inherit; pointer-events: none; background-color: inherit; }
+.wgl-lens::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background-color: inherit; box-shadow: var(--glass-inner); pointer-events: none; }   /* nền kính + viền sáng nằm TRÊN lớp bẻ cong */
+html:not(.wgl-live) .wgl-lens { display: none; }
+.wgl-lens__f { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.wgl-lens__vp { position: absolute; left: 0; top: 0; will-change: transform; }
+.wgl-lens__bg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.wgl-lens__bg::before, .wgl-lens__bg::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.wgl-lens__bg::before {
+  background:
+    radial-gradient(46vmax 46vmax at 10% 6%,  var(--orb-a), transparent 70%),
+    radial-gradient(40vmax 40vmax at 92% 12%, var(--orb-b), transparent 70%),
+    radial-gradient(50vmax 50vmax at 84% 96%, var(--orb-c), transparent 72%),
+    radial-gradient(44vmax 44vmax at 6% 90%,  var(--orb-d), transparent 70%),
+    radial-gradient(30vmax 26vmax at 34% 50%, var(--orb-b), transparent 72%),
+    radial-gradient(28vmax 28vmax at 66% 58%, var(--orb-c), transparent 72%),
+    var(--bg-base);
+}
+.wgl-lens__bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.wgl-lens__pg { all: initial; display: block; position: absolute; left: 0; top: 0; box-sizing: border-box; will-change: transform; pointer-events: none; user-select: none; -webkit-user-select: none; color: var(--color-ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+.wgl-lens__pg *, .wgl-lens__pg *::before, .wgl-lens__pg *::after { animation: none !important; transition: none !important; }
+.wgl-lens__pg .mast { position: static; visibility: hidden; }
+.wgl-lens__pg .toc-card { position: static; }
