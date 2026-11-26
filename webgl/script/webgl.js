@@ -18,8 +18,9 @@
   if (window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
 
   // ---- thông số: giống bản glass, chỉnh ở đây ----
-  var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link';
-  var FIXED = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .to-top';   // nằm trên mọi thứ: vẽ sau cùng
+  var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link, ' +
+            '.haunt, .contact-row, .mini-pill, .split-row__tag, .language-switcher, .theme-switcher, .glass-switcher, .version-link';   // dòng 2: ô kính nhỏ / lồng bên trong — bản glass không khúc xạ, bản WebGL có
+  var FIXED = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .to-top';   // nằm trên mọi thứ: vẽ sau cùng (cả các phần tử con bên trong, ví dụ công tắc trong menu)
   var DISP = '.mast-pill, .menu-toggle, .settings-popover, .btn-primary';                // có tán sắc
   var DISP_AMOUNT = 0.1;     // 0 = tắt tán sắc
   var REFRACT = 40;          // độ khúc xạ (px); mỗi phần tử có thể đặt data-refraction riêng
@@ -203,7 +204,7 @@
     wake();
   }) : null;
   Array.prototype.forEach.call(document.querySelectorAll(SEL), function (el) {
-    var it = { el: el, vis: !io, ok: false, fixed: el.matches(FIXED), disp: el.matches(DISP) ? DISP_AMOUNT : 0, x: 0, y: 0, w: 0, h: 0, op: 0, on: false };
+    var it = { el: el, vis: !io, ok: false, fixed: !!el.closest(FIXED), disp: el.matches(DISP) ? DISP_AMOUNT : 0, x: 0, y: 0, w: 0, h: 0, op: 0, on: false };
     items.push(it); measure(it); if (io) io.observe(el); if (ro) ro.observe(el);
   });
 
