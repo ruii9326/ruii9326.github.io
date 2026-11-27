@@ -15,7 +15,9 @@
   'use strict';
   var root = document.documentElement;
   var R = window.RUII9326 = window.RUII9326 || {};
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
+  // thiết lập hệ thống: giảm độ trong suốt / chế độ tương phản cao -> tắt canvas, dùng kính CSS đặc hơn (xem cuối webgl/style/site.css). Theo dõi cả khi người dùng đổi lúc đang xem.
+  function mq(q) { return !!(window.matchMedia && window.matchMedia(q).matches); }
+  function prefsOff() { return mq('(prefers-reduced-transparency: reduce)') || mq('(forced-colors: active)'); }
 
   // ---- thông số: giống bản glass, chỉnh ở đây ----
   var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link, ' +
@@ -28,6 +30,9 @@
   var REFRACT = 40;          // độ khúc xạ (px); mỗi phần tử có thể đặt data-refraction riêng
   var MAX_AREA = 900000;     // bỏ qua phần tử quá lớn (px²), như bản glass
   var MAX_DPR = 2;           // giới hạn độ phân giải canvas (iPhone là 3x; 2x đủ nét và nhẹ hơn nhiều)
+  var MAX_PIXELS = 2600000;  // ngân sách điểm ảnh của canvas (màn hình lớn / iPad: tự hạ độ phân giải cho vừa)
+  var QUALITY = [2, 1.5, 1.25, 1];   // các mức độ phân giải tối đa; máy chậm (khung hình > 40ms liên tục khi cuộn, tức dưới 25fps) sẽ tự hạ dần từng mức
+  var MAX_QUADS = 64;        // số ô kính tối đa vẽ trong một khung hình
   var MARGIN = 2;            // lề (px) quanh ô kính để khử răng cưa mép
   var IDLE_FRAMES = 24;      // đứng yên chừng này khung hình thì ngừng vòng lặp (sự kiện sẽ đánh thức lại)
 
@@ -35,6 +40,7 @@
   var canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
   canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;display:none';
+  if (window.CSS && CSS.supports && CSS.supports('height', '100lvh')) canvas.style.height = '100lvh';   // iOS: thanh địa chỉ co giãn không làm canvas đổi cỡ (không vẽ lại nền mỗi lần vuốt)
   var gl = null, glOpts = { alpha: false, antialias: false, depth: false, stencil: false, powerPreference: 'low-power' };
   try { gl = canvas.getContext('webgl', glOpts) || canvas.getContext('experimental-webgl', glOpts); } catch (e) { gl = null; }
   if (!gl) return;                                       // không có WebGL: giữ kính CSS thường
@@ -86,7 +92,7 @@
 
   var progs = {}, locs = {}, buf = null, tex = null, fbo = null;
   var ready = false, live = false, lost = false;
-  var W = 0, H = 0, Wp = 0, Hp = 0, dpr = 1, wanted = 1;
+  var W = 0, H = 0, Wp = 0, Hp = 0, dpr = 1, qi = 0, dispOn = true;
   var colors = null, bgDirty = true, colorsUntil = 0, colorsFrom = 0, colorsStable = 0;   // sau khi đổi sáng/tối: đọc lại màu mỗi khung hình tới khi ổn định (biến màu CSS đang chạy hiệu ứng chuyển, máy chậm thì lâu hơn)
 
   function compile(type, src) {
@@ -147,11 +153,16 @@
   }
 
   // ---- kích thước + texture nền ----
+  function calcDpr(w, h, maxT) {                         // độ phân giải canvas: theo màn hình, trần MAX_DPR, mức chất lượng, ngân sách điểm ảnh, giới hạn texture
+    maxT = maxT || gl.getParameter(gl.MAX_TEXTURE_SIZE) || 4096;
+    var d = Math.min(window.devicePixelRatio || 1, MAX_DPR, QUALITY[qi]);
+    d = Math.min(d, maxT / Math.max(w, h, 1), Math.sqrt(MAX_PIXELS / Math.max(w * h, 1)));
+    return Math.max(0.75, d);
+  }
   function resizeGL() {
     var b = canvas.getBoundingClientRect(); W = b.width; H = b.height;
     var maxT = gl.getParameter(gl.MAX_TEXTURE_SIZE) || 4096;
-    wanted = Math.max(1, Math.min(window.devicePixelRatio || 1, MAX_DPR));
-    dpr = Math.max(1, Math.min(wanted, maxT / Math.max(W, H, 1)));
+    dpr = calcDpr(W, H, maxT);
     Wp = Math.max(1, Math.round(W * dpr)); Hp = Math.max(1, Math.round(H * dpr));
     canvas.width = Wp; canvas.height = Hp;
     if (tex) gl.deleteTexture(tex); if (fbo) gl.deleteFramebuffer(fbo);
@@ -169,7 +180,8 @@
     if (!colors) readColors();
     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo); gl.viewport(0, 0, Wp, Hp); gl.disable(gl.BLEND);
     use('bg');
-    gl.uniform2f(U('uPx'), Wp, Hp); gl.uniform1f(U('uDpr'), dpr); gl.uniform1f(U('uVm'), Math.max(window.innerWidth, window.innerHeight)); gl.uniform3f(U('uBase'), colors.base[0], colors.base[1], colors.base[2]);
+    gl.uniform2f(U('uPx'), Wp, Hp); gl.uniform1f(U('uDpr'), dpr); gl.uniform1f(U('uVm'), Math.max(window.innerWidth, H));   // uVm = vmax của CSS (iOS: tính theo khung nhìn lớn)
+    gl.uniform3f(U('uBase'), colors.base[0], colors.base[1], colors.base[2]);
     ['uO0', 'uO1', 'uO2', 'uO3'].forEach(function (n, i) { var c = colors.o[i]; gl.uniform4f(U(n), c[0], c[1], c[2], c[3]); });
     gl.uniform4f(U('uRing'), colors.ring[0], colors.ring[1], colors.ring[2], colors.ring[3]);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -242,7 +254,7 @@
   }
   function sizeLens(it) {
     var m = lensMetrics(), L = it.lens, bs = m.bs;
-    L.vp.style.width = m.w + 'px'; L.vp.style.height = m.h + 'px';
+    L.vp.style.width = (W || m.w) + 'px'; L.vp.style.height = (H || m.h) + 'px';
     L.pg.style.width = m.w + 'px'; L.pg.style.fontSize = m.fs; L.pg.style.lineHeight = bs.lineHeight;
     L.pg.style.paddingLeft = bs.paddingLeft; L.pg.style.paddingRight = bs.paddingRight;
   }
@@ -322,7 +334,7 @@
     gl.uniform4f(U('uRect'), it.x - MARGIN, it.y - MARGIN, it.w + 2 * MARGIN, it.h + 2 * MARGIN);
     gl.uniform4f(U('uShape'), it.x + it.w / 2, it.y + it.h / 2, it.w / 2, it.h / 2);
     gl.uniform4f(U('uP'), it.r * (it.w / it.w0), it.bezel, it.S, it.sat);
-    gl.uniform2f(U('uQ'), it.disp, it.op);
+    gl.uniform2f(U('uQ'), dispOn ? it.disp : 0, it.op);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
   function draw() {
@@ -331,27 +343,34 @@
     gl.uniform1i(U('uBg'), 0); gl.uniform2f(U('uPx'), Wp, Hp); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     use('glass'); gl.uniform1i(U('uBg'), 0); gl.uniform2f(U('uRes'), W, H); gl.uniform1f(U('uDpr'), dpr);
+    var n = 0;
     for (var pass = 0; pass < 2; pass++)
-      for (var i = 0; i < items.length; i++) if (items[i].on && !items[i].lens && items[i].fixed === (pass === 1)) drawGlass(items[i]);
+      for (var i = 0; i < items.length; i++) if (items[i].on && !items[i].lens && items[i].fixed === (pass === 1) && n++ < MAX_QUADS) drawGlass(items[i]);
   }
 
-  var running = false, idle = 0;
+  var running = false, idle = 0, activeRun = 0, lastTs = 0, ema = 16, govN = 0, govFrom = 0, fxUntil = performance.now() + 3500, CV = !!(window.Element && Element.prototype.checkVisibility), stats = { frames: 0, ms: 0 };
   function frame() {
     if (!live || document.hidden) { running = false; return; }
-    var now = performance.now();
+    var now = performance.now(), t0 = now, fxOn = now < fxUntil, quads = 0;
     if (now < colorsUntil) {
       var before = JSON.stringify(colors); readColors(); idle = 0;
       if (JSON.stringify(colors) !== before) { bgDirty = true; colorsStable = 0; } else colorsStable++;
-      if (colorsStable >= 12 && now - colorsFrom > 400) colorsUntil = 0;     // ổn định rồi thì thôi
+      if (colorsStable >= 20 && now - colorsFrom > 900) colorsUntil = 0;     // ổn định đủ lâu thì thôi (hiệu ứng chuyển màu bắt đầu muộn thì sự kiện transitionrun bên dưới sẽ bắt đầu đọc lại)
     }
-    var changed = false, b = canvas.getBoundingClientRect(), nd = Math.max(1, Math.min(window.devicePixelRatio || 1, MAX_DPR));
-    if (Math.abs(b.width - W) > 0.5 || Math.abs(b.height - H) > 0.5 || nd !== wanted) { try { resizeGL(); } catch (e) { fail(e); return; } }
+    var changed = false, b = canvas.getBoundingClientRect();
+    if (gl.isContextLost && gl.isContextLost()) { running = false; return; }
+    if (Math.abs(b.width - W) > 0.5 || Math.abs(b.height - H) > 0.5 || Math.abs(calcDpr(b.width, b.height) - dpr) > 0.01) { try { resizeGL(); } catch (e) { fail(e); return; } }
     if (bgDirty) { renderBg(); bgDirty = false; changed = true; }
     for (var i = 0; i < items.length; i++) {
       var it = items[i], on = false, op = 0, r;
+      if (it.opLast === undefined) it.opLast = 1;
       if (it.ok && it.vis) {
         r = it.el.getBoundingClientRect();
-        if (r.width >= 1 && r.height >= 1) { op = opacityOf(it.el); on = op > 0.002; }
+        if (r.width >= 1 && r.height >= 1) {
+          if (fxOn || !CV) op = it.opLast = opacityOf(it.el);                   // đang có hiệu ứng (hiện dần, mở menu...): đọc đầy đủ
+          else op = it.el.checkVisibility({ opacityProperty: true, visibilityProperty: true }) ? it.opLast : 0;   // lúc cuộn bình thường: chỉ kiểm tra ẩn hẳn
+          on = op > 0.002;
+        }
       }
       if (on && it.isLens && lensReady && !it.lensFail) {
         if (!it.lens && it.ok && op > 0.02) { if (buildLens(it)) changed = true; }
@@ -366,10 +385,17 @@
       } else if (it.on) changed = true;
       it.on = on; it.lensOn = on && !!it.lens;
     }
+    var tj = performance.now();
     if (changed) {
       idle = 0; draw();
+      activeRun++;                                         // bộ điều tiết: khung hình dài liên tục khi đang cuộn -> hạ độ phân giải một mức
+      if (activeRun > 4 && now - govFrom > 2500) {
+        ema = ema * 0.92 + Math.min(now - lastTs, 200) * 0.08;
+        if (++govN > 50 && ema > 40 && qi < QUALITY.length - 1) { qi++; dispOn = qi < QUALITY.length - 1; govN = 0; ema = 16; govFrom = now; try { resizeGL(); } catch (e) { fail(e); return; } renderBg(); draw(); }
+      }
       if (!root.classList.contains('wgl-live')) root.classList.add('wgl-live');   // từ giờ mới ẩn nền CSS: không bao giờ có khung hình trống
-    } else idle++;
+    } else { idle++; activeRun = 0; }
+    lastTs = now; stats.frames++; stats.ms = stats.ms * 0.9 + (performance.now() - t0) * 0.1; stats.js = (stats.js || 0) * 0.9 + (tj - t0) * 0.1;
     if (idle > IDLE_FRAMES) { running = false; return; }
     requestAnimationFrame(frame);
   }
@@ -377,7 +403,7 @@
 
   function fail(e) { if (window.console) console.warn('[webgl] lỗi, quay về kính CSS thường:', e && e.message); ready = false; setLive(false); }
   function startColors() { colorsFrom = performance.now(); colorsUntil = colorsFrom + 8000; colorsStable = 0; }
-  function isOn() { return root.getAttribute('data-glass-mode') !== 'classic'; }
+  function isOn() { return !prefsOff() && root.getAttribute('data-glass-mode') !== 'classic'; }
   function setLive(on) {
     on = !!(on && ready && !lost);
     if (on === live) return;
@@ -390,11 +416,20 @@
 
   // ---- đồng bộ với trang ----
   R.glassEngine = { kind: 'webgl', refresh: function () { setLive(isOn()); if (live) { if (!lensReady) setTimeout(startLenses, 200); else resyncLenses(); items.forEach(measure); startColors(); bgDirty = true; wake(); } } };
+  R.glassEngine.stats = function () { return { live: live, quality: qi, dpr: dpr, canvas: [Wp, Hp], jsMs: Math.round((stats.js || 0) * 100) / 100, frameMs: Math.round(stats.ms * 100) / 100, frames: stats.frames, glass: items.filter(function (i) { return i.on; }).length, lenses: items.filter(function (i) { return i.lens; }).length }; };
+  ['(prefers-reduced-transparency: reduce)', '(forced-colors: active)'].forEach(function (q) {
+    if (!window.matchMedia) return;
+    var m = window.matchMedia(q), f = function () { if (!prefsOff() && !ready && !lost) build(); R.glassEngine.refresh(); };
+    if (m.addEventListener) m.addEventListener('change', f); else if (m.addListener) m.addListener(f);
+  });
   new MutationObserver(function () { if (!live) return; startColors(); bgDirty = true; wake(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
   ['scroll', 'resize', 'orientationchange', 'pointerdown', 'pointerup', 'pointermove', 'touchstart', 'touchmove', 'keydown', 'transitionrun', 'transitionend', 'animationstart', 'animationend', 'load']
     .forEach(function (t) { window.addEventListener(t, wake, { capture: true, passive: true }); });
   if (window.visualViewport) { window.visualViewport.addEventListener('resize', wake); window.visualViewport.addEventListener('scroll', wake); }
-  document.addEventListener('visibilitychange', wake);
+  ['transitionrun', 'animationstart', 'pointerdown', 'keydown', 'touchstart'].forEach(function (t) { window.addEventListener(t, function () { fxUntil = performance.now() + 1500; }, { capture: true, passive: true }); });
+  ['transitionrun', 'transitionend'].forEach(function (t) { window.addEventListener(t, function (e) { if (live && e.propertyName && e.propertyName.charAt(0) === '-' && e.target === root) { startColors(); wake(); } }, { capture: true, passive: true }); });   // biến màu nền (--bg-base, --orb-*) bắt đầu / kết thúc chuyển màu: đọc lại
+  document.addEventListener('visibilitychange', function () { if (document.hidden) running = false; else wake(); });   // tab ẩn: dừng hẳn vòng vẽ
+  window.addEventListener('pagehide', function () { running = false; });
   window.addEventListener('pageshow', wake);
   if (R.onLanguage) R.onLanguage(function () { setTimeout(function () { items.forEach(measure); resyncLenses(); wake(); }, 80); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { items.forEach(measure); resyncLenses(); wake(); });
@@ -404,5 +439,5 @@
   canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); lost = true; ready = false; setLive(false); }, false);
   canvas.addEventListener('webglcontextrestored', function () { lost = false; if (build()) { setLive(isOn()); } }, false);
 
-  if (build()) setLive(isOn()); else canvas.remove();
+  if (prefsOff()) { /* chờ người dùng đổi thiết lập hệ thống (xem trình nghe ở trên) */ } else if (build()) setLive(isOn()); else canvas.remove();
 })();

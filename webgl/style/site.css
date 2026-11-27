@@ -530,3 +530,15 @@ html:not(.wgl-live) .wgl-lens { display: none; }
 .wgl-lens__pg *, .wgl-lens__pg *::before, .wgl-lens__pg *::after { animation: none !important; transition: none !important; }
 .wgl-lens__pg .mast { position: static; visibility: hidden; }
 .wgl-lens__pg .toc-card { position: static; }
+
+/* ============================================================
+   GIAI ĐOẠN 4: tôn trọng thiết lập hệ thống
+   - Giảm độ trong suốt / tương phản cao: webgl.js tắt canvas; kính CSS đặc hơn, không blur để chữ rõ.
+   ============================================================ */
+@media (prefers-reduced-transparency: reduce) {
+  html, html[data-theme] { --glass-fill: color-mix(in oklab, var(--bg-base) 88%, transparent); --glass-fill-strong: color-mix(in oklab, var(--bg-base) 94%, transparent); }
+  :is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link) { -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (forced-colors: active) {
+  :is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link) { background-color: Canvas; border: 1px solid CanvasText; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
