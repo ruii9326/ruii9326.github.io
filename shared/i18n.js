@@ -1,6 +1,6 @@
 /* ============================================================
    shared/i18n.js — NGUỒN DUY NHẤT của chữ + bản dịch VI/EN
-   Dùng chung cho mọi phiên bản của trang (glass/, webgl/).
+   Dùng chung cho mọi trang.
    Muốn sửa chữ: sửa ở đây (vi / en). Trong HTML, mỗi phần tử có data-i18n="khóa" (hoặc data-aria="khóa"
    cho aria-label); chữ nằm sẵn trong thẻ chỉ là bản dự phòng khi tắt JavaScript.
    Khóa "common.*" = dùng ở nhiều trang; "home.*" = trang chủ; "world.*" = The World of Nine Continents.
@@ -19,11 +19,6 @@ window.RUII9326_I18N = {
   "common.classic": { vi: "Cổ điển", en: "Classic" },
   "common.ruii9326": { vi: "- ruii9326", en: "- ruii9326" },
   "common.2026_nguyen_duy_anh_pen": { vi: "© 2026 Nguyễn Duy Anh (bút danh: ruii9326).", en: "© 2026 Nguyen Duy Anh (pen name: ruii9326)." },
-
-  /* ===== common: phiên bản hiển thị (công tắc glass <-> webgl) ===== */
-  "common.display_version": { vi: "Phiên bản hiển thị", en: "Display version" },
-  "common.switch_to_webgl": { vi: "Đang xem bản Glass · Đổi sang WebGL", en: "Viewing Glass version · Switch to WebGL" },
-  "common.switch_to_glass": { vi: "Đang xem bản WebGL · Đổi sang Glass", en: "Viewing WebGL version · Switch to Glass" },
 
   /* ===== home ===== */
   "home.main.mast-nav": { vi: "Điều hướng trang", en: "Page navigation" },

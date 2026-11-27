@@ -1,8 +1,7 @@
 /* ============================================================
    ruii9326 — shared site script · Liquid Glass
-   shared/core.js — phần dùng chung cho MỌI phiên bản (glass/, webgl/):
-   ngôn ngữ, sáng/tối, menu cài đặt, nút Quay lại, cuộn mượt, hiệu ứng nhấn, thanh điều hướng.
-   Phần khúc xạ kính nằm ở file riêng của từng phiên bản (glass/script/glass.js ...).
+   shared/core.js — ngôn ngữ, sáng/tối, công tắc kính Liquid / Cổ điển, menu cài đặt, nút Quay lại,
+   cuộn mượt, hiệu ứng nhấn, thanh điều hướng. Hiệu ứng kính hoàn toàn bằng CSS + SVG (style/site.css), không cần JS.
 
    Mỗi trang đặt window.RUII9326_PAGE = { titleKey, descKey } (khóa trong shared/i18n.js)
    trong <script> inline TRƯỚC khi nạp file này; shared/i18n.js phải nạp trước core.js.
@@ -16,7 +15,6 @@
   root.classList.add('js');
 
   var langListeners = [];
-  window.RUII9326 = window.RUII9326 || {};
 
   // công tắc ngôn ngữ / giao diện: thanh trượt co giãn như giọt kính khi chạy
   function stretch(sw) {
@@ -102,10 +100,6 @@
     // text instead of rendered links.
     applyLanguage(saved === 'en' ? 'en' : 'vi', false);
   })();
-
-  // phần riêng của từng phiên bản (khúc xạ kính...) dùng lại hai hàm này
-  window.RUII9326.stretch = stretch;
-  window.RUII9326.onLanguage = function (fn) { langListeners.push(fn); };
 
   // ===== THEME SWITCHER (light / dark) =====
   (function () {
@@ -206,7 +200,7 @@
   try {
     if (referrer) {
       ref = new URL(referrer);
-      isInternal = ref.origin === window.location.origin && /^\/(?:glass|webgl)(?:\/|$)/.test(ref.pathname); // trang điều hướng ở gốc (/ , /theworldofninecontinents/) không bao giờ là nơi để quay về
+      isInternal = ref.origin === window.location.origin;
     }
   } catch (e) {}
 
@@ -226,7 +220,7 @@
   if (prevUrl) {
     try {
       var prevPath = new URL(prevUrl, window.location.href).pathname;
-      goingHome = /^\/(?:(?:glass|webgl)\/)?(?:index\.html)?$/.test(prevPath);
+      goingHome = /^\/(?:index\.html)?$/.test(prevPath);
     } catch (e) {}
   }
 
@@ -298,9 +292,6 @@
   function setHash(hash) {
     try { history.replaceState(null, '', hash || (location.pathname + location.search)); } catch (e) {}
   }
-  window.RUII9326.scrollToY = scrollToY;
-  window.RUII9326.currentY = currentY;
-  window.RUII9326.setHash = setHash;
 
   // mọi liên kết neo trong trang (thanh điều hướng, mục lục...) đều cuộn mượt, chừa chỗ cho thanh kính
   document.addEventListener('click', function (e) {
@@ -439,7 +430,6 @@
         button.setAttribute('aria-pressed', active ? 'true' : 'false');
       });
       switcher.classList.toggle('classic', mode === 'classic');
-      if (window.RUII9326.glassEngine) window.RUII9326.glassEngine.refresh();
       if (save) { try { localStorage.setItem('ruii9326-glass', mode); } catch (e) {} }
     }
 

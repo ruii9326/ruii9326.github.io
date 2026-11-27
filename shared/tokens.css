@@ -46,9 +46,8 @@
   --glass-fill-lite:   oklch(99% 0.012 85 / 0.08);   /* kính lồng trong kính (không blur thêm) */
   --glass-fill-hover:  oklch(99% 0.012 85 / 0.18);
   --glass-tint:        oklch(49% 0.125 45 / 0.94);   /* kính nhuộm màu gỉ đồng (đủ đặc để chữ sáng đọc rõ) */
-  --glass-blur: 9px;
-  --glass-blur-sm: 5px;
-  --glass-sat: 1.8;
+  --glass-blur: 14px;   /* kính CSS mặc định (mọi trình duyệt) */
+  --glass-sat: 1.6;
   --glass-rim-hi:  oklch(100% 0 0 / 1);
   --glass-rim-mid: oklch(100% 0 0 / 0.14);
   --glass-rim-lo:  oklch(55% 0.07 65 / 0.30);
@@ -182,7 +181,7 @@ html[data-theme="dark"] {
     --glass-fill-strong: oklch(97% 0.014 85 / 0.98);
     --glass-fill-lite:   oklch(95% 0.016 84 / 0.9);
     --glass-fill-hover:  oklch(98% 0.012 85 / 1);
-    --glass-blur: 0px; --glass-blur-sm: 0px; --glass-sat: 1;
+    --glass-blur: 0px; --glass-sat: 1;
   }
   html[data-theme="dark"] {
     --glass-fill:        oklch(21% 0.02 64 / 0.97);
