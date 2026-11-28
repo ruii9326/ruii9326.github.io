@@ -643,4 +643,26 @@
 
     setGlass(root.getAttribute('data-glass-mode') === 'classic' ? 'classic' : 'liquid', false);
   })();
+
+  // ===== NÚT VỀ MỤC LỤC (#toTop -> #toc) =====
+  (function () {
+    var toTop = document.getElementById('toTop');
+    var tocEl = document.getElementById('toc');
+    if (!toTop || !tocEl) return;
+    var ticking = false;
+    function update() {
+      ticking = false;
+      toTop.classList.toggle('show', tocEl.getBoundingClientRect().bottom < 0);
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    toTop.addEventListener('click', function () {
+      var offset = parseFloat(getComputedStyle(tocEl).scrollMarginTop) || 0;
+      var y = tocEl.getBoundingClientRect().top + currentY() - offset;
+      scrollToY(y, function () { setHash('#toc'); });
+    });
+  })();
 })();

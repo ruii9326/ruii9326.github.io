@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('ruii9326-theme');
+    var theme = saved === 'dark' || saved === 'light'
+      ? saved
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent) && !(window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches);
+    if (canLiquid) document.documentElement.classList.add('lg-can');
+    var glass = canLiquid ? (localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid') : 'classic';
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-glass-mode', glass);
+  } catch (e) {
+    document.documentElement.setAttribute('data-glass-mode', 'classic');
+  }
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ruii9326 - Tất cả chúng ta đều đang tiến về phía cái chết tất yếu</title>
+<meta name="description" content="Truyện ngắn Tất cả chúng ta đều đang tiến về phía cái chết tất yếu của ruii9326.">
+<link rel="canonical" href="https://ruii9326.github.io/truyen-ngan/tat-ca-chung-ta-deu-dang-tien-ve-phia-cai-chet-tat-yeu/">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="ruii9326">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:title" content="ruii9326 - Tất cả chúng ta đều đang tiến về phía cái chết tất yếu">
+<meta property="og:description" content="Truyện ngắn Tất cả chúng ta đều đang tiến về phía cái chết tất yếu của ruii9326.">
+<meta property="og:url" content="https://ruii9326.github.io/truyen-ngan/tat-ca-chung-ta-deu-dang-tien-ve-phia-cai-chet-tat-yeu/">
+<meta property="og:image" content="https://ruii9326.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../style/site.css">
+<link rel="stylesheet" href="../../style/story.css">
+</head>
+<body>
+
+  <a href="#" id="backLink" class="back-link-icon" data-fallback="../../" aria-label="Quay lại" data-aria-vi="Quay lại" data-aria-en="Go back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+  </a>
+
+  <div class="settings-menu" id="settingsMenu">
+    <button class="menu-toggle" type="button" id="settingsMenuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="settingsPopover" aria-label="Cài đặt" data-aria-vi="Cài đặt" data-aria-en="Settings">
+      <span class="menu-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+    <div class="settings-popover" id="settingsPopover" role="menu">
+      <div class="settings-group">
+        <p class="settings-group-label" data-i18n data-vi="Ngôn ngữ" data-en="Language">Ngôn ngữ</p>
+        <div class="language-switcher" id="languageSwitcher" role="group" aria-label="Ngôn ngữ / Language">
+          <button class="lang-btn active" type="button" data-lang="vi" aria-pressed="true">VI</button>
+          <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+      <div class="settings-divider" role="separator"></div>
+      <div class="settings-group">
+        <p class="settings-group-label" data-i18n data-vi="Giao diện" data-en="Theme">Giao diện</p>
+        <div class="theme-switcher" id="themeSwitcher" role="group" aria-label="Giao diện sáng / tối" data-aria-vi="Giao diện sáng / tối" data-aria-en="Light / dark theme">
+          <button class="theme-btn active" type="button" data-theme-choice="light" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            <span data-i18n data-vi="Sáng" data-en="Light">Sáng</span>
+          </button>
+          <button class="theme-btn" type="button" data-theme-choice="dark" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+            <span data-i18n data-vi="Tối" data-en="Dark">Tối</span>
+          </button>
+        </div>
+      </div>
+      <div class="settings-divider glass-opt" role="separator"></div>
+      <div class="settings-group glass-opt">
+        <p class="settings-group-label" data-i18n data-vi="Hiệu ứng kính" data-en="Glass effect">Hiệu ứng kính</p>
+        <div class="glass-switcher" id="glassSwitcher" role="group" aria-label="Hiệu ứng kính" data-aria-vi="Hiệu ứng kính" data-aria-en="Glass effect">
+          <span class="lg-thumb" aria-hidden="true"></span>
+          <button class="glass-btn active" type="button" data-glass-choice="liquid" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5s6 6.2 6 10.5a6 6 0 0 1-12 0C6 8.7 12 2.5 12 2.5Z"/></svg>
+            <span data-i18n data-vi="Liquid" data-en="Liquid">Liquid</span>
+          </button>
+          <button class="glass-btn" type="button" data-glass-choice="classic" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>
+            <span data-i18n data-vi="Cổ điển" data-en="Classic">Cổ điển</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Về mục lục" data-aria-vi="Về mục lục" data-aria-en="Back to contents">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+  </button>
+
+<main id="main">
+
+  <header class="mast">
+    <div class="mast-pill">
+      <p class="mast-line">
+        <a href="../../" data-i18n data-vi="← Về Trang Chủ ruii9326" data-en="← Back to ruii9326 Home">← Về Trang Chủ ruii9326</a>
+      </p>
+      <p class="mast-name" data-i18n data-vi="Truyện ngắn" data-en="Short Story">Truyện ngắn</p>
+    </div>
+  </header>
+
+  <header class="story-hero">
+    <div class="reveal" style="--i:0">
+      <p class="story-eyebrow" data-i18n data-vi="Truyện ngắn · ruii9326" data-en="Short Story · ruii9326">Truyện ngắn · ruii9326</p>
+      <h1>Tất cả chúng ta đều đang tiến về phía cái chết tất yếu</h1>
+      <p class="story-tagline" data-i18n data-vi="Mười lăm lát cắt phận người trên cùng một chuyến hành trình không thể tránh khỏi." data-en="Fifteen human portraits along the same inevitable journey.">Mười lăm lát cắt phận người trên cùng một chuyến hành trình không thể tránh khỏi.</p>
+    </div>
+    <div class="story-meta reveal" style="--i:1">
+      <span class="mini-pill"><span class="dot" aria-hidden="true"></span><span data-i18n data-vi="15 phần" data-en="15 parts">15 phần</span></span>
+      <span class="mini-pill"><span data-i18n data-vi="Hoàn chỉnh" data-en="Complete">Hoàn chỉnh</span></span>
+    </div>
+    <p class="story-lang-note" data-i18n data-vi="Tác phẩm được viết nguyên bản bằng tiếng Việt." data-en="This short story is presented in its original Vietnamese prose."></p>
+  </header>
+
+  <nav class="toc" id="toc" aria-label="Mục lục truyện" data-aria-vi="Mục lục truyện" data-aria-en="Story contents">
+    <div class="toc-card">
+      <span class="toc-rule" aria-hidden="true"></span>
+      <div class="toc-head">
+        <h2 class="toc-title" data-i18n data-vi="Mục Lục" data-en="Contents">Mục Lục</h2>
+        <span class="toc-orn" aria-hidden="true"><i></i></span>
+      </div>
+      <ol class="toc-list">
+        <li>
+          <a class="toc-link" href="#part-1">
+            <span class="toc-label">Mười bảy (Việt Nam)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">I</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-2">
+            <span class="toc-label">Bão cát trên quốc lộ 15 (Jordan)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">II</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-3">
+            <span class="toc-label">Ván mạt chược dưới tầng hầm (Trùng Khánh, Trung Quốc)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">III</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-4">
+            <span class="toc-label">Chuyến tàu bị tuyết chặn ở Hokkaido (Nhật Bản)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">IV</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-5">
+            <span class="toc-label">Đám cưới đêm mất điện ở Old Delhi (Ấn Độ)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">V</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-6">
+            <span class="toc-label">Trạm gác ghi giữa rừng taiga (Nga)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">VI</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-7">
+            <span class="toc-label">Hiệp thứ tư ở khu South Side (Mỹ)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">VII</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-8">
+            <span class="toc-label">Phiên hòa giải mùi bánh cháy ở Marseille (Pháp)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">VIII</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-9">
+            <span class="toc-label">Mâm cơm ngày thất đầu (Thành Đô, Trung Quốc)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">IX</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-10">
+            <span class="toc-label">Gói bưu kiện ở Thành phố Người Chết (Cairo, Ai Cập)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">X</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-11">
+            <span class="toc-label">Giá củi ở bến Manikarnika (Ấn Độ)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">XI</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-12">
+            <span class="toc-label">Con tàu chết máy ngoài khơi Cornwall (Anh Quốc)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">XII</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-13">
+            <span class="toc-label">Đêm mất điện trên sân thượng Tehran (Iran)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">XIII</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-14">
+            <span class="toc-label">Con mèo mù ở bảo tàng Kyoto (Nhật Bản)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">XIV</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-15">
+            <span class="toc-label">Ba giờ lẻ bảy (Việt Nam)</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">XV</span>
+          </a>
+        </li>
+      </ol>
+      <span class="toc-rule" aria-hidden="true"></span>
+    </div>
+  </nav>
+
+  <section class="story-body" aria-label="Nội dung truyện" data-aria-vi="Nội dung truyện" data-aria-en="Story text">
+    <article class="now-card story-part" id="part-1">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần I" data-en="Part I">Phần I</span></p>
+        <h2 class="story-part__title">Mười bảy (Việt Nam)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Chị đếm lần thứ hai, con số vẫn cứng đầu dừng lại ở mười bảy.</p>
+        <p>Đứng giữa lối đi hẹp chạy dọc suốt chiều dài toa, chị giơ ngón trỏ chấm vào khoảng không trước từng ô kính chữ nhật gắn trên cánh cửa. Sau mỗi ô kính là ba chiếc giường thấp kê sát vách, đèn ngủ hắt ra thứ ánh sáng vàng vọt như màu nước chè đặc. Người nằm nghiêng co ro, người nằm ngửa há miệng thở nặng nhọc, có người trùm chăn kín mít chỉ thò một bàn chân trắng bệch ra ngoài. Chị đếm kỹ từng giường, soi cả những góc khuất sát tường. Vẫn mười bảy.</p>
+        <p>Chị dùng tay trái đẩy chiếc giá đèn inox lăn thêm vài bước. Bốn bánh xe nhỏ trượt êm trên mặt sàn phẳng lì, chỉ khẽ khấc nhẹ mỗi lần đi qua một đường mạch gạch. Bóng chị đổ dài ra phía sau, loang trên nền gạch lạnh rồi gập khúc ở chân vách.</p>
+        <p>Ngoài ô kính lớn cuối toa, mưa phùn bám dày từng lớp. Mưa đêm nay lạ, chẳng tạt xiên theo gió ngược như mọi chuyến tàu chạy tốc độ cao, mà cứ bảng lảng, đọng thành từng giọt tròn lỳ lợm rồi chầm chậm rỉ xuống song sắt. Trong toa đặc quánh mùi nước lau sàn hăng hắc, quyện với mùi cháo nguội và dầu gió xanh thấm lâu ngày trong chăn vải. Thứ mùi của những chuyến đi đêm kéo dài, chị đã thuộc nằm lòng suốt ba mươi mốt năm theo ngành, nhắm mắt cũng nhận ra. Đâu đó sau lớp tường có tiếng máy chạy rì rầm đều đặn. Không có tiếng dập xình xịch của bánh sắt trên thanh ray, cũng chẳng có những cú lắc ngang quen thuộc lúc vào cua, nhưng tai chị từ lâu đã quen tự lọc đi những khoảng lặng bất thường.</p>
+        <p>"Mười bảy", chị nói.</p>
+        <p>Hạnh đứng tựa cửa toa phục vụ, một tay ôm tấm bảng kẹp giấy, tay kia đặt hờ lên miệng cốc nước ấm như giữ hơi nóng. Cô đi đôi dép đế cao su mềm, bước đi suốt ca đêm mà chị chưa một lần nghe thấy tiếng động.</p>
+        <p>"Danh sách của em là mười tám, bác ạ."</p>
+        <p>"Danh sách in sai."</p>
+        <p>"Bác chịu khó đếm lại lượt nữa xem."</p>
+        <p>"Tôi đếm hai lượt rồi."</p>
+        <p>"Thì lượt thứ ba."</p>
+        <p>Giọng Hạnh nhỏ nhẹ, chẳng mang chút vội vã nào. Chị liếc tờ giấy kẹp trên bảng, hàng chữ in li ti mờ nhòe chẳng đọc nổi từ khoảng cách này, nhưng chị cũng không bước lại gần. Chị nghĩ, chuyện gì cần nói rõ thì người ta đã đọc to lên từ đầu ca.</p>
+        <p>"Có khách chưa lên tàu", chị khẳng định. "Hoặc trốn đâu đó."</p>
+        <p>"Trốn đâu được hả bác?"</p>
+        <p>"Nhà vệ sinh. Toa hành lý. Gầm giường. Ba mươi mốt năm đi tàu, hạng khách nào tôi chẳng gặp."</p>
+        <p>"Vâng."</p>
+        <p>Hạnh khẽ gật, mặt nước trong cốc sóng sánh chạm thành thủy tinh rồi lặng đi. Cô không gặng hỏi thêm. Chị biết, đó là cách cô đối đáp mỗi khi không muốn cãi lý với người lớn tuổi.</p>
+        <p>Chị kéo ống tay áo vải xanh bạc màu xuống. Bộ đồng phục đợt này ngành phát may lạ thật, vải mỏng tang, cổ rộng cài hàng cúc nhựa, chẳng cứng cáp như bộ kaki sẫm màu hồi chị còn theo tuyến Thống Nhất. Vạt tay áo che kín chiếc vòng nhựa trắng ôm sát cổ tay trái, ngay phía trên sợi dây mảnh vắt từ chiếc giá đèn xuống mà chị vẫn hay quên mất sự tồn tại của nó. Thẻ nhân viên cũ, chị vẫn tự nhủ thế, chưa kịp xuống ga đổi lại. Hễ ai liếc xuống tay, chị lại lẳng lặng kéo tay áo trùm qua, chưa một lần lật mặt trong chiếc vòng lên nhìn.</p>
+        <p>Bàn tay phải chị thọc vào túi áo, chạm phải chiếc kìm bấm vé bằng đồng thau nặng trịch, hai bên cán quấn băng dính điện đen đã bong mép. Chị bóp thử. Tiếng <em>tách</em> khô gọn vang lên giữa hành lang vắng.</p>
+        <p>"Tôi đi thu vé."</p>
+        <p>"Vâng, bác cứ đi."</p>
+        <p>Tàu bây giờ đổi cách làm, gộp luôn thực đơn bữa sáng vào cuống vé. Đó là những tờ phiếu mỏng màu vàng chanh Hạnh phát cho từng giường mỗi tối, kẻ ô ngay ngắn in sẵn <em>cháo trắng</em>, <em>bánh mì</em>, <em>sữa đậu nành</em>. Khách chọn món cho sáng mai, chị đi thu, bấm một lỗ tròn gọn ghẽ ở góc giấy rồi gom về giao cho toa phục vụ. Ba mươi mốt năm cầm kìm, chị chẳng cần bận tâm ga tới ai sẽ đứng soát lại đống phiếu ấy, chỉ tin vào cái lỗ tròn của mình. Còn dấu kìm ở góc giấy, nghĩa là khách còn suất cho ngày mai, nghĩa là chuyến tàu vẫn giữ đúng lịch trình.</p>
+        <p>Khoang một. Ông khách giường ngoài ngủ há miệng, bàn tay gân guốc gập trên ngực. Tờ phiếu đặt ngay ngắn trên mặt tủ, ô <em>cháo trắng</em> gạch một nét bút run rẩy. Chị nâng phiếu lên, bóp kìm. <em>Tách.</em> Chấm giấy tròn bé như hạt đậu xanh rơi gọn vào lòng bàn tay. Chị thả nó vào chiếc hộp bánh quy bằng thiếc đựng trong túi vải treo bên giá đèn. Hộp nặng trịch, lạo xạo tiếng hàng trăm chấm giấy khô trượt lên nhau. Dưới tận đáy hộp, kẹp cạnh chiếc đồng hồ Poljot dây da cũ đã đứng kim ở ba giờ mười hai phút, là một mẩu giấy bìa cứng ngả màu lá chuối khô.</p>
+        <p>Đúng lúc chị vừa bước ra khỏi khoang một, cái loa treo trên trần hành lang chợt kêu <em>ọt</em> một tiếng, rè đục lên rồi tắt ngấm. Trong tai chị, thứ tạp âm ấy lập tức giãn ra thành giọng đàn ông khàn khàn, mệt mỏi quen thuộc:</p>
+        <p><em>"Đoàn tàu sắp đến ga Nam Định. Đề nghị quý khách xuống ga chuẩn bị hành lý."</em></p>
+        <p>Chị đẩy giá đèn dừng ngay trước khoang hai. Ông Tám nằm ở giường giữa, mũi miệng úp một tấm chụp nhựa trong suốt. Hơi thở làm mặt nhựa mờ sương rồi trong lại, nhịp thở mỗi lúc một thưa. Bên cạnh có hai người đàn bà, một già một trẻ, ngơ ngác nhìn chị bước vào. Hạnh đi tới sau lưng chị, khẽ lắc đầu ra hiệu cho họ rồi thì thầm điều gì đó rằng bác ấy ở khoang cuối, trước làm bên đường sắt.</p>
+        <p>"Ông Tám", chị khẽ gọi. "Đến ga của ông rồi."</p>
+        <p>Ông không nhúc nhích, bàn tay đặt ngoài chăn vàng sẫm. Tờ phiếu bữa sáng nằm ngay ngắn cạnh cốc nước có ống hút bẻ cong, tất cả các ô đều để trống. Chị cầm lên, bóp kìm. <em>Tách.</em> Chấm giấy vàng chanh rơi vào lòng bàn tay. Trên giường, lớp sương mờ phủ lên mặt nhựa lần cuối cùng rồi tan hẳn. Hạnh bước tới kéo tấm rèm vải xanh quanh giường, những khoen sắt trượt trên thanh ray kêu <em>rẹt, rẹt, rẹt</em> hệt như tiếng cánh cửa toa hạng nhất đóng sập mỗi lúc tàu rời ga.</p>
+        <p>Chị đi qua khoang ba, nơi bà Sáu đang thiếp đi với hai bàn tay vẫn túm chặt mép chăn, rồi dừng lại trước ô cửa duy nhất còn hắt ra thứ ánh sáng xanh lè ở khoang bốn.</p>
+        <p>Ánh sáng phát ra từ chiếc màn hình nhỏ đặt trên bàn gập ngang giường của Quân. Cậu ta ba mươi mốt tuổi, gầy rộc, hai tai nhét tai nghe. Ngay bên ngoài khung cửa khoang bốn treo một tấm bảng trắng nhỏ in sẵn dòng chữ <em>MỤC TIÊU HÔM NAY</em>. Quân đã lấy bút dạ xanh gạch chéo một đường qua chữ <em>MỤC</em> rồi viết thêm một dòng dài bên dưới mà chị chưa bao giờ dừng chân đọc.</p>
+        <p>"Chị Diệp", Quân tháo một bên tai nghe. "Đêm nay đếm được mấy?"</p>
+        <p>"Mười sáu. Ông Tám vừa xuống ga Nam Định rồi."</p>
+        <p>"Thấy chưa, hụt mất một người mà chị vẫn tính thiếu một suất như mọi hôm thôi."</p>
+        <p>"Ba mươi mốt năm, chưa ai bảo tôi đếm nhầm."</p>
+        <p>Quân tặc lưỡi, cầm bút bi gạch bừa vào khoảng trắng cuối tờ phiếu vàng rồi tự viết thêm hai chữ <em>bún chả</em>, ngẩng lên nhìn chị chờ đợi. Chị chẳng nói gì, cầm lên bấm. <em>Tách.</em></p>
+        <p>"Chị Diệp này", Quân ngả đầu lên gối, mắt ngước nhìn vệt nước thấm loang lổ trên trần. "Hôm qua tôi mới nghĩ ra một câu, viết lên bảng ngoài cửa rồi đấy: tất cả chúng ta đều đang tiến về phía cái chết tất yếu. Chẳng qua tôi đi tàu tốc hành, còn chị chắc đi tàu chợ."</p>
+        <p>"Tàu chợ dừng nhiều ga", chị đáp chậm rãi.</p>
+        <p>"Nhưng cuối cùng vẫn tới một chỗ."</p>
+        <p>"Cùng một chỗ, nhưng khác giờ."</p>
+        <p>"Giờ giấc là chuyện của nhà tàu chứ." Quân đeo lại tai nghe. Khi chị đẩy giá đèn qua ngưỡng cửa, cậu còn nói với theo: "Bao giờ tìm thấy cái người ở ghế mười tám bị mất tích mọi hôm ấy, nhớ báo tôi nhé."</p>
+        <p>Lát sau, ở khoang sáu phía cuối hành lang có tiếng bánh xe đẩy lăn vội. Một hành khách mới vừa lên tàu dọc đường, là một bà cụ trùm chăn kín cổ, tóc còn ướt đẫm nước mưa. Hạnh đi ngang qua chỗ chị, khẽ bảo danh sách giờ lại đủ mười tám rồi. Chị vẫn lắc đầu khẳng định mình vừa đếm lại chỉ có mười bảy, rồi lầm lũi đẩy giá đèn đi thẳng tới cánh cửa gỗ sơn trắng đã ngả màu cháo lòng nằm khuất cuối dãy. Tấm biển nhỏ phía trên đã tróc gần hết sơn, chỉ còn lờ mờ chữ <em>Kho</em>. Chị vẫn gọi đó là toa hành lý.</p>
+        <p>Trong kho sực mùi vải ẩm và bụi cũ. Đi dọc mấy dãy kệ sắt chất đầy chăn gối và những túi đồ cá nhân gửi lại, chị bỗng khựng chân trước chiếc túi nilon nhỏ nhất nằm thụt sâu ở tầng kệ dưới cùng. Bên trong có cuốn sổ tay bìa da sờn góc, chiếc lược sừng, cái mũ vải cũ và mấy mẩu vỏ quýt khô. Mảnh giấy trắng dán bên ngoài viết bằng nét chữ tròn trịa của Hạnh:</p>
+        <blockquote><p><strong>T. T. Diệp (G.18)</strong></p></blockquote>
+        <p>Chị đứng thẳng người dậy, trong đầu những con số xô vào nhau lục cục như mấy toa tàu giật mình lúc đầu máy bắt đầu kéo. Ghế mười tám. <em>Trùng tên thôi</em>, chị tự nhủ. Ngành đường sắt bao nhiêu người, ba mươi mốt năm chị gặp đến bốn người tên Diệp rồi còn gì. Chị đẩy chiếc túi thụt sâu vào trong như cũ, vội kéo ống tay áo vải xanh che kín chiếc vòng nhựa trắng vừa tuột xuống sát cổ tay, rồi khép cửa kho bước trở lại dãy hành lang dài hun hút.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-2">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần II" data-en="Part II">Phần II</span></p>
+        <h2 class="story-part__title">Bão cát trên quốc lộ 15 (Jordan)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Bầu trời phía đông sa mạc Wadi Rum chuyển sang màu vàng nghệ lúc hai giờ chiều, thứ màu báo hiệu cơn gió <em>khamsin</em> sắp nuốt trọn con đường cao tốc nối Amman xuống cảng Aqaba.</p>
+        <p>Chiếc xe tải cũ hiệu Mercedes của Tariq gầm lên một tiếng chói tai rồi khựng lại giữa dải nhựa đường nóng chảy, mùi cao su cháy khét lẹt xộc vào khoang lái. Gã đập mạnh lòng bàn tay xuống vô lăng, chửi thề một câu tục tĩu bằng tiếng Ả Rập. Ở ghế phụ, thằng Rami mười bảy tuổi vừa kịp giật mình tỉnh ngủ, mặt mũi còn dính đầy mồ hôi trộn bụi cát.</p>
+        <p>"Gãy trục láp rồi", Tariq gằn giọng sau khi chui từ gầm xe lên, mặt đen nhẻm dầu mỡ. "Chết tiệt thật."</p>
+        <p>"Gọi cứu hộ đi anh", Rami rút chiếc điện thoại vỡ màn hình ra giơ lên trời. "Mất sóng rồi. Hay mình đứng vẫy xe cảnh sát tuần tra?"</p>
+        <p>"Mày điên à?" Tariq giật phắt lấy cổ áo thằng bé, kéo sát lại mặt mình. Mắt gã đỏ ngầu vì mất ngủ hai đêm liền. "Dưới đáy đống cà chua kia là sáu thùng thuốc lá lậu với linh kiện điện thoại tao vay lãi nặng mới gom được. Cảnh sát tới là tao đi tù mọt gông, còn cả nhà mày ra đường ăn mày luôn đấy!"</p>
+        <p>Rami đẩy tay anh họ ra, giọng run lên vì tức và sợ: "Anh bảo với mẹ em là chở rau sạch xuống cảng! Anh gạt cả nhà em!"</p>
+        <p>"Mày tưởng chở mấy tấn cà chua thối thì trả nổi tiền phẫu thuật chân cho thằng em mày à?" Tariq gào lên, tiếng gã bị nuốt chửng bởi tiếng gió bắt đầu hú rít.</p>
+        <p>Chỉ trong mười phút, bức tường cát vàng đặc quánh ập tới. Tầm nhìn trước kính chắn gió rút ngắn xuống chưa đầy năm mét. Cát đập vào vỏ sắt thùng xe rào rào như ai hất từng xô đá dăm. Hai anh em phải đóng kín cửa kính ngồi co ro trong cabin nóng hầm hập như lò nướng bánh. Bình nước nhựa năm lít chỉ còn lại chưa đầy hai ngón tay nước ấm sặc mùi nhựa.</p>
+        <p>Một tiếng trôi qua. Không khí trong xe đặc quánh. Tariq nốc nốt ngụm nước cuối rồi ném vỏ chai ra sau, thò tay mở hộp găng lấy ra chiếc bật lửa nhựa cũ. Gã thèm thuốc đến run tay nhưng không dám châm vì mùi dầu diesel vẫn rỉ nồng nặc dưới sàn.</p>
+        <p>"Tao xin lỗi", Tariq bỗng nói cộc lốc, mắt nhìn đăm đăm vào màn cát mù mịt. "Đáng lẽ tao không nên kéo mày theo chuyến này."</p>
+        <p>Rami không đáp, thằng bé úp mặt vào đầu gối, vai hơi run. Đúng lúc ấy, một đôi đèn pha mờ đục đột ngột xé toạc màn cát vàng từ phía đối diện, chạy chậm chạp sát lề đường. Một chiếc xe bán tải chở mấy người du mục Bedouin quấn khăn kín mặt dừng lại cách đầu xe họ vài bước. Người lái xe thò đầu ra, vẫy tay gọi lớn qua tiếng gió gào.</p>
+        <p>Tariq không chần chừ. Gã mở tung cửa ghế phụ, nhét xấp tiền lẻ trong túi quần vào tay Rami rồi đẩy mạnh thằng bé xuống đường.</p>
+        <p>"Lên xe họ về thị trấn trước đi!" gã hét át tiếng bão.</p>
+        <p>"Còn anh?" Rami bám chặt lấy cửa xe, cát bay mù mắt.</p>
+        <p>"Tao ở lại canh hàng! Mất đống này chủ nợ nó chém chết tao! Lên mau!"</p>
+        <p>Tariq gạt phắt tay thằng bé ra, đóng sập cửa xe bán tải rồi đập mạnh vào thùng xe ra hiệu cho người lái chạy đi. Đèn hậu đỏ rực của chiếc bán tải loang ra rồi tan biến vào biển cát trong vài giây.</p>
+        <p>Bây giờ chỉ còn lại mình Tariq. Gã leo trở lại cabin, bỗng thấy nhẹ nhõm một cách kỳ lạ. Gã với tay nhặt tấm biển tam giác phản quang dưới chân ghế, mở cửa bước ra sau đuôi xe định đặt cách đó hai chục bước cho an toàn. Cát quất rát rạt vào hai má. Gã vừa cúi xuống dựng chân sắt tấm biển lên mặt đường nhựa thì nghe thấy tiếng còi hơi rền rĩ vang lên từ phía sau, quá gần và quá lớn.</p>
+        <p>Tariq ngẩng đầu. Đôi đèn pha cao vút của một chiếc xe đầu kéo mất tầm nhìn lao thẳng ra khỏi bức tường cát vàng với vận tốc điên cuồng. Gã còn chẳng kịp đứng thẳng lưng lên. Tấm biển phản quang văng tung lên không trung, vỡ tan thành hàng chục mảnh nhựa đỏ rực trước khi cả khối sắt khổng lồ cuốn phăng mọi thứ vào cơn bão cát không hề giảm nhịp.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-3">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần III" data-en="Part III">Phần III</span></p>
+        <h2 class="story-part__title">Ván mạt chược dưới tầng hầm (Trùng Khánh, Trung Quốc)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Căn phòng mạt chược nằm sâu dưới tầng hầm khu tập thể cũ ở Du Trung quanh năm không thấy ánh mặt trời, chỉ có mùi khói thuốc lá rẻ tiền quyện với mùi dầu ớt lẩu bò từ quán ăn tầng trên rỉ xuống qua ống thông gió.</p>
+        <p>Lão Triệu năm mươi tám tuổi ngồi ở cửa Đông, cổ áo sơ mi mở bung hai khuy, tay trái kẹp điếu thuốc cháy gần tới đầu lọc, tay phải gõ lách tách viên quân bài xuống mặt bàn bọc nỉ xanh đã sờn rách. Trong túi áo ngực lão vẫn còn tờ giấy xét nghiệm ung thư gan giai đoạn cuối nhàu nhĩ mới lấy sáng nay ở bệnh viện thành phố. Bác sĩ bảo nhiều nhất là ba tháng. Lão nghe xong chỉ gật đầu, chẳng báo cho vợ cũ lẫn thằng con trai đang đi làm ở Quảng Châu, mà đi thẳng ra ngân hàng rút sạch mười hai vạn tệ tiền mặt nhét vào cái túi vải đen, rồi phi thẳng xuống sới bạc này.</p>
+        <p>Ngồi đối diện lão là Mã Còi, chồng của bà chị gái mà hai mươi năm trước lão từng lừa sạch vốn liếng để mở xưởng gạch rồi phá sản. Hai mươi năm nay, Mã Còi còng lưng chạy xe ba gác nuôi vợ ốm, nhưng lạ thay gã chưa từng từ mặt thằng em vợ khốn nạn, thi thoảng cuối tuần vẫn xuống tầng hầm đánh mấy ván cỏn con giải sầu. Hai cửa còn lại là Hùng Đầu Trọc và mụ Béo chủ tiệm cắt tóc đầu ngõ.</p>
+        <p>"Hôm nay đánh lớn chút đi", lão Triệu ném cọc tiền đỏ dày cộp lên bàn đánh <em>bộp</em> một cái. "Đánh cò con ngứa mắt lắm."</p>
+        <p>"Hôm nay trúng số à lão Triệu?" Hùng Đầu Trọc sáng mắt lên, xoa hai bàn tay đầy hình xăm.</p>
+        <p>"Bán được mảnh đất mộ tổ rồi", lão Triệu cười hềnh hệch. "Cứ đánh đi, thua tao chung đủ."</p>
+        <p>Ván bài bắt đầu trong tiếng gạch va nhau rào rào. Suốt ba tiếng đồng hồ, lão Triệu đánh như kẻ mất trí. Lão giữ rịt những quân cần bỏ, rồi lại cố tình ném ra đúng những quân bài mớm miệng cho Mã Còi ù hết ván lớn này đến ván lớn khác. Ban đầu Mã Còi còn tưởng mình đỏ, mặt đỏ tía tai cười hớn hở. Đến ván thứ mười hai, khi lão Triệu ném thẳng quân Phát Tài ra giữa bàn lúc trên mặt chiếu Mã Còi đã phơi sẵn hai phỏm lớn, Hùng Đầu Trọc bỗng đập bàn đứng bật dậy.</p>
+        <p>"Khoan đã! Hai thằng mày thông đồng làm thịt bọn tao à?" gã gầm lên, vung tay hất bay nửa bàn quân bài xuống sàn gạch loảng xoảng.</p>
+        <p>"Mày nói năng cho cẩn thận", lão Triệu vẫn ngồi yên, nhếch mép cười khẩy. "Tao thua tiền của tao chứ có lấy đồng nào của mày đâu mà sủa?"</p>
+        <p>"Mày đánh kiểu ngu xuẩn thế kia mà bảo không gian lận à?" Hùng Đầu Trọc lao vòng qua bàn, túm cổ áo lão Triệu giật mạnh.</p>
+        <p>Mã Còi hoảng hốt nhảy vào can. Cả tầng hầm náo loạn trong tiếng chửi thề đặc sệt giọng Tứ Xuyên, tiếng ghế nhựa gãy răng rắc và tiếng mụ Béo gào lên đòi tiền cọc. Hùng Đầu Trọc vung khuỷu tay thúc mạnh một cái vào mạng sườn phải của lão Triệu. Cơn đau xé toạc từ lá gan hỏng đánh ập lên tận óc khiến lão khuỵu hẳn xuống nền xi măng lạnh ngắt, một dòng máu nóng đỏ thẫm trào ra từ lỗ mũi nhỏ giọt xuống cổ áo sơ mi trắng.</p>
+        <p>Mọi người chết lặng, lập tức buông tay. Hùng Đầu Trọc tái mặt lùi lại hai bước, lắp bắp bảo mình chưa đấm vào mặt lão.</p>
+        <p>"Triệu ơi! Mày làm sao thế này? Gọi cấp cứu đi!" Mã Còi quỳ sụp xuống đỡ lấy đầu lão, hai tay run bần bật.</p>
+        <p>Lão Triệu lau quẹt vệt máu dưới mũi bằng mu bàn tay, ngước mắt nhìn cái túi áo khoác cũ kỹ của Mã Còi đang phồng căng cọc tiền đỏ dày cộp, gần tám vạn tệ lão vừa cố tình thua suốt buổi chiều. Lão chợt bật cười sằng sặc, tiếng cười khàn đục sặc sụa mùi máu nhưng sảng khoái lạ thường.</p>
+        <p>"Cấp cứu cái đếch gì", lão thở hổn hển, vỗ bồm bộp lên túi áo ông anh rể. "Cầm lấy tiền mà sửa lại cái mái nhà dột cho chị tao đi. Đừng có mang ra đây cúng cho thằng Trọc nữa. Hôm nay tao sạch nợ với mày rồi nhé!"</p>
+        <p>Nói xong câu ấy, lão ngửa cổ dựa lưng vào chân bàn mạt chược, nhắm nghiền mắt lại giữa tiếng còi xe cứu thương bắt đầu hú vọng từ con phố dốc phía trên.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-4">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần IV" data-en="Part IV">Phần IV</span></p>
+        <h2 class="story-part__title">Chuyến tàu bị tuyết chặn ở Hokkaido (Nhật Bản)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Con tàu địa phương hai toa màu xanh bạc chạy tuyến đi mũi đất cực Bắc dừng hẳn giữa cánh đồng tuyết trắng mênh mông lúc chín giờ tối. Loa trong toa thông báo bão tuyết làm đổ cột điện phía trước, tàu phải chờ ít nhất ba tiếng để đội cứu hộ thông đường.</p>
+        <p>Toa tàu gần như trống trơn. Chỉ có Kenji, hai mươi chín tuổi, mặc nguyên bộ vest đen công sở ngồi thu lu bên cửa sổ, và một bà già khoảng ngoài sáu mươi mặc chiếc áo phao màu mận chín phai màu ngồi chéo đối diện.</p>
+        <p>Kenji vừa nộp đơn từ chức buổi sáng, sau khi trưởng phòng khéo léo đẩy toàn bộ lỗi sai số liệu dự án sang đầu cậu. Cậu không về căn hộ thuê chật hẹp ở Sapporo mà mua thẳng một tấm vé một chiều ra thị trấn ven biển phía Bắc, trong chiếc cặp da chỉ có một chai whisky rẻ tiền và đôi găng tay len. Cậu muốn đi bộ ra bãi đá đen ngoài bờ vịnh, uống cạn chai rượu rồi mặc kệ cơn lạnh âm mười lăm độ làm phần việc còn lại.</p>
+        <p>Đang chìm trong mớ suy nghĩ u tối, Kenji bực bội nhíu mày khi nghe tiếng nhai sột soạt đều đặn vang lên đối diện. Bà già áo mận chín đang bình thản bóc miếng rong biển bọc cơm nắm ăn ngon lành, miệng nhai chóp chép chẳng thèm giữ ý tứ.</p>
+        <p>"Bà có thể ăn nhỏ tiếng lại một chút được không?" Kenji gắt lên, giọng căng như dây đàn.</p>
+        <p>Bà già dừng nhai, nheo mắt nhìn cậu từ đầu đến chân, từ chiếc cà vạt thắt ngay ngắn đến bàn tay đang siết chặt miệng chiếc cặp da.</p>
+        <p>"Tàu đứng yên giữa đồng tuyết, không nghe tiếng tôi nhai thì cậu định nghe cái gì?" bà đáp tỉnh bơ, giọng đặc sệt vùng nông thôn phía Bắc. "Nghe tiếng gió hú à?"</p>
+        <p>"Bà đúng là bất lịch sự."</p>
+        <p>"Còn cậu mặc vest đi đâu vào giờ này? Đừng bảo đi gặp khách hàng giữa bão tuyết nhé." Bà già ném vỏ nilon vào túi, rút ra một hộp nhựa nhỏ đựng mấy lát củ cải muối vàng ươm, đưa qua lối đi. "Ăn không? Mặt cậu trắng bệch như xác chết rồi đấy."</p>
+        <p>"Tôi không cần lòng tốt của bà!" Kenji quát, lần đầu tiên trong năm năm đi làm cậu dám hét vào mặt một người lớn tuổi. Cậu kéo khóa cặp, lôi chai whisky ra vặn nắp tu một ngụm lớn. Rượu cay xè đốt cháy cổ họng. "Bà biết cái gì mà lên mặt? Làm việc như con chó suốt năm năm, cuối cùng một tờ giấy kỷ luật xóa sạch tất cả! Sống tiếp để cúi đầu xin lỗi hết đứa này tới đứa khác à?"</p>
+        <p>Bà già không hề giật mình. Bà đặt hộp củ cải muối lên đùi, cười khẩy một tiếng rất sắc.</p>
+        <p>"Mới năm năm đã đòi chết à? Cậu kém thật đấy."</p>
+        <p>Kenji sững người. "Bà nói gì?"</p>
+        <p>"Tôi tên Harue. Năm nay tôi sáu mươi hai tuổi", bà nói thản nhiên như kể chuyện thời tiết, tay vỗ nhẹ lên chiếc túi vải cũ đặt sát chân. "Suốt bốn mươi năm nay, tôi nấu cơm, giặt đồ và hứng từng cái tát của một lão chồng nghiện rượu ở Asahikawa. Mùa đông năm nào tôi cũng nhìn ra cửa sổ nghĩ hay là cởi áo đi chân đất ra rừng tuyết nằm một giấc cho xong. Nhưng tôi không đi. Sáng nay nhân lúc lão ngủ say, tôi rút sạch hai triệu yên tiền lương hưu lão giấu dưới sàn nhà, mua vé lên chuyến tàu này bỏ trốn xuống miền Nam."</p>
+        <p>Kenji chết lặng, chai rượu trên tay bỗng trở nên nặng trĩu.</p>
+        <p>"Cậu mới hai mươi chín tuổi", bà Harue nhặt một lát củ cải muối nhét vào miệng nhai rôm rốp. "Thằng sếp khốn nạn của cậu tối nay đang ngồi phòng ấm ăn lẩu thịt bò và ngủ ngon lành. Cậu ra vách đá chết cóng thì có làm hắn mất một giấc ngủ không? Hay chỉ làm khổ mấy anh cứu hộ sáng mai phải lội tuyết đi vớt xác?"</p>
+        <p>Toa tàu im bặt. Ngoài khung kính phủ đầy băng giá, gió gào rít từng cơn làm thân toa sắt khẽ rung lên. Kenji nhìn xuống bàn tay mình, bất giác thấy xấu hổ đến nóng rực hai tai. Cậu vặn chặt nắp chai whisky.</p>
+        <p>"Bà... không sợ ông ta báo cảnh sát tìm bà à?" cậu hỏi nhỏ.</p>
+        <p>"Tìm được thì đi tù vài năm. Cơm tù chắc chắn còn ngon hơn cơm tôi nấu cho lão ăn."</p>
+        <p>Bà Harue ném chiếc hộp nhựa sang ghế cậu. Kenji lúng túng chụp lấy, gắp một miếng củ cải muối cho vào miệng. Vị mặn chát và hơi chua bùng lên trên đầu lưỡi, kéo cậu ra khỏi cơn choáng váng của men rượu.</p>
+        <p>Ba tiếng sau, đèn trong toa nhấp nháy rồi con tàu chậm rãi lăn bánh trở lại. Khi tàu dừng ở ga chuyển tiếp đầu tiên, bà Harue khoác chiếc túi vải nặng trĩu lên vai, chẳng thèm ngoái lại chào Kenji mà bước thẳng xuống sân ga ngập tuyết trắng, dáng đi lùn tịt nhưng nhanh thoăn thoắt như một kẻ chạy trốn vừa chạm tay vào tự do.</p>
+        <p>Kenji ngồi thêm một lúc, rồi đứng dậy xách cặp bước xuống sân ga. Cậu ném thẳng chai whisky còn gần nguyên vào thùng rác cạnh máy bán hàng tự động, xoa hai bàn tay lạnh cóng vào nhau rồi đi thẳng tới quầy vé tự động bấm mua một tấm vé khứ hồi quay về Sapporo.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-5">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần V" data-en="Part V">Phần V</span></p>
+        <h2 class="story-part__title">Đám cưới đêm mất điện ở Old Delhi (Ấn Độ)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Nhiệt độ ở khu phố cổ Chandni Chowk lúc chín giờ tối vẫn giữ nguyên ở mức bốn mươi độ. Con ngõ hẹp chật cứng người qua lại, dây đèn trang trí màu hồng rực giăng chằng chịt bên dưới mớ dây điện đen kịt rối như tổ quạ, mùi thịt cừu nướng gia vị <em>garam masala</em> quyện chặt với mùi mồ hôi và khói dầu diesel từ chiếc máy phát điện đặt ngoài đầu ngõ.</p>
+        <p>Vikram, bốn mươi hai tuổi, mồ hôi ướt đẫm lưng chiếc áo lễ <em>kurta</em> màu kem đắt tiền, đang gào lên chửi bới tay thầu dựng rạp ngay trước cửa nhà. Cả tháng nay anh chạy vạy vay mượn khắp nơi để tổ chức một đám cưới thật rình rang cho cô em gái út, cốt để nhà thông gia giàu có ở Nam Delhi không khinh thường gia đình anh.</p>
+        <p>Ngồi thu lu trên bậc thềm đá góc sân là chú Omprakash, bảy mươi tuổi, người chú ruột không vợ con sống ăn nhờ nhà anh suốt mười năm nay. Ông gầy quắt queo, miệng bỏm bẻm nhai trầu đỏ choét, trên đùi ôm cây kèn <em>shehnai</em> bằng gỗ mun nạm đồng đã xỉn màu. Ngày xưa ông là nhạc công nổi tiếng khắp vùng, nhưng từ ngày hai lá phổi hỏng nặng vì bệnh bụi phổi, ông chỉ còn là cái bóng lầm lũi bị cả nhà coi là kẻ ăn bám.</p>
+        <p>"Chú vào trong phòng đóng cửa lại ngay đi!" Vikram quát khi thấy chú mình cứ ngồi chình ình ngay lối ra vào. "Đoàn rước dâu nhà trai sắp tới rồi, chú ngồi đấy ho sù sụ người ta lại tưởng nhà này có đám ma!"</p>
+        <p>Ông Om không cãi. Ông chỉ nhìn thằng cháu bằng đôi mắt đục ngầu, chậm rãi nhổ bã trầu vào góc cống rồi lết đôi chân phù nề lên cầu thang tối dẫn ra ban công tầng hai.</p>
+        <p>Đúng mười giờ kém mười lăm, tiếng kèn trống của đoàn rước dâu nhà trai bắt đầu vang dội ngoài đầu phố lớn. Chú rể cưỡi ngựa trắng tiến gần vào ngõ. Đúng khoảnh khắc ấy, chiếc máy phát điện ngoài đầu ngõ bỗng nổ một tiếng <em>đoàng</em> long trời, khói đen cuộn lên khét lẹt. Toàn bộ con ngõ chìm nghỉm vào bóng tối đặc quánh. Dàn loa công suất lớn tắt ngấm. Đám nhạc công thuê ngoài nhân cơ hội cúp điện liền thu dọn trống kèn, lớn tiếng đòi Vikram thanh toán nốt nửa số tiền cọc mới chịu thổi tiếp.</p>
+        <p>Vikram chết trân giữa sân tối om, tai ù đặc đi giữa tiếng xì xào chê bai của khách khứa và tiếng khóc thút thít của cô em gái trong nhà. Anh cảm thấy mọi thứ mình cố gồng gánh suốt mười năm qua đang sụp đổ tan tành trong nhục nhã.</p>
+        <p>Bỗng nhiên, từ trên ban công tầng hai chìm trong bóng tối, một âm thanh thanh mảnh, réo rắt và da diết bất ngờ vút lên, xé toạc bầu không khí ngột ngạt nồng mùi khói dầu.</p>
+        <p>Là tiếng kèn <em>shehnai</em>.</p>
+        <p>Ông Omprakash đang đứng tựa lưng vào lan can sắt gỉ, dưới ánh sáng yếu ớt hắt lên từ mấy ngọn đèn pin điện thoại của đám trẻ con dưới sân. Ông thổi điệu <em>Raga Bhairavi</em> cổ điển, thứ giai điệu vừa mang niềm hân hoan chúc phúc, vừa ẩn chứa nỗi chia ly không thể tránh khỏi của cô dâu lúc rời nhà cha mẹ. Hơi thở của ông đứt quãng ở những nốt thấp, nhưng đến đoạn cao trào, tiếng kèn bỗng vút lên trong vắt, vang vọng qua từng mái nhà san sát của khu phố cổ.</p>
+        <p>Cả con ngõ đột ngột im phăng phắc. Đám nhạc công thuê ngoài ngừng cãi vã. Đoàn nhà trai dừng bước ngước nhìn lên ban công, những người già gật gù khẽ khàng khen ngợi thứ âm nhạc truyền thống đích thực mà hiếm đám cưới thời nay còn nghe được. Vikram đứng lặng giữa sân, hai bàn tay đang nắm chặt từ từ buông thõng, sống mũi cay xè giữa màn đêm nóng bức.</p>
+        <p>Mười lăm phút sau, điện lưới được đóng lại. Đèn dây màu hồng rực sáng bừng cả khu phố, tiếng reo hò nổ ra giòn giã và nghi lễ đón dâu tiếp tục trong bầu không khí tưng bừng. Vikram bận rộn tiếp khách đến tận hai giờ sáng mới sực nhớ tới người chú trên gác.</p>
+        <p>Anh cầm một đĩa đồ ngọt nóng hổi leo lên cầu thang. Cửa ban công mở toang, gió đêm mang theo hơi nóng hầm hập thổi qua. Ông Omprakash vẫn ngồi trên chiếc ghế nhựa đỏ sát lan can, đầu ngả ra sau, khuôn mặt thư thái đến lạ. Cây kèn gỗ mun nằm gọn trong lòng ông, đầu kèn bằng đồng vẫn còn vương chút hơi ấm. Vikram từ từ đặt đĩa bánh xuống nền gạch, quỳ rạp xuống chạm trán vào đôi bàn chân khô gầy của chú theo đúng lễ nghi cổ xưa mà suốt mười năm nay anh chưa một lần làm.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-6">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần VI" data-en="Part VI">Phần VI</span></p>
+        <h2 class="story-part__title">Trạm gác ghi giữa rừng taiga (Nga)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Âm ba mươi lăm độ. Ở ngã ba đường sắt hoang vu cách Irkutsk gần bốn trăm cây số về phía Bắc, cái lạnh không chỉ làm đông cứng hơi thở mà còn khiến những thanh ray thép phát ra tiếng rạn nứt <em>tách, tách</em> sắc lạnh trong đêm tối.</p>
+        <p>Sergey, bốn mươi bảy tuổi, cựu lính công binh bị chấn thương cột sống sau một vụ nổ mìn công trường nên bị đẩy lên làm gác ghi tại trạm phụ số 14, đang ngồi gọt củ khoai tây bên bếp lò gang đỏ rực. Ngoài kia chỉ có rừng thông phủ tuyết dày ngang ngực và đường ray đơn vắt ngang bóng đêm.</p>
+        <p>Cánh cửa gỗ dày bất ngờ bật tung. Gió tuyết ùa vào làm ngọn đèn dầu treo tường chao đảo dữ dội. Một gã đàn ông trẻ mặt mày đóng băng, râu ria xồm xoàm trong bộ áo bông rách tả tơi lao vào, tiện tay đóng sầm cửa lại rồi chĩa thẳng con dao rọc bao tải dính đầy gỉ sét vào cổ Sergey.</p>
+        <p>"Đừng nhúc nhích! Tao vừa trốn khỏi trại giam phía Đông, tao chẳng còn gì để mất đâu!" gã thở dốc, hơi trắng phun ra mù mịt, hàm răng va vào nhau lập cập.</p>
+        <p>Sergey từ từ đặt con dao nhỏ và củ khoai tây xuống mặt bàn gỗ sần sùi, giơ hai bàn tay dính đầy đất lên ngang vai. Gã tù vượt ngục tên Mitya, mới chừng hai mươi lăm tuổi, mắt trắng dã vì đói và kiệt sức.</p>
+        <p>"Mày muốn gì?" Sergey hỏi, giọng bình thản đến rợn người. "Bánh mì đen ở trên kệ, thịt hộp trong thùng gỗ. Cứ lấy mà ăn."</p>
+        <p>"Im miệng!" Mitya vơ lấy ổ bánh mì cứng ngắc nhét vào miệng nhai ngấu nghiến, mắt vẫn không rời khỏi Sergey. "Mày có biết mấy giờ có chuyến tàu hàng chạy qua đây không? Một rưỡi sáng đúng không? Đến giờ mày ra ngoài kéo cần ghi sang nhánh đường cụt kia cho nó dừng lại, tao sẽ leo lên toa than trốn về phía Tây."</p>
+        <p>Sergey liếc nhìn chiếc đồng hồ treo tường cũ kỹ. Một giờ mười lăm. Trên bàn đặt cuốn sổ trực điện báo mới nhận cách đây nửa tiếng.</p>
+        <p>"Hôm nay không có tàu hàng một rưỡi", ông nói chậm rãi. "Tuyến chính phía Nam bị tuyết lở, họ đổi lộ trình cho chuyến tàu khách số 094 chạy ngang qua nhánh này lúc một giờ bốn mươi. Toàn đàn bà với trẻ con trên đó. Nếu kéo sang nhánh đường cụt đầy tuyết, cả đoàn tàu sẽ trật bánh lao xuống vực."</p>
+        <p>"Mày lừa tao!" Mitya gào lên, dí mũi dao sâu hơn làm rách một vệt nhỏ trên cổ Sergey, máu rỉ ra nóng hổi. "Tao canh lịch tàu hàng ở tuyến này cả tháng nay rồi! Đừng giở trò với tao!"</p>
+        <p>Sergey không tranh cãi. Ông biết tranh luận với một con thú cùng đường chỉ tổ chết sớm. Ông khẽ hất cằm về phía chai thủy tinh không nhãn đặt dưới gầm bếp.</p>
+        <p>"Rượu tự nấu đấy. Uống một ngụm cho ấm người đi rồi tao ra kéo ghi cho mày. Lạnh thế này mày không leo nổi lên toa tàu đâu."</p>
+        <p>Mitya nghi ngờ liếc nhìn chai rượu, nhưng cơn run rẩy đã hành hạ gã suốt hai ngày luồn rừng. Gã với tay trái mở nắp, ngửa cổ tu một ngụm lớn thứ rượu mạnh nồng mùi khoai tây lên men. Ngay khoảnh khắc gã sặc sụa nhắm tịt mắt lại vì độ cồn cháy cổ, Sergey xoay người hất đổ chiếc ấm nước sôi trên bếp lò thẳng vào chân gã rồi lao tung cánh cửa gỗ chạy ra ngoài trời băng giá.</p>
+        <p>Tiếng còi tàu từ phía xa bỗng vang lên rền rĩ, xuyên qua rừng thông đen đặc. Đèn pha đầu máy đã rọi thấy một vệt sáng trắng xóa ở khúc cua cách đó chưa đầy hai cây số.</p>
+        <p>Sergey lao tới trụ sắt kéo ghi, vừa kịp thấy khóa an toàn đã bị Mitya gạt lửng trước khi vào nhà hòng thử cơ chế. Thanh ray đang nằm lệch ở vị trí tử thần. Sergey dùng toàn bộ sức lực đè mạnh cánh tay đòn bằng thép phủ đầy băng tuyết xuống. Đúng lúc ấy, Mitya gầm lên lao từ trong chòi ra như một bóng ma, vung con dao đâm ngập vào hông trái của ông.</p>
+        <p>Cơn đau buốt giá xé toạc ổ bụng. Sergey gục một gối xuống lớp tuyết dày nhưng hai bàn tay chai cứng vẫn bấu chết lấy cánh tay đòn, dồn toàn bộ trọng lượng cơ thể kéo sập nó xuống tận đáy. Tiếng khóa sắt kêu <em>cạch</em> một tiếng nặng nề.</p>
+        <p>Đèn tín hiệu trên cột cao chuyển từ đỏ sang xanh.</p>
+        <p>Mitya hốt hoảng nhìn thấy đoàn tàu chở khách sáng rực ánh đèn qua hàng chục ô cửa sổ đang lao tới ầm ầm với tốc độ kinh hoàng. Gã nhận ra mình đã sai, vứt phăng con dao xuống tuyết rồi quay đầu chạy thục mạng vào bóng tối của rừng taiga.</p>
+        <p>Đoàn tàu 094 rầm rập lướt qua trạm gác ghi số 14, từng toa nối tiếp nhau cuốn theo cơn lốc tuyết trắng xóa. Qua những ô cửa kính ấm áp chạy vun vút, vài hành khách còn đang dựa đầu ngủ yên. Sergey ngồi tựa lưng vào cột sắt gác ghi, tay ôm lấy vệt máu đỏ thẫm đang loang rộng và đóng băng dần trên lớp tuyết trắng, mỉm cười nhìn chấm đèn đỏ ở đuôi tàu khuất hẳn sau khúc cua rừng thông.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-7">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần VII" data-en="Part VII">Phần VII</span></p>
+        <h2 class="story-part__title">Hiệp thứ tư ở khu South Side (Mỹ)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Phòng tập quyền anh của lão Frankie nằm trên tầng hai một xưởng sửa ô tô bỏ hoang ở khu South Side, Chicago, sặc mùi mồ hôi chua loét, mùi da thuộc mục nát và dầu xoa bóp cay nồng. Dưới ánh đèn tuýp cũ nhấp nháy, khoảng ba chục gã đàn ông đứng vây quanh chiếc võ đài rách bươm dây thừng, tay cầm những cọc tiền mặt nhàu nhĩ hò hét chói tai.</p>
+        <p>Marcus Vance, ba mươi tám tuổi, ngồi trong góc võ đài, để mặc lão Frankie bôi lớp mỡ dày lên hai bên chân mày đã đầy sẹo. Tám năm trước, người ta từng gọi gã là "Búa Tạ" với chuỗi mười bốn trận thắng knock out liên tiếp, trước khi khớp gối trái vỡ nát và bác sĩ cảnh báo gã có dấu hiệu tổn thương não nếu còn tiếp tục ăn đấm. Bây giờ gã là một gã bảo vệ quán bar nói năng hơi lắp bắp mỗi khi mệt, và đêm nay gã nhận kèo đấu chui lấy năm nghìn đô tiền mặt với một thằng nhóc hăm hai tuổi hung hãn tên Darius.</p>
+        <p>Cánh cửa sắt cuối phòng bật mở. Maya, con gái mười sáu tuổi của Marcus, xông thẳng qua đám đông đang hò hét, mặc nguyên chiếc áo khoác trường trung học, mắt đỏ hoe chạy tới bám chặt lấy dây thừng góc đài.</p>
+        <p>"Bố xuống ngay đi!" cô bé hét lên át cả tiếng chửi thề xung quanh. "Chú Frankie gọi cho con rồi! Bố hứa với con là không bao giờ đeo găng nữa cơ mà!"</p>
+        <p>"Tao bảo mày ở nhà làm bài tập cơ mà!" Marcus gằn giọng, cố giấu sự lúng túng sau cặp găng da đỏ sờn. "Về đi, Maya. Chỗ này không phải nơi cho mày."</p>
+        <p>"Con không cần tiền học đại học kiểu này!" nước mắt Maya giàn giụa trên gò má. "Bố muốn đánh xong trận này rồi quên luôn tên con là gì hả? Bố muốn chết trên cái sàn bẩn thỉu này à?"</p>
+        <p>Đám đông xung quanh bắt đầu la ó, huýt sáo giễu cợt. Ở góc đối diện, thằng Darius nhổ nước bọt xuống xô nhựa, đấm hai chiếc găng vào nhau cười nhạo.</p>
+        <p>Marcus bước sát lại dây thừng, cúi thấp đầu xuống ngang mặt con gái. Giọng gã trầm hẳn, không hề run rẩy:</p>
+        <p>"Nghe này, Maya. Cả đời bố dốt nát, chẳng có bằng cấp, cũng chẳng biết cách nói mấy lời ngọt ngào. Cả đời bố chỉ biết đúng một việc là chịu đòn để đứng vững. Nếu bỏ cuộc bây giờ, năm năm nữa bố vẫn sẽ mục rữa trên cái ghế sofa trước tivi thôi. Ít nhất tối nay, bố vẫn còn đứng bằng hai chân của mình vì một cái gì đó đáng giá. Ra cửa đứng chờ bố."</p>
+        <p>Tiếng chuông sắt vang lên chát chúa.</p>
+        <p>Trận đấu diễn ra một chiều và tàn khốc. Darius nhanh như cắt, những cú móc ngang của nó giáng xuống như búa bổ vào mạng sườn và thái dương Marcus. Hiệp một, mắt trái Marcus sưng húp. Hiệp hai, đầu gối trái của gã khuỵu xuống sau một cú đấm thẳng vào cằm, máu từ khóe miệng bắn tung tóe lên mặt vải bạt xám xịt. Maya đứng nép bên cánh cửa sắt, bịt chặt tai lại nhưng không dám quay đi.</p>
+        <p>Sang hiệp thứ tư, Marcus gần như không còn nhìn thấy gì bằng mắt trái. Cả căn phòng quay cuồng như một cái thùng rượu bị lăn xuống dốc. Nhưng mỗi khi Darius lao vào kết liễu, Marcus vẫn dùng toàn bộ kinh nghiệm già rơ để ôm ghì lấy đối thủ, ghìm nhịp thở, rồi tung ra một cú đấm móc nặng trịch vào hông nó khiến gã thanh niên khựng lại gầm gừ.</p>
+        <p>Ở giây cuối cùng của hiệp bốn, một cú đấm trời giáng trúng thẳng vào hàm khiến Marcus ngã ngửa xuống sàn đánh <em>rầm</em>. Trọng tài bắt đầu giơ ngón tay đếm lớn giữa tiếng gào thét điên loạn của đám con bạc.</p>
+        <p><em>Một. Hai. Ba...</em></p>
+        <p>Mắt Marcus nhòe đi trong ánh đèn tuýp chói lòa. Gã nghe thấy tiếng tên mình vọng lại từ rất xa. <em>Bảy. Tám...</em> Hai cánh tay nặng như đeo chì của gã chống xuống mặt sàn dính mồ hôi, đẩy tấm thân gần một tạ gượng đứng dậy đúng khoảnh khắc ngón tay thứ chín giơ lên. Gã đứng thẳng, mắt nhìn thẳng về phía cửa, ngay lúc tiếng chuông kết thúc trận đấu vang lên.</p>
+        <p>Darius thắng điểm tuyệt đối. Nhưng theo giao kèo, chỉ cần đứng vững hết bốn hiệp, Marcus vẫn nhận đủ tiền. Lão Frankie giật xấp tiền năm nghìn đô từ tay nhà cái, nhét vào tay Marcus. Gã loạng choạng bước xuống bậc thang võ đài, đặt cọc tiền còn dính vệt máu mờ vào lòng bàn tay run rẩy của con gái, khẽ cười bằng chiếc môi sưng vều rồi mới để đầu gối mình khuỵu hẳn xuống nền xi măng lạnh ngắt.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-8">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần VIII" data-en="Part VIII">Phần VIII</span></p>
+        <h2 class="story-part__title">Phiên hòa giải mùi bánh cháy ở Marseille (Pháp)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Gió <em>mistral</em> từ Địa Trung Hải thổi lồng lộng dọc khu cảng cũ Marseille, cuốn theo mùi muối biển, mùi cá nướng và mùi bột mì cháy khét mỗi sáng từ tiệm bánh của Karim.</p>
+        <p>Trong phòng xử hòa giải số 3 của tòa án dân sự địa phương, thẩm phán Moreau, một ông già hói đầu đã mệt mỏi đến tận xương tủy, đang day thái dương nhìn tập hồ sơ dày cộp trước mặt. Đứng hai bên bục là hai kẻ thù truyền kiếp của con phố Rue des Consuls: bà Colette sáu mươi tám tuổi, chủ tiệm tạp hóa khó tính nổi tiếng khắp khu phố, và Karim bốn mươi tuổi, thợ làm bánh gốc Algeria mới mở lò nướng ngay đối diện nhà bà bảy năm trước.</p>
+        <p>"Tôi nhắc lại lần cuối, thưa bà Colette", thẩm phán thở dài. "Đây là đơn kiện thứ mười một của bà trong vòng năm năm qua."</p>
+        <p>"Vì hắn vẫn cố tình chĩa cái ống khói chết tiệt ấy thẳng vào cửa sổ phòng ngủ nhà tôi!" bà Colette đập chiếc túi xách da xuống bục gỗ cái <em>rầm</em>, mái tóc bạc uốn xoăn rung lên bần bật. "Ngày nào cũng bốn giờ sáng, cái mùi bột cháy với mùi dầu ô liu rẻ tiền của hắn xộc thẳng vào phổi tôi! Hắn muốn giết tôi để mua lại mặt bằng nhà tôi phải không?"</p>
+        <p>"Bà đúng là bị hoang tưởng rồi, bà già điên!" Karim vung hai bàn tay còn dính bột trắng lên trời, giọng miền Nam Pháp oang oang. "Cái ống khói đó đã được thanh tra đô thị kiểm tra ba lần! Ai thèm cái tiệm tạp hóa chật như lỗ mũi toàn bán đồ hộp hết hạn của bà? Chính bà hôm thứ Ba vừa rồi đã đổ cả xô nước muối rửa cá vào thềm tiệm bánh của tôi làm một khách hàng suýt trượt chân gãy cổ!"</p>
+        <p>"Đó là tôi tưới cây ngoài ban công bị trượt tay!"</p>
+        <p>"Tưới cây bằng nước muối cá mòi à?"</p>
+        <p>Cuộc đấu khẩu nổ ra dữ dội như một trận cãi vã ngoài chợ cá khiến thư ký tòa phải gõ búa liên hồi. Bà Colette mặt đỏ bừng lên, gân cổ nổi rõ, giơ ngón tay trỏ run rẩy chỉ thẳng vào mặt Karim định mắng thêm một tràng dài. Nhưng đột nhiên, câu nói của bà đứt ngang ở giữa cổ họng. Bà ôm chặt lấy ngực trái, đôi mắt mở trừng trừng kinh hoàng, chiếc túi xách tuột khỏi tay rơi đánh <em>bịch</em> xuống sàn gỗ, rồi cả người bà đổ gục xuống ngay trước mặt thẩm phán.</p>
+        <p>Cả phòng xử nhốn nháo hẳn lên. Thẩm phán cuống cuồng gọi nhân viên y tế. Mọi người đứng vây quanh lúng túng không ai biết bà già sống cô độc kia bị bệnh gì.</p>
+        <p>Chỉ có Karim lao bổ qua bục gỗ, quỳ sụp xuống nới lỏng khuy cổ áo sơ mi cho bà Colette, rồi giật phắt lấy chiếc túi xách đổ hết đồ đạc ra sàn tìm lọ thuốc xịt dưới lưỡi.</p>
+        <p>"Bà ấy bị suy tim, dị ứng nặng với nhóm thuốc kháng sinh cũ, mỗi sáng bảy giờ đều tự đi bộ ra hiệu thuốc phố dưới lấy thuốc!" Karim gào lên với nhân viên y tế vừa chạy vào, hai tay anh run rẩy đặt lọ thuốc vào tay họ. "Nhanh lên, nhà bà ấy chẳng còn ai sống cùng đâu!"</p>
+        <p>Hai tiếng sau, tại sảnh chờ yên tĩnh của bệnh viện thành phố, Karim ngồi co ro trên dãy ghế nhựa xanh, chiếc áo tạp dề trắng vẫn còn buộc ngang hông, trên đùi kẹp tờ giấy triệu tập hòa giải nhàu nhĩ. Một bác sĩ bước ra thông báo bà Colette đã qua cơn nguy kịch nhờ được cấp cứu đúng lúc và biết rõ tiền sử dị ứng, nhưng cần nằm theo dõi ít nhất một tuần.</p>
+        <p>Karim thở phào một hơi dài đến rũ cả hai vai. Anh bước tới ô kính phòng hồi sức nhìn vào trong. Bà già khó ưa nhất Marseille đang nằm thiếp đi dưới lớp chăn trắng, trông nhỏ bé và yếu ớt đến mức anh suýt không nhận ra.</p>
+        <p>Bất giác, Karim nghĩ đến sáng mai lúc bốn giờ, khi anh mở cửa lò nướng và nhìn sang ban công tầng hai đối diện sẽ chẳng có ai chống nạnh đứng chửi xuống, chẳng có tiếng sập cửa sổ rầm rầm đầy giận dữ. Ý nghĩ ấy khiến con phố cũ bỗng trở nên trống trải đến kỳ lạ. Anh rút cây bút bi trong túi tạp dề, gạch một đường chéo thật mạnh lên tờ đơn phản tố của mình, rồi lặng lẽ quay về tiệm để sáng mai nướng thêm một mẻ bánh mì mềm không rắc muối cho người hàng xóm vừa bước hụt một chân qua cửa tử.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-9">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần IX" data-en="Part IX">Phần IX</span></p>
+        <h2 class="story-part__title">Mâm cơm ngày thất đầu (Thành Đô, Trung Quốc)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Bảy ngày sau đám tang bà Chu, trong căn hộ tập thể cũ kỹ xây từ thập niên tám mươi ở quận Vũ Hầu, ba anh em nhà họ Chu ngồi quây quanh chiếc bàn tròn đầy ắp món ăn Tứ Xuyên đỏ rực ớt tiêu. Ngoài cửa sổ, trời Thành Đô đổ mưa dầm dề, thứ mưa lạnh thấm qua khung cửa sắt gỉ sét.</p>
+        <p>Ở đầu bàn, ông Chu bảy mươi sáu tuổi ngồi lom khom trên chiếc ghế đẩu, đôi mắt mờ đục cúi xuống bát cháo trắng loãng, tai đeo chiếc máy trợ thính cũ cứ thỉnh thoảng lại rè lên một tiếng rít nhỏ. Cả ba đứa con đều mặc định từ ngày mẹ mất, bố chúng vừa lẫn vừa điếc đặc nên chẳng buồn hạ giọng.</p>
+        <p>"Em nói thẳng luôn", anh cả Chu Minh đặt đôi đũa xuống đánh <em>cạch</em>, gõ ngón tay lên tờ thông báo quy hoạch giải tỏa khu tập thể đặt ngay cạnh đĩa đậu phụ cay. "Tiền đền bù căn này ít nhất cũng hai triệu rưỡi tệ. Em là con trai trưởng, trước giờ lo hương khói tổ tiên, phần em phải là một nửa. Còn lại anh hai với cô út chia nhau."</p>
+        <p>"Anh ăn nói buồn cười nhỉ!" cô út Chu Lan bật cười khẩy, mặt đỏ lựng vì tức. "Ba năm nay mẹ nằm liệt giường có thấy mặt anh về được mấy lần đâu? Tiền viện phí đợt cuối cũng là vợ chồng em ứng ra trước. Giờ thấy tiền giải tỏa anh nhảy vào đòi một nửa à?"</p>
+        <p>"Thôi đi hai đứa", anh hai Chu Hải châm điếu thuốc phả khói mù mịt khắp phòng. "Chia tiền thì dễ, nhưng còn bố kia kìa, ai rước về nuôi? Nhà tôi chật như hộp diêm, vợ tôi nó lại khó tính, không chăm người già lẫn được đâu."</p>
+        <p>"Vợ anh khó tính thì vợ tôi dễ tính chắc?" Chu Minh gắt lên. "Bố cũng yếu lắm rồi, chắc gì trụ nổi qua mùa đông năm nay. Hay là trích hai chục vạn tiền đền bù gửi bố vào cái viện dưỡng lão ngoài ngoại ô đi, đỡ phiền ai."</p>
+        <p>Chu Lan vừa định mở miệng cãi tiếp thì tiếng chiếc bát sứ đặt xuống mặt bàn vang lên khô khốc.</p>
+        <p>Cả ba đứa con giật mình quay phắt lại. Ông Chu đã tháo chiếc máy trợ thính đặt gọn lên mặt bàn từ lúc nào. Ánh mắt ông không hề mờ đục như chúng vẫn tưởng, mà lạnh lẽo và sắc lẹm đến rợn người.</p>
+        <p>"Xong chưa?" ông hỏi, giọng rành rọt không chút run rẩy. "Ăn no rồi thì câm hết mồm lại mà nghe tao nói."</p>
+        <p>Căn phòng chết lặng, chỉ còn tiếng mưa rơi lộp độp ngoài mái tôn. Ông Chu chậm rãi thò tay vào túi áo bông cũ, rút ra một phong bì màu nâu đặt thẳng vào giữa mâm cơm, đè lên trên tờ thông báo quy hoạch.</p>
+        <p>"Ba năm mẹ chúng mày ốm, đứa nào cũng bảo bận kiếm tiền, chỉ có con bé Tiểu Lâm thuê trọ dưới tầng một sáng nào đi làm về cũng mang cho ông bà già này bát canh củ cải nóng, nửa đêm gọi xe cấp cứu cũng là nó." Ông đứng thẳng lưng dậy, phủi mấy hạt cơm vương trên vạt áo. "Tháng trước, tao với mẹ chúng mày đã ra phòng công chứng làm di chúc với hợp đồng tặng cho xong hết rồi. Sau khi tao chết, căn nhà này cùng toàn bộ tiền đền bù sẽ sang tên cho con bé Tiểu Lâm. Không có một xu nào cho lũ chúng mày đâu."</p>
+        <p>"Bố điên rồi à!" Chu Minh nhảy dựng lên làm đổ cả cốc trà. "Bố bị con ranh đó lừa rồi! Tôi kiện ra tòa hủy cái giấy đó ngay!"</p>
+        <p>"Cứ việc kiện", ông Chu nhếch mép, một nụ cười chua chát nhưng nhẹ nhõm lạ thường. "Giấy khám tâm thần minh mẫn của bệnh viện tỉnh tao kẹp sẵn trong bìa hồ sơ rồi đấy. Luật sư bảo chữ ký của tao có giá trị hơn nước bọt của cả ba đứa chúng mày cộng lại."</p>
+        <p>Mặc kệ tiếng gào thét, tiếng ghế đổ và tiếng chửi bới điên cuồng phía sau lưng, ông Chu bình thản khoác chiếc áo bông sờn vai, cầm cây ô đen dựng sau cửa rồi bước thẳng ra cầu thang tập thể tối om. Ra tới con ngõ nhỏ ngập nước mưa, ông mở ô bước đi chậm rãi về phía quán trà đầu phố, lần đầu tiên sau nhiều năm cảm thấy hai lá phổi mình hít vào một bầu không khí trong lành đến thế.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-10">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần X" data-en="Part X">Phần X</span></p>
+        <h2 class="story-part__title">Gói bưu kiện ở Thành phố Người Chết (Cairo, Ai Cập)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Hoàng hôn buông xuống Cairo trong tiếng còi xe điếc tai và lớp bụi vàng quẩn quanh những cây cầu vượt bằng bê tông chật cứng ô tô.</p>
+        <p>Youssef, hai mươi sáu tuổi, vừa tắt máy chiếc xe gắn máy Trung Quốc cũ kỹ bên lề cầu 6 Tháng Mười, mặt xám ngoét vì mệt và tuyệt vọng. Buổi sáng, nhà vợ sắp cưới vừa gọi điện tuyên bố hủy hôn vì hai năm đi giao hàng cậu vẫn không gom đủ tiền đặt cọc thuê một căn hộ tử tế. Bây giờ thì ông chủ kho hàng lại gọi điện chửi rủa, dọa cắt sạch tiền lương tháng này nếu cậu không giao xong gói bưu kiện cuối cùng còn sót lại trong thùng xe.</p>
+        <p>Đó là một hộp giấy bọc vải thô đã ngả vàng, dán tem cũ từ tận Alexandria gửi lên, ghi địa chỉ một tòa nhà ở khu trung tâm gần quảng trường Tahrir. Khốn nỗi, lúc cậu chạy tới nơi thì tòa nhà ấy đã bị phá dỡ xây bãi đỗ xe từ mấy năm trước, còn số điện thoại người nhận đã bị khóa từ đời nào.</p>
+        <p>Youssef châm một điếu thuốc, đứng tựa lan can cầu nhìn xuống dòng sông Nile đục ngầu phía dưới. Trong đầu cậu thoáng qua ý nghĩ điên rồ là ném thẳng gói hàng xuống sông, rồi trèo luôn qua lan can cho xong một kiếp người bế tắc. Cậu nâng hộp giấy lên, bỗng nghe bên trong có tiếng lạch cạch nhỏ như cuộn băng cũ. Chẳng hiểu ma xui quỷ khiến thế nào, cậu lại rút tay về.</p>
+        <p>"Thôi, coi như việc tử tế cuối cùng trước khi nghỉ việc", cậu lầm bầm.</p>
+        <p>Youssef dắt xe quay lại con hẻm nhỏ cạnh bãi đỗ xe cũ, hỏi dò một ông thợ đóng giày già ngồi nép bên bức tường gạch loang lổ. Nghe tên người nhận là bà Fatima, ông thợ giày nheo mắt nghĩ một lát rồi chỉ tay về phía Đông thành phố.</p>
+        <p>"Bà ấy chuyển đi từ hồi con trai bà ấy mất tích năm 2011 rồi. Mất nhà, không tiền thuê trọ, người ta bảo bà ấy dọn vào trong <em>Qarafa</em> ở cùng họ hàng bên khu mộ cũ."</p>
+        <p><em>Qarafa</em>, Thành phố Người Chết. Khu nghĩa trang khổng lồ trải dài hàng cây số ở rìa Cairo, nơi hàng chục vạn người nghèo dựng nhà, mở quán trà, phơi quần áo và sinh sống ngay bên cạnh những lăng mộ đá cổ xưa.</p>
+        <p>Chín giờ tối, Youssef chạy xe len lỏi qua những con đường đất mấp mô không đèn đường của khu nghĩa trang. Dưới ánh sáng vàng vọt hắt ra từ những khung cửa sổ nhỏ xây ghép vào tường mộ, trẻ con vẫn đá bóng trên nền cát, mùi bánh mì dẹt mới nướng thơm lừng bay ra từ một lò than góc ngõ. Hỏi qua ba quán trà và hai gã giữ mộ, cuối cùng cậu cũng tìm thấy căn phòng gạch nhỏ của bà Fatima nép dưới bóng một mái vòm đá đã nứt vỡ.</p>
+        <p>Người mở cửa là một bà cụ gầy gò, đôi mắt đã mù lòa gần hết vì đục thủy tinh thể, sống cùng một đứa cháu gái nhỏ. Khi Youssef đọc to tên người gửi trên gói bưu kiện, người bạn tù cũ của con trai bà vừa mới được thả ở Alexandria, hai bàn tay bà cụ run lên dữ dội.</p>
+        <p>Cô cháu gái mở hộp giấy ra. Bên trong không có tiền bạc hay vàng vòng, chỉ có một chiếc máy ghi âm cát sét cũ nát, một đôi pin mới và một cuốn băng nhỏ. Youssef ngồi xổm xuống bậc cửa, lắp pin rồi ấn nút chạy hộ bà.</p>
+        <p>Tiếng băng rè rè quay vài vòng. Rồi giọng cười vang của một chàng thanh niên hai mươi tuổi bất ngờ vang lên giữa khu nghĩa trang tĩnh lặng, xen lẫn tiếng sóng biển Alexandria ầm ầm từ hơn mười năm trước: <em>"Mẹ ơi, hôm nay biển đẹp lắm, tháng sau con về con mua cho mẹ chiếc khăn mới..."</em></p>
+        <p>Bà Fatima khuỵu xuống nền đất, ôm chặt chiếc máy ghi âm vào ngực, bật khóc không thành tiếng. Giữa thành phố của hàng triệu ngôi mộ im lìm, giọng nói của một người đã chết bỗng vang lên sống động như vừa mới hôm qua.</p>
+        <p>Youssef lặng lẽ bước ra khỏi ngõ đất, chẳng cần xin chữ ký xác nhận vào tờ biên lai. Cậu nổ máy xe chạy ngược ra đại lộ lớn. Phía trước, dòng xe cộ ở Cairo vẫn kẹt cứng và ồn ào điên đảo, ngày mai ông chủ chắc chắn sẽ trừ lương cậu, và cuộc hôn nhân kia cũng chẳng thể cứu vãn. Nhưng lúc chạy ngang qua cầu vượt sông Nile, Youssef không còn nhìn xuống mặt nước đen ngòm nữa, mà vặn ga chạy thẳng về phía những ánh đèn vàng rực của khu chợ đêm để mua cho mình một đĩa <em>koshary</em> nóng hổi.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-11">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần XI" data-en="Part XI">Phần XI</span></p>
+        <h2 class="story-part__title">Giá củi ở bến Manikarnika (Ấn Độ)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Bến hỏa táng Manikarnika bên bờ sông Hằng không bao giờ tắt lửa, và càng không bao giờ thơ mộng như trong mấy cuốn sách du lịch của khách phương Tây.</p>
+        <p>Không khí ở đây đặc quánh mùi khói gỗ cháy, mùi bơ lỏng, mùi tro bụi nóng rực và thứ mùi khét lẹt trần trụi của thịt da hóa thành cát bụi. Bò hoang đi lang thang gặm mấy vòng hoa cúc vạn thọ héo úa vứt ngổn ngang trên bậc đá dính đầy bồ hóng. Tiếng tụng kinh hòa lẫn với tiếng mặc cả giá củi khô khốc vang lên suốt ngày đêm.</p>
+        <p>Dev, mười chín tuổi, mình trần bóng nhẫy mồ hôi trộn muội than, đang vác từng khúc củi xoài nặng trịch chất lên giàn thiêu. Sinh ra trong đẳng cấp <em>Dom</em> chuyên gác lửa cho người chết, từ năm mười hai tuổi cậu đã quen nhìn xác người cháy rụi dưới chân mình. Dev căm ghét công việc này, căm ghét mùi tro bám chặt trong từng kẽ móng tay không xà phòng nào rửa sạch. Cậu đã lén giấu tiền dưới nền đất suốt hai năm để tháng sau bỏ trốn lên Bangalore học nghề sửa điện thoại.</p>
+        <p>Khách hàng chiều nay là một vị giáo sư đại học giàu có từ Mumbai bay về hỏa táng cha. Ông ta mặc bộ đồ trắng tinh không một nếp nhăn, bịt chặt chiếc khẩu trang y tế màu xanh, đứng nép tít trên bậc thềm cao, mắt không ngừng nhăn nhó nhìn xuống giàn củi nghi ngút khói.</p>
+        <p>"Tôi trả thêm gấp đôi tiền", vị giáo sư nói lớn, rút xấp tiền mới cứng đưa cho cha của Dev. "Chọn toàn bộ gỗ đàn hương tốt nhất cho tôi. Và để con trai ông cầm bó đuốc châm lửa thay tôi đi. Tôi bị hen suyễn, không chịu nổi mùi khói dưới đó."</p>
+        <p>Cha của Dev vừa định cúi đầu nhận tiền thì Dev ném đánh <em>rầm</em> khúc củi trên vai xuống đất, tro bụi bay mù mịt bám đầy ống quần trắng tinh của vị giáo sư.</p>
+        <p>"Ông tưởng bến này là nhà hàng à?" Dev quát, đôi mắt đen rực lửa vì cơn uất ức dồn nén suốt nhiều năm. "Ông bỏ tiền mua gỗ quý cho cha ông, nhưng lại sợ bẩn tay không dám tự châm lửa tiễn ông ấy đi đoạn cuối à? Ông có cả đống bằng cấp trên Mumbai mà còn sợ người chết hơn cả thằng thất học như tôi!"</p>
+        <p>"Dev! Mày điên rồi à? Xin lỗi ngài ấy ngay!" cha cậu hoảng hốt giơ tay định tát cậu, nhưng vị giáo sư giơ tay ngăn lại.</p>
+        <p>Đôi mắt vị giáo sư sau cặp kính gọng vàng thoáng lộ vẻ bàng hoàng, rồi chuyển sang nỗi xấu hổ cay đắng. Ông ta tháo chiếc khẩu trang y tế xuống, hít một hơi không khí nồng mùi khói cay xè đến ho sặc sụa, rồi chậm rãi bước xuống bậc đá dính đầy tro nóng tiến lại gần giàn củi nơi thi hài người cha bọc vải trắng đang nằm yên.</p>
+        <p>"Đưa bó đuốc cho tôi", ông ta nói khẽ, giọng không còn chút vẻ bề trên nào nữa.</p>
+        <p>Dev im lặng nhìn ông ta một lát, rồi châm bó rơm khô vào ngọn lửa thiêng truyền đời trong góc đền, đưa sang cho vị giáo sư. Bàn tay trắng trẻo quen cầm phấn viết của ông ta run lên bần bật đến mức suýt làm rơi bó đuốc. Dev không nói gì thêm, chỉ đưa bàn tay đen nhẻm muội than của mình nắm chặt lấy cổ tay vị giáo sư, cùng ông ta đặt ngọn lửa vào dưới lớp củi khô.</p>
+        <p>Lửa bùng lên dữ dội, gió từ mặt sông Hằng thổi tạt vào làm tàn lửa bay rợp trời như mưa sao đỏ. Hai con người thuộc hai đầu xa nhất của xã hội Ấn Độ đứng cạnh nhau, mặt mũi cùng nóng rực lên trước sức nóng hủy diệt của ngọn lửa.</p>
+        <p>Trong khoảnh khắc nhìn đống gỗ đắt tiền lẫn đống củi rẻ tiền bên giàn kế bên đều tan thành cùng một thứ tro xám nhạt trôi xuống sông, Dev chợt hết hẳn cơn giận. Tháng sau cậu vẫn sẽ bắt tàu đi Bangalore để sống cuộc đời của mình, nhưng cậu biết từ nay về sau, sẽ chẳng còn bất cứ thứ gì trên đời này đủ sức khiến cậu phải cúi đầu sợ hãi nữa.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-12">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần XII" data-en="Part XII">Phần XII</span></p>
+        <h2 class="story-part__title">Con tàu chết máy ngoài khơi Cornwall (Anh Quốc)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Biển ngoài khơi Cornwall vào tháng Mười mang màu xám chì nặng nề, sóng không dựng đứng mà cuộn lên từng đợt dài lạnh buốt, sẵn sàng nhấn chìm bất cứ con tàu gỗ nhỏ nào liều lĩnh rời bến lúc trời chuyển bão.</p>
+        <p>Owen, sáu mươi bốn tuổi, một tay ghì chặt bánh lái con tàu đánh cá cũ tên <em>Bà Sarah</em>, tay kia châm tẩu thuốc bất chấp gió biển tạt muối rát mặt. Hai tuần trước, bác sĩ ở Truro đã chỉ thẳng vào phim chụp động mạch chủ của ông và tuyên bố nó đã phình to như một quả bóng cao su sắp nổ: chỉ cần một cơn gắng sức mạnh hay một cú sốc nhiệt, ông sẽ chết ngay tại chỗ trước khi kịp gọi trực thăng cứu hộ.</p>
+        <p>Ông giấu kết quả chụp chiếu, lén nhổ neo ra khơi lúc năm giờ sáng. Nhưng ngay khi con tàu vừa rời cầu cảng, Liam, thằng con trai ba mươi lăm tuổi đang làm luật sư tận London vừa về nhà tối qua, đã lao ra nhảy phắt lên boong tàu trong bộ áo khoác văn phòng mỏng manh.</p>
+        <p>"Quay tàu lại ngay!" Liam gào lên, hai tay bám chặt vào lan can sắt khi con sóng lớn tạt ướt sũng từ đầu đến chân. "Mẹ đã nói hết với con rồi! Bố muốn tự sát ngoài này cho oai lắm phải không?"</p>
+        <p>"Mày xuống khoang mà nôn đi, thằng công tử bột!" Owen quát lại, giọng khàn đặc át cả tiếng động cơ diesel nổ ầm ầm. "Cả đời tao ở trên biển, đừng có mang mấy tờ giấy xét nghiệm chết tiệt về ra lệnh cho tao phải chết trên cái giường trắng ở bệnh viện!"</p>
+        <p>"Bố ích kỷ vừa thôi!" Liam lao tới túm lấy cánh tay ông, mặt trắng bệch vì lạnh và giận. "Bố nghĩ chết ngoài biển là anh hùng à? Bố có nghĩ tới cảnh mẹ phải sống thế nào khi tàu dạt vào bờ mà không có người không? Hay bố chỉ yêu mỗi cái đống gỗ mục nát này?"</p>
+        <p>Đúng lúc hai cha con đang giằng co dữ dội, tiếng động cơ dưới khoang máy bỗng khục khặc hai tiếng rồi tắt ngấm. Con tàu mất đà, lập tức xoay ngang thân, nghiêng hẳn sang một bên hứng trọn một con sóng lớn tràn qua mạn tàu. Nước biển lạnh cóng ngập đến mắt cá chân.</p>
+        <p>"Chết tiệt! Tắc đường dầu rồi!" Owen hét lên, sắc mặt đổi hẳn. Cơn đau nhói đột ngột xé ngang ngực làm ông khựng lại, hơi thở đứt quãng.</p>
+        <p>Liam lập tức nhận ra tình thế sống còn. Không đợi bố chửi thêm, anh lao xuống khoang máy ngập mùi dầu mỡ, mặc kệ bộ quần áo đắt tiền bẩn thỉu, vừa lắng nghe lời chỉ dẫn gãy gọn của ông Owen từ trên boong vừa dùng cờ lê tháo van lọc dầu thông khí và bật máy bơm xả nước.</p>
+        <p>Suốt bốn mươi phút giữa biển sương mù đặc quánh, không ai nói thêm một lời oán trách nào. Owen ghì chặt bánh lái giữ mũi tàu đón sóng, còn Liam tay rướm máu vì cạnh sắt cứa liên tục bơm tay phụ giúp động cơ khởi động lại. Khi tiếng máy diesel cuối cùng cũng nổ giòn trở lại, hai cha con cùng đổ gục xuống sàn gỗ ướt sũng thở hồng hộc.</p>
+        <p>Chiều muộn, con tàu <em>Bà Sarah</em> lết được về tới bến cảng nhỏ yên sóng. Đèn từ quán rượu ven bờ đã bật sáng ấm áp. Owen tắt máy, buộc dây neo vào cọc gỗ. Ông đứng lặng nhìn mặt biển xám đang tối dần rất lâu, cảm nhận rõ nhịp đập dồn dập mong manh ngay trong lồng ngực mình.</p>
+        <p>Khi bước lên cầu cảng gỗ, Owen rút chùm chìa khóa đồng nặng trịch trong túi áo mưa, ném gọn vào lòng bàn tay đầy vết xước của Liam.</p>
+        <p>"Gọi cho thằng môi giới ở cảng dưới đi", ông nói cộc lốc, mắt không nhìn con trai. "Bán con tàu đi. Nhớ đòi nó đúng giá, gỗ sồi thân tàu vẫn còn tốt lắm."</p>
+        <p>Liam nắm chặt chùm chìa khóa lạnh buốt, khẽ gật đầu rồi khoác chiếc áo khô dự phòng lên đôi vai ướt sũng của cha. Hai người lặng lẽ đi cạnh nhau về phía ánh đèn vàng của thị trấn, nơi bữa tối nóng hổi đang chờ sẵn.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-13">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần XIII" data-en="Part XIII">Phần XIII</span></p>
+        <h2 class="story-part__title">Đêm mất điện trên sân thượng Tehran (Iran)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Thành phố Tehran rơi vào bóng tối lúc mười giờ tối vì sự cố cắt điện luân phiên giữa mùa thu khô lạnh. Từ sân thượng tầng năm khu chung cư cũ nằm gần chân dãy núi Alborz, hàng triệu ô cửa sổ đen ngòm trải dài tít tắp, chỉ còn vệt đèn pha ô tô loang loáng chạy dọc đường cao tốc phía dưới như một dòng sông lửa mỏng manh.</p>
+        <p>Mina, hai mươi ba tuổi, sinh viên kiến trúc năm cuối, ngồi bó gối tựa lưng vào chiếc bồn nước inox lạnh ngắt. Ngồi cạnh cô là Farhad, hai mươi lăm tuổi, tay ôm cây đàn guitar thùng cũ kỹ đã cạo sạch sơn. Mùi khói thuốc lá lẫn mùi không khí khô lạnh từ sườn núi thổi xuống làm tóc Mina bay lòa xòa trước trán.</p>
+        <p>Sáu giờ sáng mai, Farhad sẽ lên chuyến xe khách đi về phía biên giới Thổ Nhĩ Kỳ để rời khỏi đất nước bằng hộ chiếu vừa xin được sau hai năm chật vật. Ban nhạc ngầm của anh đã bị giải tán từ mùa xuân, và anh không thể chịu nổi cảm giác mỗi ngày mở mắt ra đều phải thu mình lại nhỏ hơn hôm qua.</p>
+        <p>"Em vẫn còn kịp thu dọn đồ đi cùng anh mà", Farhad nói nhỏ, ngón tay gảy nhẹ một dây đàn tạo ra âm thanh khô khốc. "Ở đây em vẽ bản thiết kế xong cũng có ai duyệt đâu."</p>
+        <p>"Em nói rồi, mẹ em vừa mổ mắt xong, chẳng có ai ở bên bà ngoài em cả", Mina đáp, giọng cố giữ bình thản nhưng hai hàm răng đã cắn chặt vào nhau. "Anh muốn chạy trốn thì cứ đi một mình, đừng lôi em ra làm lý do để anh đỡ áy náy."</p>
+        <p>"Anh không chạy trốn!" Farhad bật lên, giọng gay gắt rồi lập tức phải hạ xuống khi nghe tiếng còi xe tuần tra vọng lên từ đại lộ phía dưới. "Anh chỉ không muốn chết mòn ở tuổi hai mươi lăm! Em ở lại đây thì được gì? Năm năm nữa em sẽ lấy một gã nào đó gia đình sắp đặt rồi quên sạch cả việc em từng muốn xây bảo tàng!"</p>
+        <p>"Còn hơn là đi theo anh để rồi năm năm nữa chúng ta cãi nhau trong một căn phòng trọ lạnh cóng ở nước ngoài vì không trả nổi tiền nhà!"</p>
+        <p>Lời nói sắc như dao cứa vào khoảng không tối đen giữa hai người. Không ai nói thêm câu nào nữa. Cả hai đều biết một sự thật tàn nhẫn hơn mọi lời buộc tội: chẳng có cái chết nào bằng dao súng hay bệnh tật đang chờ họ ngày mai, nhưng khoảnh khắc chiếc xe khách lăn bánh lúc bình minh, phiên bản trẻ trung và yêu nhau điên cuồng nhất của cả hai sẽ chính thức chết hẳn. Một cái chết nhỏ, sạch sẽ và không thể hồi sinh.</p>
+        <p>Farhad thở ra một hơi dài, dựa đầu vào thành bồn nước. Anh không tranh cãi nữa, chỉ nhẹ nhàng đặt những ngón tay lên phím đàn, đánh lại bản nhạc không lời mà anh từng viết cho cô trong căn phòng hầm ẩm thấp năm ngoái. Không có loa phóng thanh, âm thanh gỗ mộc vang lên rất nhỏ, chỉ đủ cho hai người nghe thấy giữa màn đêm mênh mông của thành phố chín triệu dân. Anh gảy mạnh đến mức sợi dây sắt cứa rướm máu đầu ngón trỏ mà vẫn không dừng lại.</p>
+        <p>Mina không khóc thành tiếng. Cô chỉ xích lại gần, tựa hẳn đầu lên vai anh, nhắm mắt lại để ghi nhớ trọn vẹn mùi áo khoác da cũ và nhịp đập nóng hổi nơi ngực anh.</p>
+        <p>Đột nhiên, một tiếng <em>tạch</em> lớn vang lên từ trạm biến áp cuối phố. Cả thành phố phía dưới đồng loạt bừng sáng hàng triệu ánh đèn vàng và trắng chói lòa. Chảo vệ tinh và mấy giàn phơi quần áo trên sân thượng hiện rõ mồn một. Farhad đặt tay lên dây đàn chặn đứng nốt nhạc cuối cùng. Cả hai từ từ đứng dậy, biết rằng màn đêm dành riêng cho họ đã thực sự kết thúc.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-14">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần XIV" data-en="Part XIV">Phần XIV</span></p>
+        <h2 class="story-part__title">Con mèo mù ở bảo tàng Kyoto (Nhật Bản)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Hai giờ sáng trong khu trưng bày tượng cổ của bảo tàng tư nhân ở quận Higashiyama, Kyoto, nhiệt độ luôn được giữ cố định ở mười chín độ để bảo quản gỗ sơn mài. Không gian im ắng đến mức nghe rõ cả tiếng rè điện mờ nhạt từ hệ thống cảm biến chống trộm gắn trên trần cao.</p>
+        <p>Sato, năm mươi mốt tuổi, mặc bộ đồng phục bảo vệ màu xanh đen phẳng phiu, rọi tia đèn pin nhỏ dọc theo dãy tượng gỗ thời Kamakura. Ba năm trước, sau vụ ly hôn kéo dài và khoản nợ thua lỗ chứng khoán, vợ ông đưa con trai chuyển hẳn sang Osaka cắt đứt liên lạc. Từ đó, Sato nhận ca trực đêm ở đây để khỏi phải đối diện với ánh nắng ban ngày và những câu hỏi xã giao. Ông mắc chứng mất ngủ kinh niên, sống đều đặn, chính xác và vô hồn chẳng khác gì một pho tượng gỗ biết đi tuần.</p>
+        <p>Khi tia đèn pin quét ngang qua bệ đá của pho tượng Địa Tạng gỗ cổ nhất phòng, một tiếng động khẽ vang lên. Ngay sát góc tối chân bệ, một con mèo mướp gầy nhom, bộ lông ướt sũng nước mưa và mất hẳn một bên mắt trái đang cuộn tròn run rẩy. Chắc nó đã chui qua khe cửa thông gió bị hở ngoài vườn sỏi để tránh cơn mưa băng đang trút xuống Kyoto.</p>
+        <p>Đèn tín hiệu nhỏ màu đỏ trên góc trần chớp nháy: cảm biến chuyển động khu vực B vừa nhận diện vật thể lạ. Theo đúng quy trình nghiêm ngặt ghi trong sổ tay nhân viên, Sato phải lập tức mở hệ thống báo động nội bộ, dùng vợt lưới đuổi con vật ra ngoài trời mưa rét, rồi lập biên bản gửi ban quản lý trước sáu giờ sáng. Chỉ cần sai một bước, ông sẽ mất ngay công việc duy nhất giúp mình trả tiền thuê phòng trọ.</p>
+        <p>Sato đứng im, tia đèn pin chiếu thẳng vào con mắt duy nhất còn lành lặn của con mèo hoang. Nó không chạy, cũng chẳng gào lên, chỉ cụp hai tai xuống nhìn ông bằng ánh nhìn cam chịu của một sinh vật đã quen bị xua đuổi suốt cả cuộc đời.</p>
+        <p>Một ý nghĩ điên rồ nhưng nhẹ bẫng đột ngột chạy qua đầu Sato. Ông nhìn xung quanh căn phòng đầy những cổ vật hàng trăm năm tuổi được nâng niu trong lồng kính, rồi nhìn lại chính mình trong tấm kính phản chiếu mờ đục: một gã đàn ông năm mươi mốt tuổi đang sợ hãi một cái đèn báo động nhỏ xíu đến mức không dám cứu một con mèo sắp chết cóng.</p>
+        <p>Sato quay người đi tới hộp điều khiển góc hành lang, tra chìa khóa tắt tạm cảm biến khu vực B trong đúng mười lăm phút. Ông quay lại phòng trực lấy hộp cơm nắm cá hồi ăn dở, tách phần cá bên trong bỏ lên mảnh giấy ăn rồi quay vào đặt trước mặt con mèo. Ông ngồi bệt xuống sàn gỗ lạnh ngắt cạnh bệ tượng, lặng lẽ ngắm nó ăn ngấu nghiến trong khi bên ngoài cửa kính mưa mùa đông vẫn gõ đều lên khu vườn sỏi trắng.</p>
+        <p>Tám giờ sáng hôm sau, giám đốc bảo tàng triệu tập Sato lên văn phòng, chỉ thẳng vào đoạn băng ghi hình từ camera an ninh và đặt tờ quyết định sa thải ngay lập tức lên bàn vì hành vi tự ý vô hiệu hóa hệ thống an ninh.</p>
+        <p>Sato không hề van xin hay giải thích một lời nào. Ông bình thản ký tên, trả lại thẻ nhân viên và bộ đồng phục xanh đen sạch sẽ. Bước ra khỏi cánh cổng gỗ nặng nề của bảo tàng trong nắng sớm lạnh buốt của Kyoto, ông mở khuy áo khoác gió cho con mèo mù thò đầu ra hít thở khí trời. Chẳng có công việc, chẳng biết tháng sau lấy gì trả tiền nhà, thế mà ngay giữa con dốc lát đá vắng người, Sato bỗng bật cười thành tiếng, sảng khoái và nhẹ nhõm như vừa thoát khỏi một cỗ quan tài chật chội.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-15">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần XV" data-en="Part XV">Phần XV</span></p>
+        <h2 class="story-part__title">Ba giờ lẻ bảy (Việt Nam)</h2>
+      </header>
+      <div class="story-prose">
+        <p>Ánh sáng ập tới trước cả tiếng động.</p>
+        <p>Chị Diệp đang đứng bên cửa sổ cuối hành lang, nơi chị vừa mở hé một khe nhỏ chừng hai đốt ngón tay cho đỡ ngột. Quá nửa đêm, chị không tài nào ngủ nổi. Đi ngang qua phòng bốn thấy Quân đã ngủ gục bên chiếc máy tính bảng còn sáng, chị đẩy cây sào ra đứng cạnh cửa sổ, ôm chiếc hộp bánh quy thiếc trước ngực.</p>
+        <p>Trong hộp, kẹp dưới lớp chấm giấy vàng chanh là chiếc đồng hồ Poljot cũ của chồng chị, đứng chết ở ba giờ mười hai phút suốt hai mươi mốt năm nay. Ba lần chị mang ra thợ, người ta đều bảo máy tốt, bánh răng không hỏng, chỉ là nó không muốn chạy nữa. Đêm ông Thịnh mất ở bệnh viện quê nhà, chị đang theo chuyến tàu Bắc Nam, chuyến cuối cùng với tư cách phó tàu trước ngày nhận quyết định lên trưởng tàu. Bác sĩ gọi hai lần, chị vẫn không đổi ca. Đúng ba giờ mười hai phút sáng hôm ấy, tàu vào ga Đồng Hới, chị đang đứng bấm lỗ vé cho một anh khách ngủ gật thì ông trút hơi thở cuối cùng. Cô y tá kể lại, lúc còn tỉnh, ông chẳng hỏi chị ở đâu, chỉ hỏi tàu có chạy đúng giờ không. Mẩu giấy bìa cứng xỉn màu nằm dưới đáy hộp chính là chấm vé đêm đó. Hai mươi mốt năm, chị vẫn giữ nó vì nghĩ chưa giao nộp đủ vé thì chưa thể kết ca.</p>
+        <p>Bỗng một luồng sáng trắng quét ngang bức tường gạch ẩm của dãy nhà đối diện, trượt dài rồi vỡ ra thành từng ô vuông vàng rực chạy nối đuôi nhau vun vút.</p>
+        <p>Tiếng động theo sau ập tới. Ban đầu là tiếng sắt nghiến rít từ xa, rồi tiếng bánh tàu dập rầm rập trên thanh ray. Bức tường rung lên bần bật, ô kính cửa sổ kêu lạch cạch trong khung, cốc nước đặt trên bệ cửa gợn thành những vòng tròn đồng tâm.</p>
+        <p>Một đoàn tàu. Một đoàn tàu thật sự đang lao qua tuyến đường sắt ngay phía sau khuôn viên bệnh viện. Thứ âm thanh ấy đêm nào chị cũng nghe nhưng đã quen đến mức hòa lẫn vào ảo giác của mình.</p>
+        <p>Chị đứng bất động, nhìn từng toa tàu lướt qua khe cửa hẹp: toa hành lý tối om, toa ghế ngồi đèn sáng lưa thưa khách, mấy dãy toa giường nằm kéo kín rèm. Chị bật ra đếm theo bản năng. Hai mươi mốt, hai mươi hai, hai mươi ba. Cuối cùng là toa phát điện với chấm đèn đỏ nhấp nháy ở đuôi tàu, nhỏ dần rồi tan biến vào màn mưa đen đặc.</p>
+        <p>Tiếng ầm ĩ rút đi. Chị nhìn xuống nền gạch dưới chân mình.</p>
+        <p>Nền gạch đứng im phăng phắc. Cốc nước đã thôi rung. Cây sào truyền dịch khóa bánh đứng gọn bên tường, chai dịch trong suốt treo tít trên cao, từng giọt nước rơi chậm rãi xuống bầu đếm giọt, theo sợi dây nhựa mềm nối thẳng vào miếng băng keo trắng dán trên mu bàn tay trái của chị.</p>
+        <p>Đoàn tàu của chị chưa bao giờ chạy.</p>
+        <p>Chị cúi nhìn bộ quần áo mình đang mặc. Vải thô màu xanh da trời đã bạc trắng, khuy nhựa rẻ tiền, ống tay rộng thùng thình. Nó chẳng giống bộ đồng phục ngành đường sắt chút nào. Chị chỉ cố tin là nó giống.</p>
+        <p>Chị từ từ kéo tay áo trái lên.</p>
+        <p>Chiếc vòng nhựa trắng siết quanh cổ tay gầy, hằn hai vệt đỏ mờ. Chị đưa cổ tay lại gần bóng đèn hành lang, nheo mắt đọc dòng chữ đen in nhỏ chạy dọc mặt vòng:</p>
+        <blockquote><p><strong>TẠ THỊ DIỆP, 67T, GIƯỜNG 18, K. CHĂM SÓC GIẢM NHẸ</strong></p></blockquote>
+        <p>Bên dưới còn một dãy mã số và vài chữ viết tắt in đậm hơn, nhưng chị không đọc nữa. Tiếng dép cao su vừa dừng lại sau lưng chị.</p>
+        <p>Hạnh đứng ngay đó, tay ôm bảng kẹp giấy. Cô không nói gì, chỉ lặng lẽ nhìn chị, nhìn chiếc vòng nhựa lộ ra dưới ống tay áo vén cao, rồi cụp mắt xuống nền gạch.</p>
+        <p>Chị thả ống tay áo xuống.</p>
+        <p>"Danh sách em có mười tám", Hạnh cất tiếng, giọng khẽ như sợ làm vỡ sự yên tĩnh.</p>
+        <p>"Mười bảy."</p>
+        <p>"Bác đếm lại một lần nữa đi."</p>
+        <p>Lần này, câu nói của Hạnh nghe khác hẳn mọi đêm. Chị không cãi. Chị giơ ngón trỏ tay phải lên, chấm vào khoảng không, nhẩm đếm từng khuôn mặt sau những ô cửa kính từ đầu hành lang đến cuối dãy. Ông giường đầu. Quân. Bà cụ mới vào tóc còn ướt mưa. Từng người một.</p>
+        <p>Mười bảy.</p>
+        <p>Chị khựng lại, ngón tay vẫn lơ lửng giữa không trung. Cả dãy hành lang im phăng phắc. Chị chỉ nghe thấy tiếng thở của chính mình: ngắn, khô, khò khè ở cuối nhịp. Suốt ba mươi mốt năm nay, ngón trỏ ấy chỉ quen đếm thiên hạ, chưa một lần nào quay lại chỉ vào mình.</p>
+        <p>Chị từ từ hạ tay xuống. Đầu ngón trỏ chạm vào giữa ngực, qua lớp vải áo mỏng manh, cảm nhận một nhịp đập yếu ớt nhưng đều đặn bên dưới xương ức.</p>
+        <p>"Mười tám", chị nói.</p>
+        <p>Hạnh khẽ gật đầu.</p>
+        <p>Chị đẩy cây truyền dịch đi ngược dọc hành lang, tiếng bánh nhựa lọc cọc vang lên nghe hoàn toàn xa lạ với tiếng bánh sắt đường ray. Chị dừng lại trước tấm bảng trắng nhỏ treo bên khung cửa phòng bốn, tấm bảng chị đi qua trăm lần mà chưa bao giờ chịu đọc hết.</p>
+        <p>Trên nền bảng trắng, nét bút dạ xanh của Quân ngay ngắn, cứng cáp như chữ dân kỹ thuật:</p>
+        <blockquote><p><strong>TẤT CẢ CHÚNG TA ĐỀU ĐANG TIẾN VỀ PHÍA CÁI CHẾT TẤT YẾU.</strong></p></blockquote>
+        <p>Ngay bên dưới, viết bằng nét chữ nhỏ hơn, nguệch ngoạc như vừa mới thêm vào lúc rảnh rỗi:</p>
+        <blockquote><p><em>Ghi chú: Chị Diệp bấm vé rất đẹp. Lỗ tròn, không rách.</em></p></blockquote>
+        <p>Chị đứng nhìn dòng chữ rất lâu. Mắt chị không ướt, chỉ thấy nơi cổ họng nghẹn cứng một cục, mãi mới nuốt trôi.</p>
+        <p>Trời ngoài cửa sổ bắt đầu chuyển sang màu xám nhạt. Từ phía khu bếp tầng dưới, mùi cháo gạo mới nấu thoang thoảng bay lên. Chị mở nắp hộp bánh quy thiếc, nhón lấy mẩu vé giấy bìa cứng cũ xỉn nằm dưới cùng cạnh chiếc đồng hồ Poljot, ngắm nó một hồi lâu rồi nhẹ nhàng đặt lại vào đáy hộp, đậy nắp thiếc thật kín.</p>
+        <p>Hạnh bước tới bên cạnh, không cười, chỉ rút một tờ phiếu báo ăn màu vàng chanh còn mới nguyên từ xấp giấy kẹp dưới tay, đưa cho chị.</p>
+        <p>"Phiếu của bác này."</p>
+        <p>Chị cầm lấy. Tờ giấy mỏng, hơi ẩm sương sớm, thoang thoảng mùi mực. Từ ngày vào đây, chị đã thu phiếu của tất cả mọi người, chưa bao giờ cầm một tờ cho riêng mình.</p>
+        <p>Chị đẩy cây truyền dịch về phòng sáu, ngồi xuống mép giường số mười tám ở góc cuối phòng. Chị đặt hộp bánh quy lên gối, trải tờ phiếu trên đùi, cầm cây bút bi Hạnh để quên trên mặt tủ rồi nắn nót đánh dấu.</p>
+        <p>Cháo trắng. Một ô.</p>
+        <p>Sữa đậu nành. Một ô nữa.</p>
+        <p>Chị dừng tay, nhìn xuống dòng chữ in nhỏ phía cuối bảng, những món chị chưa từng để ý tới. Ngòi bút lơ lửng một thoáng trên ô cuối cùng, ô <em>thêm hoa quả</em>, rồi chị dứt khoát gạch một nét.</p>
+        <p>Tay chị lại tìm thấy chiếc kìm đồng thau trong túi áo.</p>
+        <p>Chị nâng tờ phiếu lên, đưa mép giấy vào giữa hai lưỡi kìm rồi bóp nhẹ.</p>
+        <p><em>Tách.</em></p>
+        <p>Chấm giấy tròn màu vàng chanh rơi gọn vào lòng bàn tay. Chị nhìn nó, lần này không bỏ vào hộp bánh quy nữa. Chị giơ tờ phiếu lên ngang tầm mắt, hướng về phía ô cửa sổ đang hửng sáng sau cơn mưa. Qua cái lỗ tròn nhỏ xíu ở góc giấy, tia sáng nhạt của buổi sớm mai xuyên qua, in lên bức tường trắng đối diện một đốm sáng tròn như đồng xu, rung nhè nhẹ theo nhịp tay chị.</p>
+      </div>
+      <p class="story-end" data-i18n data-vi="— HẾT —" data-en="— THE END —">— HẾT —</p>
+    </article>
+  </section>
+
+  <aside class="story-next" aria-label="Đọc tiếp" data-aria-vi="Đọc tiếp" data-aria-en="Read next">
+    <p class="story-next__label" data-i18n data-vi="Đọc tiếp truyện ngắn khác" data-en="Read another short story">Đọc tiếp truyện ngắn khác</p>
+    <a class="split-row__link" href="../ngon-hai-dang-cuoi-cung/">
+      <div class="split-row">
+        <div class="split-row__body">
+          <h3 class="split-row__title" data-i18n data-vi="Ngọn hải đăng cuối cùng" data-en="The Last Lighthouse">Ngọn hải đăng cuối cùng</h3>
+          <p class="split-row__blurb" data-i18n data-vi="Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng — cho đến ngày cơn bão số Chín ập xuống." data-en="For nearly half a century, Old Tu has climbed forty-two laterite steps to light Mũi Đá Dựng — until Typhoon Nine strikes.">Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng — cho đến ngày cơn bão số Chín ập xuống.</p>
+          <span class="split-row__cta">
+            <span data-i18n data-vi="Đọc truyện này" data-en="Read this story">Đọc truyện này</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+  </aside>
+
+  <footer class="foot-letter">
+    <p class="foot-letter__close" data-i18n data-vi="Cảm ơn bạn đã dành thời gian đọc hết câu chuyện này." data-en="Thank you for spending time with this story.">
+      Cảm ơn bạn đã dành thời gian đọc hết câu chuyện này.<br>
+      <span class="foot-letter__sign">- ruii9326</span>
+    </p>
+
+    <div class="foot-letter__row">
+      <a href="https://youtube.com/@ruii9326" aria-label="YouTube">
+        <svg viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M5 6.5H19A4 4 0 0 1 23 10.5V13.5A4 4 0 0 1 19 17.5H5A4 4 0 0 1 1 13.5V10.5A4 4 0 0 1 5 6.5ZM10 9.7L10 14.3L16 12Z"/></svg>
+      </a>
+      <span class="sep">·</span>
+      <a href="https://x.com/ruii9326" aria-label="X">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8.1-9.3L1 2h7l4.8 6.3L18.9 2Zm-1.2 18h1.9L7.4 4H5.4l12.3 16Z"/></svg>
+      </a>
+      <span class="sep">·</span>
+      <a href="https://facebook.com/ruii9326" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-letter__copyright" data-i18n data-vi="© 2026 Nguyễn Duy Anh (bút danh: ruii9326)." data-en="© 2026 Nguyen Duy Anh (pen name: ruii9326).">
+      © 2026 Nguyễn Duy Anh (bút danh: ruii9326).
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  window.RUII9326_PAGE = {
+    titleVi: 'ruii9326 - Tất cả chúng ta đều đang tiến về phía cái chết tất yếu',
+    titleEn: 'ruii9326 - We Are All Moving Toward Inevitable Death',
+    descVi: 'Truyện ngắn Tất cả chúng ta đều đang tiến về phía cái chết tất yếu của ruii9326.',
+    descEn: 'Short story We Are All Moving Toward Inevitable Death by ruii9326.'
+  };
+</script>
+<script src="../../script/site.js"></script>
+</body>
+</html>

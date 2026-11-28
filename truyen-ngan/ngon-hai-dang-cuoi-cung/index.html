@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('ruii9326-theme');
+    var theme = saved === 'dark' || saved === 'light'
+      ? saved
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent) && !(window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches);
+    if (canLiquid) document.documentElement.classList.add('lg-can');
+    var glass = canLiquid ? (localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid') : 'classic';
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-glass-mode', glass);
+  } catch (e) {
+    document.documentElement.setAttribute('data-glass-mode', 'classic');
+  }
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ruii9326 - Ngọn hải đăng cuối cùng</title>
+<meta name="description" content="Truyện ngắn Ngọn hải đăng cuối cùng của ruii9326.">
+<link rel="canonical" href="https://ruii9326.github.io/truyen-ngan/ngon-hai-dang-cuoi-cung/">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="ruii9326">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:title" content="ruii9326 - Ngọn hải đăng cuối cùng">
+<meta property="og:description" content="Truyện ngắn Ngọn hải đăng cuối cùng của ruii9326.">
+<meta property="og:url" content="https://ruii9326.github.io/truyen-ngan/ngon-hai-dang-cuoi-cung/">
+<meta property="og:image" content="https://ruii9326.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../style/site.css">
+<link rel="stylesheet" href="../../style/story.css">
+</head>
+<body>
+
+  <a href="#" id="backLink" class="back-link-icon" data-fallback="../../" aria-label="Quay lại" data-aria-vi="Quay lại" data-aria-en="Go back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+  </a>
+
+  <div class="settings-menu" id="settingsMenu">
+    <button class="menu-toggle" type="button" id="settingsMenuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="settingsPopover" aria-label="Cài đặt" data-aria-vi="Cài đặt" data-aria-en="Settings">
+      <span class="menu-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+    <div class="settings-popover" id="settingsPopover" role="menu">
+      <div class="settings-group">
+        <p class="settings-group-label" data-i18n data-vi="Ngôn ngữ" data-en="Language">Ngôn ngữ</p>
+        <div class="language-switcher" id="languageSwitcher" role="group" aria-label="Ngôn ngữ / Language">
+          <button class="lang-btn active" type="button" data-lang="vi" aria-pressed="true">VI</button>
+          <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+      <div class="settings-divider" role="separator"></div>
+      <div class="settings-group">
+        <p class="settings-group-label" data-i18n data-vi="Giao diện" data-en="Theme">Giao diện</p>
+        <div class="theme-switcher" id="themeSwitcher" role="group" aria-label="Giao diện sáng / tối" data-aria-vi="Giao diện sáng / tối" data-aria-en="Light / dark theme">
+          <button class="theme-btn active" type="button" data-theme-choice="light" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            <span data-i18n data-vi="Sáng" data-en="Light">Sáng</span>
+          </button>
+          <button class="theme-btn" type="button" data-theme-choice="dark" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+            <span data-i18n data-vi="Tối" data-en="Dark">Tối</span>
+          </button>
+        </div>
+      </div>
+      <div class="settings-divider glass-opt" role="separator"></div>
+      <div class="settings-group glass-opt">
+        <p class="settings-group-label" data-i18n data-vi="Hiệu ứng kính" data-en="Glass effect">Hiệu ứng kính</p>
+        <div class="glass-switcher" id="glassSwitcher" role="group" aria-label="Hiệu ứng kính" data-aria-vi="Hiệu ứng kính" data-aria-en="Glass effect">
+          <span class="lg-thumb" aria-hidden="true"></span>
+          <button class="glass-btn active" type="button" data-glass-choice="liquid" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5s6 6.2 6 10.5a6 6 0 0 1-12 0C6 8.7 12 2.5 12 2.5Z"/></svg>
+            <span data-i18n data-vi="Liquid" data-en="Liquid">Liquid</span>
+          </button>
+          <button class="glass-btn" type="button" data-glass-choice="classic" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>
+            <span data-i18n data-vi="Cổ điển" data-en="Classic">Cổ điển</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Về mục lục" data-aria-vi="Về mục lục" data-aria-en="Back to contents">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+  </button>
+
+<main id="main">
+
+  <header class="mast">
+    <div class="mast-pill">
+      <p class="mast-line">
+        <a href="../../" data-i18n data-vi="← Về Trang Chủ ruii9326" data-en="← Back to ruii9326 Home">← Về Trang Chủ ruii9326</a>
+      </p>
+      <p class="mast-name" data-i18n data-vi="Truyện ngắn" data-en="Short Story">Truyện ngắn</p>
+    </div>
+  </header>
+
+  <header class="story-hero">
+    <div class="reveal" style="--i:0">
+      <p class="story-eyebrow" data-i18n data-vi="Truyện ngắn · ruii9326" data-en="Short Story · ruii9326">Truyện ngắn · ruii9326</p>
+      <h1>Ngọn hải đăng cuối cùng</h1>
+      <p class="story-tagline" data-i18n data-vi="Bốn mươi hai bậc thang đá ong, một ngọn đèn cũ và sợi dây nối lại hai cha con giữa đêm bão." data-en="Forty-two laterite steps, an old lamp, and a storm that reunites father and son.">Bốn mươi hai bậc thang đá ong, một ngọn đèn cũ và sợi dây nối lại hai cha con giữa đêm bão.</p>
+    </div>
+    <div class="story-meta reveal" style="--i:1">
+      <span class="mini-pill"><span class="dot" aria-hidden="true"></span><span data-i18n data-vi="9 phần" data-en="9 parts">9 phần</span></span>
+      <span class="mini-pill"><span data-i18n data-vi="Hoàn chỉnh" data-en="Complete">Hoàn chỉnh</span></span>
+    </div>
+    <p class="story-lang-note" data-i18n data-vi="Tác phẩm được viết nguyên bản bằng tiếng Việt." data-en="This short story is presented in its original Vietnamese prose."></p>
+  </header>
+
+  <nav class="toc" id="toc" aria-label="Mục lục truyện" data-aria-vi="Mục lục truyện" data-aria-en="Story contents">
+    <div class="toc-card">
+      <span class="toc-rule" aria-hidden="true"></span>
+      <div class="toc-head">
+        <h2 class="toc-title" data-i18n data-vi="Mục Lục" data-en="Contents">Mục Lục</h2>
+        <span class="toc-orn" aria-hidden="true"><i></i></span>
+      </div>
+      <ol class="toc-list">
+        <li>
+          <a class="toc-link" href="#part-1">
+            <span class="toc-label">Mũi Đá Dựng</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">I</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-2">
+            <span class="toc-label">Nguyệt</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">II</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-3">
+            <span class="toc-label">Người đi xa</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">III</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-4">
+            <span class="toc-label">Chuyến đi bất đắc dĩ</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">IV</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-5">
+            <span class="toc-label">Đêm bên phòng đèn</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">V</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-6">
+            <span class="toc-label">Vết rạn</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">VI</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-7">
+            <span class="toc-label">Cha và con</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">VII</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-8">
+            <span class="toc-label">Cơn bão số Chín</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">VIII</span>
+          </a>
+        </li>
+        <li>
+          <a class="toc-link" href="#part-9">
+            <span class="toc-label">Sau cơn bão</span>
+            <span class="toc-dots" aria-hidden="true"></span>
+            <span class="toc-num" aria-hidden="true">IX</span>
+          </a>
+        </li>
+      </ol>
+      <span class="toc-rule" aria-hidden="true"></span>
+    </div>
+  </nav>
+
+  <section class="story-body" aria-label="Nội dung truyện" data-aria-vi="Nội dung truyện" data-aria-en="Story text">
+    <article class="now-card story-part" id="part-1">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần I" data-en="Part I">Phần I</span></p>
+        <h2 class="story-part__title">Mũi Đá Dựng</h2>
+      </header>
+      <div class="story-prose">
+        <p>Chiều nào cũng vậy, hễ nắng bắt đầu xiên qua rặng phi lao phía tây xóm Gành, ông Tư lại men theo bốn mươi hai bậc thang xoáy ốc leo lên đỉnh tháp. Đá ong lâu năm mòn vẹt, lõm hẳn xuống ở giữa theo dấu chân hai đời người giữ đèn. Khớp gối ông giờ khô khốc, mỗi bước nhấc lên lại kêu lạo xạo trong ống quần vải sờn. Vậy mà suốt gần nửa thế kỷ qua, chưa có lấy một buổi chiều ông trễ giờ đèn.</p>
+        <p>Hải đăng Mũi Đá Dựng chỉ là một cây tháp tròn quét vôi trắng, cao chừng mười lăm mét, xây từ thời Pháp trên mỏm đá chồm hẳn ra biển. Dưới chân mỏm đá là dải ngầm lởm chởm từng đánh vỡ không biết bao nhiêu mạn ghe trước khi ngọn đèn này sáng lên. Mười năm nay, trên tỉnh cho dựng một ngọn hải đăng mới cách đó bảy cây số về phía nam, cao to, chạy tự động hoàn toàn để dẫn luồng tàu lớn. Cái tháp cũ của ông Tư lập tức rơi vào diện "công trình phụ trợ, chờ thanh lý". Mấy ông cán bộ nói vậy, chứ dân đánh cá gần bờ trong xóm thì không. Ngọn đèn mới đứng tuốt đằng kia, ánh sáng quét ngang chứ có rọi tới chân Mũi Đá Dựng đâu. Ghe nhỏ chiều tối chạy về gặp sóng lớn, cứ phải nhắm chùm sáng vàng đục của ông Tư mà né bãi đá ngầm.</p>
+        <p>Ông Tư năm nay bảy mươi sáu. Da mặt ông sạm như vỏ tràm, bàn tay nổi gân xanh chằng chịt, mắt mờ dần theo tuổi nhưng nhìn ra biển vẫn tinh. Sáng ông quét dọn chân tháp, lấy giẻ mềm lau từng múi kính Fresnel, châm nhớt vào dàn bánh răng đồng đã hết đồ thay từ đời nào. Trưa rảnh, ông mang lưới ra hiên vá mướn cho mấy nhà trong xóm. Khoản phụ cấp ba trăm ngàn mỗi tháng xã phát gọi là tiền trông coi, đong vài chục ký gạo là hết nhẵn. Chiều xuống, ông lại lụi cụi leo thang.</p>
+        <p>Bên kia vịnh, mấy giàn cần cẩu thép vươn cao lêu nghêu, đèn pha sáng choang suốt đêm. Ba năm trước chỗ đó còn là bãi dương liễu, con nít xóm Gành chiều chiều ra đào còng, thả diều. Giờ khu nghỉ dưỡng năm sao đã lên quá nửa phần thô, hắt ánh sáng trắng lóa ra tận mặt nước, làm nhòa sạch mấy chòm sao ông vẫn dùng để coi trời trở gió hồi còn trẻ. Ông Tư không ghét chuyện làm ăn mới mẻ. Ông chỉ hay ngồi ngó sang bên đó, tự hỏi sao người ta muốn cất cái mới lên thì y như rằng phải ủi sạch những thứ cũ kỹ dưới chân đi.</p>
+        <p>Trên cái bàn gỗ đóng ván tạp trong phòng đèn, kế cuốn sổ ghi thời tiết đã quăn góc, có kẹp một tấm hình trắng đen ố vàng. Trong hình, một thanh niên mặc áo sơ mi bạc màu đứng cạnh cô gái mặc đồ bà ba, cả hai cười híp mắt, sau lưng là ngọn hải đăng tường vôi còn trắng tinh chưa rêu phong. Chiều nào trước khi gạt cái công tắc đồng đã lên ten xanh, ông cũng liếc qua tấm hình một cái. Dạo này tay ông hay run, chạm vào cần gạt nghe cả tiếng kim loại va nhẹ lách cách.</p>
+        <p>Vừa bước lên tới sàn đèn thì dưới nhà có tiếng chuông điện thoại bàn réo lên. Cái máy cũ rích phủ bụi cả tháng trời mới đổ chuông một lần, làm ông khựng tay lại. Số máy này ông chỉ cho đúng một người. Chẳng cần đoán cũng biết là Sơn, thằng con trai duy nhất bỏ xóm đi biền biệt hai mươi sáu năm, đếm trên đầu ngón tay mới về đúng ba lượt.</p>
+        <p>Ông Tư đứng im trên đỉnh tháp, để chuông reo thêm mấy hồi nữa, mắt nhìn mặt biển đang sậm màu dần dưới ráng chiều. Rồi ông mới vịn tay vào lan can sắt, chậm rãi bước xuống từng bậc đá.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-2">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần II" data-en="Part II">Phần II</span></p>
+        <h2 class="story-part__title">Nguyệt</h2>
+      </header>
+      <div class="story-prose">
+        <p>"Ba hả? Con Sơn đây."</p>
+        <p>Giọng nó trong ống nghe vẫn giữ cái nhịp vội vã của người quen nói chuyện công việc hơn là nói với người nhà. Ông Tư kéo chiếc ghế mây ra ngồi, im lặng mấy giây, để tiếng sóng vỗ ngoài gành lọt qua khung cửa gỗ vào thế chỗ cho khoảng trống giữa hai cha con.</p>
+        <p>"Ừ, ba nghe," giọng ông khàn đặc.</p>
+        <p>"Tuần sau con có việc công ty ở gần ngoài đó. Con tính ghé về thăm ba mấy bữa, dẫn theo con Linh nữa, cho nó nghỉ hè."</p>
+        <p>Tay ông Tư siết nhẹ lấy ống nghe. "Ừ, về đi. Để ba dọn dẹp lại cái buồng trong."</p>
+        <p>Cuộc gọi gọn lỏn, vừa đủ đầu đuôi, cúp máy xong là căn nhà rơi tõm vào bóng tối nhá nhem. Ông Tư không buồn đứng dậy bật đèn. Ngồi một mình trong khoảng tranh tối tranh sáng này, chuyện cũ cứ tự nhiên ùa về, rõ mồn một như mới hôm qua.</p>
+        <p>Ông không phải dân gốc xóm Gành. Hòa bình lập lại, ông theo cha về đây tiếp quản cái hải đăng người Pháp bỏ lại. Cha ông từng đi tàu, biết chút chữ nghĩa nên được giao giữ đèn. Hồi đó ông Tư mới hai mươi hai, chưa vợ con, chẳng nghề ngỗng gì, cứ quanh quẩn dưới chân tháp phụ cha quét dọn, châm dầu, hôm nào cha trở trời đau khớp thì leo lên canh đèn thay.</p>
+        <p>Ông gặp Nguyệt ở chợ phiên gần đình làng, lúc bà đang đặt đôi quang gánh đầy mực ống còn óng ánh nước biển xuống đất. Con gái nhà chài, dáng dong dỏng, ăn nói rổn rảng mà nụ cười hiền đến lạ. Hai năm sau họ cưới nhau, nhằm mùa biển êm ru cả tháng trời. Mấy bà già trong xóm bảo điềm lành.</p>
+        <p>Mấy năm bao cấp sau đó đói quay đói quắt. Gạo mua sổ, cá đánh lên chia phần cho hợp tác xã. Căn nhà nhỏ dưới chân tháp tới mùa mưa dột tứ tung, Nguyệt phải bê mấy cái thau nhôm ra hứng giữa nền bếp, tiếng nước rơi tong tỏng suốt đêm. Cực vậy mà cứ cơm nước xong, hai vợ chồng lại ra bậc thềm đá ngồi hóng gió, ngó quầng đèn trên đỉnh tháp quét qua mặt biển đen ngòm. Chẳng ai nói gì, chỉ nghe tiếng sóng với tiếng thở đều của nhau mà thấy nhẹ lòng.</p>
+        <p>Cha mất, ông Tư thành người giữ đèn chính thức. Đêm đầu tiên sau đám tang, một mình ông xách can dầu leo lên tháp, hai tay run bần bật suýt tuột quai. Quay lại đã thấy Nguyệt đứng ngay bậc thang cuối, lặng lẽ đưa tay đỡ lấy bình dầu. Bà đứng đó suốt cho tới khi tim đèn cháy đều. Từ đêm ấy, ngọn đèn là việc của hai vợ chồng, dù trên giấy tờ xã chỉ ghi tên một mình ông.</p>
+        <p>Hai lần sẩy thai khiến cả hai gần như tắt hy vọng, mãi tới năm ông ba mươi mốt tuổi, thằng Sơn mới chịu ra đời. Đêm đó ông đứng trên phòng đèn, tay lại run, mà là run vì mừng tới nghẹt thở. Ông đặt tên con là Sơn, mong nó đứng vững như núi, dẫu nhà ở sát mép sóng chẳng có lấy một ngọn đồi nào quanh đây.</p>
+        <p>Con lớn lên, rời xóm đi học rồi ở lại thành phố lập nghiệp, lấy vợ sinh con. Mãi đến năm Sơn ngoài ba mươi, Nguyệt mới phát bệnh. Lúc đầu chỉ là mấy cơn đau bụng âm ỉ, bà tiếc tiền cứ ra tiệm thuốc tây ngoài chợ mua mấy liều giảm đau uống cho qua. Đến lúc ôm bụng gục xuống nền bếp, ông mượn ghe rồi thuê xe đưa lên bệnh viện tỉnh mất gần ba tiếng đường đất đỏ, bác sĩ nhìn phim chụp xong chỉ lắc đầu. Ung thư giai đoạn cuối.</p>
+        <p>Sáu tháng sau bà đi, nhằm một đêm gió chướng thổi rát mặt, sóng đập vào chân mỏm đá ầm ầm như muốn bứng cả căn nhà lên. Ông Tư ngồi bên giường nắm bàn tay chỉ còn da bọc xương của vợ cho tới lúc bà trút hơi thở cuối cùng. Ông không khóc ngay. Chiều đang xuống, trời mù mịt, ngoài khơi còn mấy chiếc ghe chưa kịp vô lạch. Ông vuốt mắt cho vợ, đắp lại tấm mền mỏng, rồi đứng dậy ra ngoài leo lên bốn mươi hai bậc thang thắp đèn.</p>
+        <p>Phải tới khi dàn bánh răng bắt đầu quay đều, luồng sáng quét vòng đầu tiên ra mặt biển, ông mới ngồi thụp xuống sàn xi măng, úp mặt vào hai bàn tay chai sạn mà khóc không thành tiếng.</p>
+        <p>Từ ngày Nguyệt mất, mấy lần trên xã xuống nói chuyện cho ông nghỉ, đóng cửa cái tháp cũ. Ông cứ ậm ừ rồi lờ đi. Ông đâu nói với ai được rằng, mỗi lần gạt cái công tắc đồng ấy lên, ông có cảm giác bà vẫn đang đứng ngay sau lưng mình ở bậc thang cuối cùng.</p>
+        <p>Đêm nay, cúp máy với con xong, ông Tư lại chầm chậm leo lên tháp dù đèn đã sáng từ chiều. Gió biển thổi tung vạt áo bà ba cũ. Ông nhìn về phía ánh đèn tự động nhấp nháy xa tít phía nam, khẽ lầm bầm trong gió:</p>
+        <p>"Thằng Sơn sắp về đó Nguyệt. Nó dẫn cả con Linh về nữa."</p>
+        <p>Dưới chân vách đá, sóng vẫn vỗ đều một nhịp như suốt mấy chục năm nay.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-3">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần III" data-en="Part III">Phần III</span></p>
+        <h2 class="story-part__title">Người đi xa</h2>
+      </header>
+      <div class="story-prose">
+        <p>Đứng bên khung cửa kính tầng hai mươi mốt giữa trung tâm thành phố, Sơn nhìn xuống dòng xe cộ nối đuôi nhau sáng rực như một con sông lửa. Chiếc điện thoại vẫn còn ấm trong lòng bàn tay. Khoảng im lặng của cha ở đầu dây bên kia khiến ông thấy bứt rứt, dù mới nửa tiếng trước ông vừa chủ trì xong cuộc họp dự án với cả hội đồng quản trị.</p>
+        <p>Bốn mươi lăm tuổi, Phó Tổng Giám đốc phụ trách phát triển dự án của Tập đoàn Đại Dương Xanh, Sơn có đủ thứ mà thằng bé mười chín tuổi ngày xưa xách ba lô rời xóm Gành không dám mơ tới: xe riêng, văn phòng nhìn ra sông Sài Gòn, tiếng nói có trọng lượng trong giới bất động sản nghỉ dưỡng phía Nam. Vậy mà mỗi lần gọi về nhà, cái cảm giác lép vế ngày cũ lại trỗi dậy.</p>
+        <p>Tuổi thơ của ông đặc quánh mùi dầu ma-zút trộn mùi cá khô và gió mặn. Là tiếng bước chân cha gõ đều lên cầu thang đá mỗi chiều, là bữa cơm quanh năm cá nục kho mặn với rau muống luộc. Ông vẫn nhớ như in năm lên trường huyện học cấp ba, bạn bè hỏi ba làm nghề gì, ông đã chột dạ nói trệch thành "cán bộ hàng hải". Hồi đó ông sợ cái chữ "gác đèn" nghe quê mùa, lạc hậu trước đám bạn phố huyện.</p>
+        <p>Trong nhà, ông gần má hơn gần ba. Chỉ có má chịu ngồi nghe ông luyên thuyên chuyện lên Sài Gòn học đại học, chuyện làm giàu. Ngày ông đậu trường Kinh tế, ba lặng thinh mấy ngày liền, không hẳn vì tiếc tiền, mà ông biết ba sợ ông đi rồi là mất hút luôn. Cuối cùng chính má tháo đôi bông tai cưới duy nhất còn giữ trong đáy rương đem bán, gói tiền nhét vào túi áo ông tiễn ra bến xe.</p>
+        <p>Ra trường đúng lúc thị trường bất động sản lên cơn sốt, Sơn lao vào làm việc như người bị đuổi sau lưng. Ông giỏi xoay xở, liều lĩnh và chịu cày, chỉ vì một nỗi sợ mơ hồ rằng hễ mình dừng lại một chút thôi là cái nghèo sẽ kéo tuột ông về lại căn nhà dột nát dưới chân tháp. Quanh năm hết dự án này tới công trình khác, ông cưới Hạnh, sinh con gái, thời gian dành cho gia đình còn chắt chiu từng chút huống hồ đường về xóm Gành xa lắc.</p>
+        <p>Năm má phát bệnh nặng, ông đang ở Singapore đàm phán một thương vụ lớn với đối tác ngoại. Nghe điện thoại ba gọi báo tin má yếu lắm, ông đã đặt vé bay ngay hôm đó. Nhưng phía đối tác bất ngờ đòi rà soát lại điều khoản, sếp trực tiếp gọi điện nài nỉ ông nán lại thêm ba ngày cho xong chữ ký. Ông chép miệng nghĩ ba ngày chắc không sao, má mới uống thuốc đợt mới.</p>
+        <p>Ông đã tính sai. Khi ông cùng Hạnh dắt con Linh lúc đó mới bốn tuổi vượt đường đất đỏ về tới xóm Gành, mộ má đã đắp xong từ hai hôm trước, khói nhang trên bàn thờ còn chưa kịp tan. Ông quỳ xuống trước di ảnh má mà đầu óc trống rỗng. Mọi lý do về chuyến bay, về hợp đồng, về tương lai công ty bỗng trở nên lố bịch đến tàn nhẫn.</p>
+        <p>Kể từ chuyến cúng mở cửa mả đó, ông không về thêm lần nào nữa. Ba không trách nửa lời, nhưng cái nhìn điềm tĩnh của ông cụ mỗi khi chạm mặt lại làm Sơn thấy mình trần trụi. Suốt hai mươi sáu năm đi xa, ông chỉ về đúng ba lần: một lần xin cưới vợ, một lần đưa Linh mới đầy năm về trình mặt nội, và lần cuối là đám tang má mà ông đến muộn.</p>
+        <p>Chuyến về lần này lại càng trớ trêu hơn.</p>
+        <p>Ba tháng trước, tập đoàn trúng thầu khu tổ hợp nghỉ dưỡng cao cấp trải dài bờ biển, nuốt trọn cả mỏm Mũi Đá Dựng. Sơn được chỉ định làm trưởng dự án. Lúc mở bản vẽ quy hoạch, thấy nét mực đỏ khoanh phăng qua vị trí ngọn hải đăng cũ, tay ông khựng lại. Ông không xin rút. Ông tự thuyết phục mình rằng cứ để ông trực tiếp cầm trịch còn hơn rơi vào tay người khác. Ít ra ông sẽ tính toán mức đền bù hậu hĩnh nhất, thu xếp cho ba lên thành phố sống chung với vợ chồng ông cho an nhàn tuổi già.</p>
+        <p>Lý lẽ đó nghe rất xuôi tai, chỉ có điều mãi đến lúc sắp xếp đồ đạc về quê, ông vẫn chưa mở miệng nói với cha nửa chữ về cái dự án kia.</p>
+        <p>Tối trước ngày đi, Hạnh đứng gấp áo sơ mi cho ông, chợt liếc sang phòng con gái rồi bảo: "Anh dẫn con Linh theo đi. Dạo này nó cứ ru rú trong phòng dán mắt vô điện thoại, hỏi gì cũng gắt. Về biển mấy bữa không có mạng mẽo, biết đâu nó đỡ lì hơn."</p>
+        <p>Sơn gật đầu. Ông không ngờ chuyến đi tránh mạng của con bé lại xáo tung tất cả những tính toán gọn gàng mà ông đã vạch sẵn trong đầu.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-4">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần IV" data-en="Part IV">Phần IV</span></p>
+        <h2 class="story-part__title">Chuyến đi bất đắc dĩ</h2>
+      </header>
+      <div class="story-prose">
+        <p>Linh mười sáu tuổi, chuẩn bị lên lớp mười một. Trong nhóm chat với tụi bạn thân ở Sài Gòn, nó gọi chuyến đi này là "đi đày", chỉ vì ba mẹ nổi hứng muốn cai điện thoại cho con.</p>
+        <p>Gần năm tiếng ngồi xe từ thành phố về xóm Gành, Linh đeo tai nghe, mắt không rời màn hình cho tới khi xe rẽ vào con đường đất đỏ lởm chởm ổ gà thì cột sóng tụt sạch. Nó tháo tai nghe, miễn cưỡng nhìn ra cửa kính. Hai bên đường toàn nhà tôn thấp lè tè, mấy giàn tre phơi cá khô bốc mùi mặn nồng làm nó nhăn mặt. Cuối con dốc, một cái tháp trắng cũ kỹ hiện ra giữa nền trời xám nhạt.</p>
+        <p>"Nhà ông nội đó con," Sơn hất cằm chỉ.</p>
+        <p>"Cái tháp đó là hải đăng hả ba?"</p>
+        <p>"Ừ. Ông nội giữ đèn trên đó gần năm chục năm rồi."</p>
+        <p>Linh im lặng. Trong trí nhớ mờ nhạt của nó, ông nội chỉ là một bóng người gầy gò đứng bên bàn thờ nghi ngút khói hương hồi nó còn bé xíu, không rõ mặt.</p>
+        <p>Xe dừng trước khoảng sân đầy cát. Ông Tư đã đứng sẵn ở bậc thềm, dáng người nhỏ thó nhưng lưng vẫn thẳng, đôi mắt sâu hõm nhìn nó chăm chú khiến Linh hơi chột dạ.</p>
+        <p>"Con là Linh đó hả? Lớn bổng lên rồi ha." Giọng ông khàn mà ấm.</p>
+        <p>"Dạ, con chào ông nội," Linh lí nhí, tay bám chặt quai ba lô.</p>
+        <p>Cảnh hai cha con gặp nhau còn ngượng ngập hơn. Sơn bước tới đưa tay ra, ông Tư khựng lại nửa giây rồi mới nắm lấy. Cái bắt tay nhanh, khô khốc, chẳng khác gì hai người quen sơ lâu ngày chạm mặt.</p>
+        <p>"Ba vẫn khỏe chứ?" Sơn hỏi.</p>
+        <p>"Vẫn vậy thôi," ông Tư đáp gọn, rồi cúi xuống xách cái túi vải của Linh vào nhà, cắt ngang câu chuyện.</p>
+        <p>Đêm đầu tiên ở xóm Gành dài như vô tận đối với Linh. Giường ván trải chiếu cói cứng đau cả lưng, không máy lạnh, chỉ có cây quạt bàn quay rè rè thổi hơi gió mang vị muối. Ngoài kia yên ắng đến mức nghe rõ mồn một tiếng dế rỉ rả lẫn tiếng sóng vỗ đều đều vào vách đá. Điện thoại chập chờn đúng một vạch sóng. Nó gõ dòng tin nhắn than thở gửi cho nhỏ bạn thân: <em>Tao sắp chết ngộp ở chỗ khỉ ho cò gáy này rồi</em>, nhưng cái vòng tròn cứ xoay mãi không đi nổi.</p>
+        <p>Nửa đêm, trằn trọc không ngủ được, Linh chợt nghe một âm thanh rất lạ vọng từ trên cao xuống: tiếng bánh răng kim loại xoay đều, chậm rãi, kèm theo tiếng rít khẽ như nhịp đồng hồ cổ. Tò mò, nó xỏ dép bước ra bên khung cửa sổ.</p>
+        <p>Một vệt sáng vàng rực từ đỉnh tháp đang quét chậm qua khoảng sân cát, lướt qua mấy ngọn dừa rồi vươn dài ra mặt biển đen thẫm. Xoay hết một vòng, nó lại quay về, đều đặn, bền bỉ giữa đêm tối mịt mùng. Linh đứng tì cằm lên bậu cửa sổ nhìn hồi lâu. Cơn bực bội vì mất mạng dịu xuống lúc nào không hay. Nó giơ điện thoại lên định chụp lại vệt sáng ấy, nhưng màn hình tối om chẳng bắt nổi thứ ánh sáng lầm lũi ngoài kia.</p>
+        <p>Sáng hôm sau, Linh trở dậy đã thấy ông nội ngồi trước hiên từ đời nào, hai bàn tay chai sần thoăn thoắt luồn kim gỗ vá tấm lưới cước rách. Hỏi ba đâu, ông Tư chỉ hất hàm bảo đi có việc trên xã từ sớm. Giọng ông hơi chùng xuống một chút khi nhắc tới Sơn, nhưng Linh chưa để ý kỹ.</p>
+        <p>"Ông nội ơi," Linh ngồi xổm xuống bậc thềm, đánh bạo hỏi. "Tối qua con thấy đèn trên tháp quay. Đêm nào ông cũng tự leo lên bật hết hả?"</p>
+        <p>Ông Tư ngước mắt nhìn cháu, thoáng ngạc nhiên vì từ hôm qua tới giờ nó mới chịu mở miệng hỏi trước. "Ừ. Tính từ hồi ông cố con mất tới giờ cũng bốn mấy năm rồi, chưa tối nào bỏ."</p>
+        <p>"Sao không lắp máy tự động giống cái tháp bự đằng kia cho khỏe vậy ông?"</p>
+        <p>Ông Tư kéo mạnh mối gút dây lưới, khóe miệng nhếch lên một nụ cười nhẹ: "Cái đèn này nó cũ rồi, không chạy tự động được đâu con. Nó quen hơi người."</p>
+        <p>Linh không hiểu hết câu nói đó, nhưng nó không còn thấy chán nản như đêm qua nữa. Nó ngồi nán lại trước hiên, nhìn đôi tay gân guốc của ông nội đưa lên hạ xuống đều đặn trong nắng sớm.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-5">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần V" data-en="Part V">Phần V</span></p>
+        <h2 class="story-part__title">Đêm bên phòng đèn</h2>
+      </header>
+      <div class="story-prose">
+        <p>Mấy ngày kế tiếp trôi qua chậm rãi, không chuông báo thức, không lịch học thêm, không tiếng tin nhắn nổ liên hồi. Sơn đi biền biệt từ sáng tới chiều mịt mới về, lúc nào cũng vội vã với mấy tập hồ sơ dày cộp, bảo là đi khảo sát cho công ty. Linh ở nhà không có bạn, quanh đi quẩn lại đâm ra bám lấy ông nội.</p>
+        <p>Trái với vẻ ngoài lầm lì, ông Tư kể chuyện rất có duyên, chậm rãi mà nhớ chi tiết từng ly từng tý. Ông chỉ cho Linh cách ngó chân mây đằng đông để biết chiều có giông không, phân biệt tiếng sóng gầm báo biển động với sóng thường, rồi dạy nó thắt nút dây neo kiểu dân chài.</p>
+        <p>Một buổi chiều lên phòng đèn phụ ông lau bụi, Linh lỡ tay làm rớt cuốn sổ ghi thời tiết xuống sàn. Tấm hình trắng đen kẹp bên trong trượt ra ngoài.</p>
+        <p>"Ai đây vậy ông?" Linh nhặt lên, nhìn hai gương mặt trẻ măng đang cười tươi rói.</p>
+        <p>Ông Tư đón tấm ảnh bằng hai tay, ngón cái miết nhẹ lên mép giấy sờn. "Bà nội con đó. Bà Nguyệt."</p>
+        <p>"Hồi trẻ bà đẹp quá trời luôn." Linh khẽ nói, rồi bất giác nín thinh khi thấy khóe mắt ông nội chợt đỏ hoe.</p>
+        <p>Tối hôm đó, ngồi trên bậc thềm đá trước sân, ông Tư kể cho cháu gái nghe chuyện đời mình. Chuyện gánh mực ở chợ đình, chuyện căn bếp dột mưa phải hứng thau, đêm sinh thằng Sơn, rồi căn bệnh hiểm nghèo đến quá muộn ở cái xóm biển hẻo lánh này. Linh ngồi bó gối nghe im phăng phắc. Lần đầu tiên nó hình dung ra ba mình không phải trong bộ vest phẳng phiu hay những cuộc điện thoại tiền tỷ, mà là một thằng bé lớn lên trong mùi muối mặn, rồi thành người đàn ông quỳ sụp trước ngôi mộ đất mới đắp của mẹ vì về không kịp.</p>
+        <p>"Sao trước giờ ba con không kể mấy chuyện này cho con nghe vậy ông?"</p>
+        <p>Ông Tư rít một hơi trà nguội, mắt nhìn ra bãi cát tối đen: "Chuyện buồn quá, người ta hay cất kỹ. Lôi ra kể lại chỉ tổ xót ruột thêm."</p>
+        <p>Mấy bữa sau, Linh bắt đầu lôi điện thoại ra không phải để canh sóng nữa mà để chụp hình. Nó chụp đôi tay nhăn nheo của ông đang châm dầu vô bánh răng đồng, chụp mấy trang sổ thời tiết viết bằng nét bút bi run rẩy, chụp tấm ảnh bà Nguyệt, chụp cả quầng đèn vàng quét ngang trời đêm. Tối về giường, nó mở phần ghi chú gõ lại lặt vặt mấy chuyện ông kể. Nó chẳng biết viết để làm gì, chỉ thấy nếu mình không ghi lại thì mai mốt mấy thứ này sẽ trôi tuột đi hết.</p>
+        <p>Chiều thứ năm, ông Sáu — bạn chài cũ của ông Tư, giờ nghỉ biển vì thoái hóa cột sống — xách qua mấy con mực khô mới phơi. Hai ông già ngồi nhâm nhi trà nóng, kể cho Linh nghe chuyện xóm Gành hồi xưa có những trận bão lớn phải chạy cả làng lên chùa trên đồi, chuyện lễ cúng cá Ông, chuyện chia từng rổ cá cơm sau đêm kéo lưới.</p>
+        <p>"Ông nội cháu giỏi lắm à nha," ông Sáu vỗ vai ông Tư, giọng hào hứng. "Năm bão lớn hồi trước, cái tháp tự động ngoài kia mất điện tối thui, có mỗi đèn nhà ổng sáng trưng. Cả mấy chục chiếc ghe nhờ ngó vô đó mà tránh được bãi ngầm. Xóm này ai cũng mang ơn ổng."</p>
+        <p>Khen xong, giọng ông Sáu bỗng hạ xuống, ngập ngừng: "Mà nghe mấy đứa trên xã xì xào sắp giải tỏa mỏm đá này làm resort gì đó. Cháu có nghe ba cháu nói gì không?"</p>
+        <p>Linh khựng tay rót trà. "Giải tỏa làm resort nào ạ?"</p>
+        <p>Ông Sáu liếc vội sang ông Tư, biết mình lỡ lời. Ông Tư chỉ lặng lẽ nâng chén trà, mắt nhìn thẳng ra biển không đáp.</p>
+        <p>"Thôi, chuyện trên tỉnh người ta tính, già rồi biết gì đâu," ông Sáu cười xòa đánh trống lảng. Nhưng câu nói lửng lơ đó đã kịp ghim lại trong đầu Linh.</p>
+        <p>Chiều hôm đó, leo theo ông nội lên đỉnh tháp bật đèn, Linh đứng dựa lưng vào vách tường vôi loang lổ. Nghe tiếng bánh răng ken két bắt đầu quay, nó khẽ hỏi:</p>
+        <p>"Ông ơi, mai mốt ông già yếu không leo thang nổi nữa, thì ai giữ cái đèn này?"</p>
+        <p>Ông Tư không quay lại. Ông đứng nhìn luồng sáng vàng vừa cắt ngang mặt biển đang lên nước, giọng nhẹ tênh lẫn vào gió:</p>
+        <p>"Ông cũng không biết nữa con. Chỉ biết ngày nào chân ông còn bước nổi, đèn trên này còn sáng."</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-6">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần VI" data-en="Part VI">Phần VI</span></p>
+        <h2 class="story-part__title">Vết rạn</h2>
+      </header>
+      <div class="story-prose">
+        <p>Ba đêm sau, trời đứng gió, oi bức đến ngộp thở. Mấy người hàng xóm bảo kiểu nóng hầm hập này là điềm trời sắp trở bão. Linh trằn trọc mãi không ngủ nổi, bèn cầm ly ra phòng khách rót nước. Đi ngang gian ngoài, nó nghe có tiếng người nói nhỏ qua khe cửa khép hờ. Là giọng ba nó đang gọi điện.</p>
+        <p>"...anh báo với bên anh Bình phòng kỹ thuật, hồ sơ giải phóng mặt bằng Mũi Đá Dựng phải chốt xong trước tháng Mười. Cái tháp cũ nằm ngay lõi khu biệt thự hướng biển, không giữ lại được đâu... Biết rồi, có ngọn hải đăng mới cách đó bảy cây số rồi, giữ cái tháp phế tích này làm gì... Chuyện ông già để anh tự thu xếp, không cần trên xã xuống gây áp lực nữa."</p>
+        <p>Linh đứng chết trân ngoài hành lang, cái ly thủy tinh trên tay suýt trượt xuống nền gạch. Mọi mảnh ghép rời rạc mấy hôm nay bỗng khớp lại với nhau rành mạch đến rợn người. Mấy buổi sáng đi sớm về khuya, những tập hồ sơ dày cộp, câu nói lỡ miệng của ông Sáu. Người muốn san phẳng ngọn hải đăng này không phải ai xa lạ, mà là chính ba nó.</p>
+        <p>Nó lẳng lặng quay về phòng, nằm mở mắt trừng trừng nhìn trần nhà cho tới lúc gà gáy.</p>
+        <p>Sáng hôm sau, Sơn vừa xách cặp bước ra sân để lên xe, Linh đã chạy theo chặn ngay đầu cổng.</p>
+        <p>"Ba là người định phá ngọn hải đăng của ông nội, đúng không?"</p>
+        <p>Sơn sững người. Ông nhìn thẳng vào mắt con gái, cố giữ vẻ bình tĩnh nhưng giọng vẫn hơi lạc đi: "Ai nói với con chuyện đó?"</p>
+        <p>"Đêm qua con nghe hết rồi. Ba nói với người ta là giải tỏa trước tháng Mười, xây biệt thự hướng biển, còn bảo cái tháp của ông là phế tích!" Giọng Linh run lên, mắt đỏ hoe. "Con cứ tưởng ba đưa con về thăm ông nội. Hóa ra ba về để dẹp ông nội đi cho kịp tiến độ công ty hả?"</p>
+        <p>"Linh, chuyện này không đơn giản như con nghĩ đâu..."</p>
+        <p>"Không đơn giản chỗ nào? Cả đời ông nội chỉ có mỗi cái tháp đèn này với kỷ niệm của bà nội! Ba không ở với ông được ngày nào, giờ ba về ba đòi đập bỏ luôn chỗ ở của ông sao?"</p>
+        <p>Nước mắt Linh trào ra, nó gạt ngang tay rồi quay lưng chạy vụt vô nhà. Sơn đứng trơ ra giữa khoảng sân nắng gắt, tay xách cặp da mà thấy nặng như đeo đá. Ông muốn gọi con lại giải thích về khoản đền bù, về chuyện ông đã tính mua căn hộ đẹp đẽ đưa ông cụ lên thành phố dưỡng già, nhưng cổ họng nghẹn cứng. Trước ánh mắt của đứa con gái mười sáu tuổi, mấy lý lẽ thực tế của một Phó Tổng Giám đốc bỗng trở nên thảm hại lạ lùng.</p>
+        <p>Trưa hôm đó, Linh bưng mâm cơm lên phòng đèn cho ông Tư như lệ thường mấy bữa nay. Nó đặt mâm xuống bàn gỗ, đứng tần ngần mãi không biết mở lời thế nào. Ông Tư liếc thấy đôi mắt sưng mọng của cháu gái, chỉ khẽ thở dài.</p>
+        <p>"Con biết hết rồi hả?"</p>
+        <p>Linh giật mình ngẩng lên: "Ông... ông biết rồi sao ông?"</p>
+        <p>Ông Tư gật đầu, chậm rãi xới cơm ra chén, vẻ mặt điềm nhiên đến xót xa. "Tuần trước mấy chú bên địa chính xuống đo đạc quanh chân đồi, có ghé nói chuyện quy hoạch. Họ không nói tên người phụ trách, nhưng ông nghe tới Tập đoàn Đại Dương Xanh là hiểu. Rồi mấy bữa nay ba con về, ăn chung mâm mà có dám ngó thẳng vô mặt ông đâu."</p>
+        <p>"Ông không giận ba con sao?"</p>
+        <p>Ông Tư đặt đôi đũa xuống, nhìn ra khoảng biển lặng gió đang đổi màu xám đục. "Giận chứ sao không. Nhưng sống tới chừng này tuổi rồi, giận con mình hoài cũng đâu làm được gì. Chỉ thấy buồn thôi con."</p>
+        <p>Ông đứng dậy, chắp hai tay sau lưng bước ra sát khung cửa sổ nhìn sang hàng cần cẩu thép bên kia vịnh.</p>
+        <p>"Ông chỉ không ngờ, cái người đòi dỡ ngọn đèn này đi, lại là thằng nhỏ đêm xưa ông bồng trên tay đứng ngay chỗ này ngắm biển."</p>
+        <p>Chiều hôm đó, ông Tư vẫn đúng giờ leo lên bốn mươi hai bậc thang đá ong. Linh đứng dưới sân ngước nhìn theo, thấy lưng ông hôm nay như còng thêm một chút, bước chân nặng trĩu qua từng ô cửa sổ nhỏ chạy dọc thân tháp.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-7">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần VII" data-en="Part VII">Phần VII</span></p>
+        <h2 class="story-part__title">Cha và con</h2>
+      </header>
+      <div class="story-prose">
+        <p>Bữa cơm tối hôm đó không ai nói với ai câu nào, chỉ nghe tiếng đũa chạm chén lách cách. Linh gảy vài hạt cơm rồi buông đũa. Sơn cũng nuốt không trôi. Ông Tư vẫn ăn thong thả như thường ngày, xong xuôi mới đẩy chén ra, rót nước trà.</p>
+        <p>"Ba," Sơn cất tiếng trước, giọng khàn đi. "Con muốn nói chuyện rõ ràng với ba."</p>
+        <p>"Ừ, nói đi."</p>
+        <p>Linh định đứng lên dọn chén để hai người nói chuyện riêng, ông Tư khoát tay bảo nó ngồi lại: "Cứ ngồi đó đi con. Đằng nào con cũng biết rồi."</p>
+        <p>Sơn hít một hơi sâu, hai bàn tay đan chặt trên mặt bàn gỗ. "Tập đoàn con trúng thầu toàn bộ dải ven biển này, tính luôn Mũi Đá Dựng. Quy hoạch là do trên tỉnh duyệt cùng hội đồng quản trị, một mình con không đổi được. Con nhận làm trưởng dự án vì muốn tự tay lo liệu cho ba..."</p>
+        <p>"Lo liệu là đập cái tháp này đi hả?" Ông Tư ngắt lời, giọng vẫn đều đều.</p>
+        <p>"Con đã làm việc với bên tài chính, mức đền bù cho đất nhà mình sẽ cao hơn khung giá rất nhiều. Với lại ba cũng bảy mươi sáu tuổi rồi, sao cứ phải ở đây một mình chịu cực, vá lưới từng đồng qua ngày? Con muốn đón ba lên Sài Gòn ở với vợ chồng con, có người sớm hôm chăm sóc, ốm đau có bệnh viện lớn..."</p>
+        <p>"Con nghĩ ba sống ở đây là khổ lắm hả Sơn?" Ông Tư nhìn thẳng vào mắt con trai, giọng trầm hẳn xuống. "Con tưởng cái tháp này chỉ là đống gạch vụn hết đát sao? Ngọn đèn lớn đằng kia cách bảy cây số, đêm biển động sóng mù trời, ánh đèn đó có rọi nổi xuống rặng đá ngầm dưới chân mình không? Mấy chục chiếc ghe máy nhỏ trong xóm này chạy vô lạch ban đêm, không có đèn này thì đâm vô đá vỡ xác hết à?"</p>
+        <p>"Ba à, thời buổi nào rồi!" Sơn bắt đầu mất bình tĩnh, giọng cao lên. "Xóm Gành này rồi cũng phải đổi khác thôi. Ba ngó thử coi, đám thanh niên trong xóm giờ còn mấy đứa chịu đi biển đâu, tụi nó kéo lên khu công nghiệp, lên Sài Gòn hết rồi. Khu nghỉ dưỡng này xây xong sẽ tạo công ăn việc làm, kéo kinh tế cả vùng lên..."</p>
+        <p>"Kéo cho ai? Cho mấy ông chủ ngoài thành phố vô chia lô bán biệt thự, còn dân chài ở đây mất bến đậu ghe, vô làm bảo vệ với dọn phòng cho người ta hả?" Ông Tư chống tay đứng phắt dậy, lần đầu tiên giọng ông vang lên đầy giận dữ. "Đừng tưởng ba già lẩm cẩm suốt ngày chui rúc trong cái tháp này nên không biết gì. Ba nghe đài, ba đọc báo, ba thấy đầy chỗ người ta đẩy dân biển đi nơi khác để xây resort rồi!"</p>
+        <p>Gian nhà nhỏ chìm vào sự im lặng ngột ngạt. Linh ngồi nép một bên, tim đập thình thịch.</p>
+        <p>Sơn cúi gằm mặt, hai vai chùng xuống. Cơn nóng giận vừa bốc lên bỗng xẹp lép. Một lúc lâu sau, ông mới cất tiếng, giọng nhỏ hẳn lại:</p>
+        <p>"Ba biết hồi nhỏ con sợ nhất cái gì không? Con sợ buổi chiều. Cứ tới chiều là ba bỏ nhà leo lên tháp, để con lủi thủi một mình dưới bếp đợi má đi chợ về. Lớn thêm chút, con ghét cái ngọn hải đăng này lắm. Con cứ nghĩ giá mà nhà mình không làm cái nghề gác đèn bạc bẽo này, chắc ba đã có thời gian ngó ngàng tới con hơn."</p>
+        <p>Ông Tư khựng lại, bàn tay đang chống mặt bàn khẽ buông thõng.</p>
+        <p>"Con bỏ đi," Sơn nói tiếp, mắt nhìn chằm chằm xuống mặt bàn xước xát, "vì con sợ cái nghèo, mà cũng vì con muốn trốn khỏi cái bóng của ngọn đèn này. Rồi tới lúc má bệnh mất, con vì cái hợp đồng mà về trễ hai ngày. Từ đó tới giờ, mỗi lần nghĩ tới ba, con thấy mình như thằng con bất hiếu không dám vác mặt về. Con cứ nghĩ mình ráng kiếm thật nhiều tiền, lo cho ba sống sung sướng tuổi già thì mới bớt có lỗi. Ngoài cách đó ra, con thật sự không biết phải làm sao nữa, ba à."</p>
+        <p>Cơn giận trong mắt ông Tư tan biến lúc nào không hay, chỉ còn lại nét mỏi mệt hằn sâu quanh khóe mắt. Ông ngồi phịch xuống ghế, chậm rãi lên tiếng:</p>
+        <p>"Sơn à. Chuyện má con mất, ba chưa từng trách con nửa lời. Con đi làm ăn xa, kẹt chuyện công việc, số má con tới đó thì trời kêu ai nấy dạ. Cái làm ba buồn, không phải vì con về trễ đám tang. Cái ba buồn là suốt hai mươi mấy năm trời, con cứ tự ôm cái mặc cảm đó mà tránh mặt ba, trong khi ba chỉ mong con thỉnh thoảng ghé về ăn với ba một bữa cơm."</p>
+        <p>Sơn thấy sống mũi cay xè, cổ họng nghẹn đắng. Suốt từng ấy năm, ông cứ nghĩ cha mình giữ kín một nỗi oán hận không lời, hóa ra bức tường ngăn cách giữa hai cha con lại do chính ông tự xây lên.</p>
+        <p>Nhưng một cuộc trò chuyện không thể tháo gỡ ngay lập tức mớ bòng bong ngoài đời thực. Sơn vẫn bị trói bởi hợp đồng, bởi hàng trăm tỷ đồng vốn đầu tư của tập đoàn. Còn ông Tư, dẫu lòng đã dịu lại với con trai, vẫn không thể gật đầu trao đi ngọn đèn mà cả đời ông và bà Nguyệt đã gắn chặt vào đó.</p>
+        <p>"Thôi, tối rồi," ông Tư đứng dậy, vỗ nhẹ mép bàn. "Để ba suy nghĩ thêm."</p>
+        <p>Ông quay lưng bước ra sân, hướng về phía cửa tháp. Ngoài kia, gió biển bắt đầu nổi lên từng cơn mạnh bất thường, thổi rít qua rặng phi lao.</p>
+        <p>Sơn vẫn ngồi bất động bên bàn ăn, hai tay ôm lấy trán. Linh khẽ đứng dậy, bước tới đặt bàn tay nhỏ nhắn lên vai ba. Hai cha con cứ ngồi im như vậy trong ánh đèn tuýp vàng vọt.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-8">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần VIII" data-en="Part VIII">Phần VIII</span></p>
+        <h2 class="story-part__title">Cơn bão số Chín</h2>
+      </header>
+      <div class="story-prose">
+        <p>Ba ngày sau, bản tin dự báo thời tiết liên tục phát cảnh báo khẩn: áp thấp nhiệt đới ngoài Biển Đông mạnh đột ngột thành bão số Chín, đổi hướng đi thẳng vào đất liền, tâm bão quét ngang vùng biển xóm Gành ngay trong đêm với sức gió giật trên cấp mười hai.</p>
+        <p>Cả xóm nhốn nháo như vỡ tổ. Đàn ông trai tráng chạy rần rần xuống bến kéo ghe lên bờ, neo chặt dây thừng; đàn bà con nít xúc cát vào bao tải đè lên mái tôn. Sơn vứt bộ đồ công sở qua một bên, mặc cái áo thun cũ, xắn quần lội cát phụ mấy nhà hàng xóm chằng chống cửa nẻo.</p>
+        <p>Gần tối, gió đã rít từng hồi rợn người, mưa bắt đầu quất rát mặt. Ông Sáu hớt hải chạy qua nhà ông Tư, áo mưa ướt sũng, giọng lạc đi:</p>
+        <p>"Anh Tư ơi, chết rồi! Có ba chiếc ghe câu mực đi từ sáng sớm không nghe kịp đài, giờ đang chạy vô mà sóng đánh dữ quá. Chiếc của thằng Tý vừa gọi vô bộ đàm bảo gãy chân vịt hay trục trặc máy gì đó, đang trôi dạt ngay phía ngoài rặng đá ngầm Mũi Đá Dựng!"</p>
+        <p>Vừa dứt lời thì một tiếng nổ khô khốc vang lên từ phía đầu xóm, ánh sáng từ mấy cột đèn đường tắt phụt. Mất điện lưới toàn vùng. Ông Tư lao ra hiên ngó vội về phía nam. Giữa màn mưa trắng xóa, ngọn hải đăng hiện đại cách đó bảy cây số đã tối thui. Hệ thống điện lưới sập kéo theo sự cố trạm phát dự phòng bên đó hay sao mà không thấy một tia sáng nào quét ra.</p>
+        <p>"Chỉ còn đèn nhà mình thôi!" Ông Tư quay vào hét lớn. "Sơn! Theo ba lên tháp!"</p>
+        <p>Hai mươi sáu năm xa nhà, đây là lần đầu tiên Sơn nghe cha gọi mình lên đỉnh tháp trong một đêm bão.</p>
+        <p>Ngọn đèn của ông Tư từ lâu đã được ông tự chế thêm dàn bình ắc-quy dự phòng sạc bằng mấy tấm pin mặt trời mua lại ngoài chợ cũ, nên mất điện lưới đèn vẫn sáng. Nhưng gió bão đêm nay quá khủng khiếp. Mưa tạt ngang như đá ném, cả thân tháp đá rung bần bật. Dàn bánh răng cơ học từ thời Pháp vốn đã rơ lỏng, gặp rung chấn mạnh bất ngờ kẹt cứng. Quầng sáng không quay nữa mà đứng chết dí một góc hướng vào đất liền.</p>
+        <p>Sơn bám chặt tay vịn sắt lao lên bốn mươi hai bậc thang, gió lùa qua mấy ô cửa sổ hẹp đẩy người ông loạng choạng. Lên tới sàn đèn, ông thấy cha mình người ướt sũng, hai tay gân guốc đang gồng hết sức tì vào trục quay, mồ hôi hòa nước mưa chảy ròng ròng trên gương mặt nhăn nheo.</p>
+        <p>"Để con phụ ba!" Sơn hét to át tiếng gió.</p>
+        <p>"Giữ chặt cái chốt hãm này!" Ông Tư chỉ vào thanh sắt đang rung bần bật cạnh hộp số. "Gió lắc lệch chốt rồi! Con đè mạnh xuống đừng cho nó bật ra, để ba chêm lại bánh răng, không thì đèn đứng im, ghe ngoài kia không thấy đường vô đâu!"</p>
+        <p>Đôi tay quen cầm bút ký hợp đồng của Sơn giờ bám chặt lấy thanh sắt đầy dầu mỡ và gỉ sét. Ông gồng cứng cánh tay, cảm nhận rõ sức nặng của cả cỗ máy đang giật mạnh từng chặp. Ngay bên cạnh, ông Tư nheo mắt trong ánh đèn chói lòa, luồn hai bàn tay run rẩy nhưng thuộc từng kẽ hở vào bên trong hộp số, vừa gõ vừa nắn lại khớp răng. Một cơn gió giật khủng khiếp đập thẳng vào lồng kính chắn gió khiến cả hai cha con mất đà ngã dúi vào nhau, nhưng tay Sơn vẫn không rời thanh chốt.</p>
+        <p>Dưới căn nhà cấp bốn, Linh ngồi ôm chặt chiếc bộ đàm cũ ông Sáu để lại, nghe tiếng réo rắt hỗn loạn xen lẫn tiếng kêu cứu đứt quãng của mấy chú ngư dân ngoài biển. Trời tối mịt, sóng điện thoại mất hẳn. Linh nhớ lại mấy buổi ông nội chỉ cách nhìn bản đồ ven biển treo trên tường, vội cầm đèn pin soi tọa độ ước lượng mà người trên ghe báo về. Nó chạy ra sát cửa sổ hướng về phía đồi cao, giơ điện thoại lên dò từng chút sóng yếu ớt còn sót lại của trạm phát bên kia vịnh.</p>
+        <p>Mười phút trôi qua như cả thế kỷ. Cuối cùng, một vạch sóng mỏng manh lóe lên đúng hai giây. Tin nhắn nó soạn sẵn gửi tới số trực ban đồn biên phòng mà ông Sáu đọc cho kịp vụt đi: <em>"Khẩn cấp: 3 ghe gặp nạn, 1 chiếc hỏng máy đang trôi gần rặng đá ngầm Mũi Đá Dựng, cần cứu hộ gấp!"</em></p>
+        <p>Trên đỉnh tháp, sau gần nửa tiếng vật lộn đến rách cả da tay, một tiếng <em>cạch</em> khô khốc vang lên. Bánh răng ăn khớp trở lại. Hệ thống quay rì rì chuyển động, luồng ánh sáng vàng rực bắt đầu chậm rãi quét vòng xuyên qua bức tường mưa đặc quánh, rọi thẳng xuống khu vực rặng đá ngầm trắng xóa bọt sóng.</p>
+        <p>"Ba, nhìn kìa!" Sơn hét lên, chỉ tay ra ngoài màn mưa.</p>
+        <p>Giữa những con sóng dựng đứng đen ngòm, một đốm sáng đèn pin yếu ớt vừa nhấp nháy đáp lại. Thấy quầng đèn hải đăng quét tới, chiếc ghe đang trôi dạt vội thả neo phụ, hai chiếc ghe còn lại cũng định hướng được rặng đá ngầm để vòng ra né và quăng dây kéo bạn tàu.</p>
+        <p>Ông Tư thở dốc, nhưng bàn tay vẫn đặt hờ lên vỏ hộp số nóng ran, mắt không rời mặt biển. Sơn đứng sát cạnh cha, người run lên vì lạnh và kiệt sức. Lần đầu tiên trong đời, ông hiểu thấu câu nói mà cha vẫn giữ suốt nửa thế kỷ: ngọn đèn này không chỉ là khối bê tông sắt thép, nó thật sự cần hơi người.</p>
+        <p>Suốt ba tiếng đồng hồ kế tiếp, hai cha con thay nhau chực bên dàn bánh răng, hễ gió giật làm chệch nhịp là lại ghì tay giữ lấy. Dưới nhà, Linh ôm bộ đàm giữ liên lạc không rời cho tới khi tiếng còi tàu cứu hộ của biên phòng rúc lên giữa màn mưa. Gần nửa đêm, cả ba chiếc ghe cùng mười mấy mạng người cuối cùng cũng được lai dắt vào cửa lạch an toàn, chỉ vài người bị trầy xước do va đập.</p>
+        <p>Gần sáng, tâm bão đi qua, gió dịu dần. Trên đỉnh tháp, hai cha con ngồi bệt xuống sàn xi măng, lưng tựa vách tường lạnh ngắt, chẳng ai còn sức để nói thêm lời nào. Quầng đèn trên đầu vẫn quay đều, rọi những vòng sáng cuối cùng của đêm bão. Dưới ánh sáng hắt xuống từ lồng kính, Sơn quay sang nhìn cha. Gương mặt già nua đầy vết dầu nhớt và nước mưa ấy lại thoáng một nét nhẹ nhõm lạ thường.</p>
+        <p>"Ba ơi..." Sơn khẽ gọi.</p>
+        <p>Ông Tư quay sang nhìn con trai, không nói gì, chỉ đưa bàn tay gầy guốc, chai sạn vỗ nhẹ lên vai ông. Một cái chạm ấm nóng, xóa tan đi cái bắt tay khách sáo hôm nào.</p>
+      </div>
+    </article>
+    <article class="now-card story-part" id="part-9">
+      <header class="story-part__head">
+        <p class="story-part__kicker"><span data-i18n data-vi="Phần IX" data-en="Part IX">Phần IX</span></p>
+        <h2 class="story-part__title">Sau cơn bão</h2>
+      </header>
+      <div class="story-prose">
+        <p>Sáng hôm sau trời tạnh ráo, nắng lên yếu ớt chiếu xuống xóm Gành ngổn ngang cành phi lao gãy đổ và vài mái tôn tốc nóc. Nhưng khắp xóm không ai than vãn. Cả mười mấy ngư dân trên ba chiếc ghe đêm qua đều bình an vô sự. Chuyện ngọn đèn cũ của ông Tư cứu mạng cả đội tàu giữa đêm mất điện lan khắp từ bến cá lên tới ủy ban xã.</p>
+        <p>Chiều đó, ông Sáu dẫn đám thanh niên vừa thoát chết mang mấy rổ cá tươi, ghẹ sống tới cảm ơn. Mấy người đàn ông đi biển dạn dày sương gió nắm chặt tay ông Tư mà mắt cứ đỏ hoe. Họ cũng rối rít cảm ơn Sơn đã thức trắng đêm phụ cha giữ máy, và khen con bé Linh nhanh trí nhắn tin gọi biên phòng kịp lúc.</p>
+        <p>Tối xuống, khi khách khứa đã về hết, Sơn mang hai ly trà nóng ra bậc thềm đá ngồi cạnh cha. Phía trên đầu, ngọn hải đăng vẫn đứng vững chãi sau cơn cuồng phong, dù lớp vôi trắng bị mưa bão quật tróc thêm mấy mảng lớn.</p>
+        <p>"Ba," Sơn đặt ly trà xuống, giọng trầm tĩnh. "Sáng nay có sóng lại, con đã gọi trực tiếp cho chủ tịch hội đồng quản trị rồi."</p>
+        <p>Ông Tư quay sang nhìn con, im lặng chờ đợi.</p>
+        <p>"Con không có quyền hủy dự án, vì hợp đồng và vốn đã đổ xuống hết rồi. Nhưng con đã trình bày lại toàn bộ chuyện đêm qua, kèm theo báo cáo đánh giá thực tế về rặng đá ngầm dưới chân Mũi Đá Dựng. Con đề xuất phương án điều chỉnh quy hoạch: cắt bớt khu biệt thự sát mũi đá, giữ nguyên ngọn hải đăng làm công trình di sản và điểm nhấn lịch sử cho toàn khu nghỉ dưỡng, đồng thời vẫn duy trì hoạt động chiếu sáng cho ngư dân địa phương."</p>
+        <p>Ông Tư nhấp một ngụm trà, hỏi khẽ: "Trên đó họ nghe lọt tai không?"</p>
+        <p>"Chủ tịch bảo sẽ họp hội đồng xem xét lại bản vẽ thiết kế. Con không dám hứa chắc mười phần, ba à. Nhưng lần này con sẽ đứng ra bảo vệ phương án đó tới cùng. Có kết quả sao, con sẽ nói thẳng với ba, không giấu giếm gì nữa."</p>
+        <p>Ông Tư gật đầu chậm rãi. Đôi mắt ông không còn vẻ căng thẳng mấy hôm trước, chỉ còn sự điềm đạm của người từng trải.</p>
+        <p>"Đêm qua," ông Tư khẽ nói, "lúc thấy con ghì tay vô cái thanh sắt đó, lạnh run cầm cập mà không chịu buông, tự dưng ba nhớ lại đêm con mới đẻ. Đêm đó đứng trên tháp, tay ba cũng run y vậy. Ba mới thấy, dù con có đi xa tới đâu, làm ông lớn cỡ nào, con vẫn là thằng Sơn của ba, vẫn đứng vững trên bốn mươi hai bậc thang này được."</p>
+        <p>Sơn cúi đầu, che đi giọt nước mắt vừa kịp ứa ra nơi khóe mắt. "Con xin lỗi ba. Xin lỗi vì chuyện hồi má mất, xin lỗi vì bao nhiêu năm để ba lủi thủi một mình."</p>
+        <p>"Ba nói rồi, đừng ôm chuyện cũ nữa. Con người ta lớn lên ai cũng phải chọn đường mình đi. Con chọn ra thành phố làm ăn không có gì sai hết. Ba chỉ mong con đừng quên đường về nhà là được."</p>
+        <p>Hai cha con ngồi im lặng nghe tiếng sóng vỗ đều ngoài bãi đá. Khoảng lặng đêm nay khác hẳn hai mươi sáu năm qua, nhẹ nhõm và ấm áp đến lạ.</p>
+        <p>Lát sau, Linh từ trong nhà chạy ra, chìa chiếc điện thoại cho hai người xem. Tranh thủ lúc có sóng mạnh trở lại, nó đã đăng hết loạt ảnh nó chụp suốt tuần qua — từ đôi tay vá lưới, dàn bánh răng thời Pháp, cuốn sổ thời tiết, tấm ảnh trắng đen của bà nội cho đến cảnh ngọn đèn xuyên qua màn mưa bão — kèm một bài viết ngắn kể về người giữ đèn cuối cùng của Mũi Đá Dựng lên trang cá nhân và một diễn đàn nhiếp ảnh. Mới hơn hai tiếng mà bài viết đã có hàng ngàn lượt chia sẻ, cả mấy nhà báo địa phương cũng nhắn tin hỏi thăm.</p>
+        <p>"Con viết thiệt tình những gì con thấy thôi," Linh hơi ngượng ngùng gãi đầu. "Con nghĩ nhiều người biết chuyện ngọn đèn này cứu tàu đêm qua, biết đâu mấy chú trong công ty ba cũng ủng hộ giữ nó lại."</p>
+        <p>Ông Tư đeo cặp kính lão đã trầy xước, cầm chiếc điện thoại bằng đôi tay run run, nhờ Sơn chỉ cách vuốt từng tấm hình. Tới tấm ảnh trắng đen của bà Nguyệt nằm gọn giữa những dòng chữ nắn nót của đứa cháu gái, mắt ông lại nhòe đi. Bà đã mất hơn mười năm, vậy mà qua ống kính của đứa cháu nhỏ, câu chuyện của hai vợ chồng ông vẫn còn ở lại giữa đời.</p>
+        <p>"Cảm ơn con gái của ông," ông Tư nói, giọng nghèn nghẹn.</p>
+        <p>Mấy ngày sau, kỳ nghỉ hè ngắn ngủi kết thúc. Lúc xách ba lô ra xe về lại Sài Gòn, Linh không còn thấy vui mừng như cái ngày nó than vãn "bị đày" nữa. Lòng nó cứ bùi ngùi khi nhìn lại giàn lưới trước hiên, bậc thềm đá và cây tháp trắng sừng sững trên mỏm đá.</p>
+        <p>Trước khi lên xe, Sơn không chìa tay ra nữa mà bước tới ôm chầm lấy cha. Ông Tư gầy hơn ông tưởng, bờ vai cứng cáp ngày xưa giờ nhỏ thó trong vòng tay ông. Hai cha con ôm nhau thật chặt. Rồi ông Tư quay sang xoa đầu Linh:</p>
+        <p>"Hè sau lại về với ông nữa nha con."</p>
+        <p>"Dạ, con hứa! Hè sau con dẫn cả mẹ về luôn!" Linh gật đầu lia lịa, mắt đỏ hoe.</p>
+        <p>Ba tháng sau, chuông điện thoại bàn trong căn nhà nhỏ dưới chân tháp lại réo vang. Đầu dây bên kia, giọng Sơn hồ hởi hiếm thấy: Hội đồng quản trị đã chính thức phê duyệt phương án điều chỉnh thiết kế, giữ nguyên hiện trạng ngọn hải đăng Mũi Đá Dựng. Tập đoàn còn chi kinh phí gia cố tường tháp, bảo dưỡng lại dàn máy cũ, đồng thời ký hợp đồng mời ông Tư tiếp tục làm người trông coi chính thức với chế độ đãi ngộ đàng hoàng.</p>
+        <p>Ông Tư nghe xong, chỉ cười hiền rồi đặt ra đúng một điều kiện: không ai được lắp máy tự động thay thế công việc buổi chiều của ông. Chừng nào chân ông còn bước được, ông vẫn sẽ tự tay leo lên bốn mươi hai bậc thang đá ong kia.</p>
+        <p>Mùa hè năm sau, khi nắng chiều lại xiên qua rặng phi lao phía tây xóm Gành, Linh và mẹ đứng dưới chân tháp ngước nhìn lên. Phía trên dãy cửa sổ nhỏ chạy vòng quanh thân tháp, bóng dáng ông Tư đang chậm rãi bước lên từng bậc đá, ngay sát phía sau là Sơn tay xách can dầu nhớt bước theo phụ cha.</p>
+        <p>Trời sập tối. Dàn bánh răng đồng lại ken két chuyển động. Một luồng sáng vàng ấm từ đỉnh Mũi Đá Dựng vươn dài ra mặt biển, đều đặn, bền bỉ, soi rõ lối về cho những chiếc ghe nhỏ đang rẽ sóng vào bờ.</p>
+      </div>
+      <p class="story-end" data-i18n data-vi="— HẾT —" data-en="— THE END —">— HẾT —</p>
+    </article>
+  </section>
+
+  <aside class="story-next" aria-label="Đọc tiếp" data-aria-vi="Đọc tiếp" data-aria-en="Read next">
+    <p class="story-next__label" data-i18n data-vi="Đọc tiếp truyện ngắn khác" data-en="Read another short story">Đọc tiếp truyện ngắn khác</p>
+    <a class="split-row__link" href="../tat-ca-chung-ta-deu-dang-tien-ve-phia-cai-chet-tat-yeu/">
+      <div class="split-row">
+        <div class="split-row__body">
+          <h3 class="split-row__title" data-i18n data-vi="Tất cả chúng ta đều đang tiến về phía cái chết tất yếu" data-en="We Are All Moving Toward Inevitable Death">Tất cả chúng ta đều đang tiến về phía cái chết tất yếu</h3>
+          <p class="split-row__blurb" data-i18n data-vi="Mười lăm lát cắt phận người từ một hành lang toa tàu đêm ở Việt Nam đến khắp các ngả đường thế giới." data-en="Fifteen human portraits stretching from a quiet night-train corridor in Vietnam across the world.">Mười lăm lát cắt phận người từ một hành lang toa tàu đêm ở Việt Nam đến khắp các ngả đường thế giới.</p>
+          <span class="split-row__cta">
+            <span data-i18n data-vi="Đọc truyện này" data-en="Read this story">Đọc truyện này</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+  </aside>
+
+  <footer class="foot-letter">
+    <p class="foot-letter__close" data-i18n data-vi="Cảm ơn bạn đã dành thời gian đọc hết câu chuyện này." data-en="Thank you for spending time with this story.">
+      Cảm ơn bạn đã dành thời gian đọc hết câu chuyện này.<br>
+      <span class="foot-letter__sign">- ruii9326</span>
+    </p>
+
+    <div class="foot-letter__row">
+      <a href="https://youtube.com/@ruii9326" aria-label="YouTube">
+        <svg viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M5 6.5H19A4 4 0 0 1 23 10.5V13.5A4 4 0 0 1 19 17.5H5A4 4 0 0 1 1 13.5V10.5A4 4 0 0 1 5 6.5ZM10 9.7L10 14.3L16 12Z"/></svg>
+      </a>
+      <span class="sep">·</span>
+      <a href="https://x.com/ruii9326" aria-label="X">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8.1-9.3L1 2h7l4.8 6.3L18.9 2Zm-1.2 18h1.9L7.4 4H5.4l12.3 16Z"/></svg>
+      </a>
+      <span class="sep">·</span>
+      <a href="https://facebook.com/ruii9326" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-letter__copyright" data-i18n data-vi="© 2026 Nguyễn Duy Anh (bút danh: ruii9326)." data-en="© 2026 Nguyen Duy Anh (pen name: ruii9326).">
+      © 2026 Nguyễn Duy Anh (bút danh: ruii9326).
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  window.RUII9326_PAGE = {
+    titleVi: 'ruii9326 - Ngọn hải đăng cuối cùng',
+    titleEn: 'ruii9326 - The Last Lighthouse',
+    descVi: 'Truyện ngắn Ngọn hải đăng cuối cùng của ruii9326.',
+    descEn: 'Short story The Last Lighthouse by ruii9326.'
+  };
+</script>
+<script src="../../script/site.js"></script>
+</body>
+</html>
