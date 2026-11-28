@@ -433,8 +433,8 @@
     var BIG = '.mast-pill, .emblem, .settings-popover';   // nhóm này dùng --glass-blur, còn lại --glass-blur-sm
     var DISP = '.mast-pill, .menu-toggle, .settings-popover, .btn-primary';
     var DISP_AMOUNT = 0.1;                                  // tán sắc đầy đủ trên desktop
-    var REFRACT = 40;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
-    var MAX_AREA = 900000;                                // bỏ qua phần tử quá lớn (px²)
+    var REFRACT = 46;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
+    var MAX_AREA = 3000000;                               // hỗ trợ cả các khối chương truyện dài trên desktop
     var MAP_PX = 280000;                                  // ngân sách điểm ảnh bản đồ dịch (nét, vẫn nhanh nhờ bỏ qua vùng lõi phẳng)
     var AA_BLUR = 0.5;                                    // khử răng cưa cho nền sau khi bẻ cong (px CSS)
     var MAP_BLUR = 0.5;                                   // làm mịn bản đồ (px CSS): xóa bậc thang 8-bit
@@ -542,7 +542,7 @@
       if (w < 8 || h < 8 || w * h > MAX_AREA) return;
       var rs = getComputedStyle(el).borderTopLeftRadius;
       var r = /%/.test(rs) ? parseFloat(rs) / 100 * Math.min(w, h) : (parseFloat(rs) || h / 2);
-      var bezel = Math.max(3, Math.min(Math.min(w, h) * 0.18, 18));
+      var bezel = Math.max(4, Math.min(Math.min(w, h) * 0.18, 24));
       var S = Math.min(parseFloat(el.getAttribute('data-refraction')) || REFRACT, Math.min(w, h) * 0.9);
       var disp = el.matches(DISP) ? DISP_AMOUNT : 0;
       var id = filterFor(w, h, r, bezel, S, disp);
@@ -571,7 +571,7 @@
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         var el = e.target;
-        if (e.isIntersecting) { if (!active.has(el)) { active.add(el); if (ro) ro.observe(el); else apply(el); } }
+        if (e.isIntersecting) { if (!active.has(el)) { active.add(el); if (!el.__lgId) try { apply(el); } catch (err) {} if (ro) ro.observe(el); } }
         else if (active.has(el)) { active.delete(el); if (ro) ro.unobserve(el); release(el); }
       });
     }, { rootMargin: '250px' });
