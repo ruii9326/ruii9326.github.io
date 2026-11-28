@@ -432,10 +432,10 @@
     var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link';
     var BIG = '.mast-pill, .emblem, .settings-popover';   // nhóm này dùng --glass-blur, còn lại --glass-blur-sm
     var DISP = '.mast-pill, .menu-toggle, .settings-popover, .btn-primary';
-    var DISP_AMOUNT = 0.1;                                  // tán sắc đầy đủ trên desktop
-    var REFRACT = 46;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
-    var MAX_AREA = 3000000;                               // hỗ trợ cả các khối chương truyện dài trên desktop
-    var MAP_PX = 280000;                                  // ngân sách điểm ảnh bản đồ dịch (nét, vẫn nhanh nhờ bỏ qua vùng lõi phẳng)
+    var DISP_AMOUNT = 0.1;                                  // 0 = tắt tán sắc (hết vệt cầu vồng); thử 0.02–0.06 để bật lại
+    var REFRACT = 40;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
+    var MAX_AREA = 3000000;                               // hỗ trợ cả các khối chương truyện dài
+    var MAP_PX = 300000;                                  // ngân sách điểm ảnh tối đa của bản đồ dịch
     var AA_BLUR = 0.5;                                    // khử răng cưa cho nền sau khi bẻ cong (px CSS)
     var MAP_BLUR = 0.5;                                   // làm mịn bản đồ (px CSS): xóa bậc thang 8-bit
     function dprNow() { return Math.min(window.devicePixelRatio || 1, 3); }
@@ -461,33 +461,17 @@
       var ctx = c.getContext('2d');
       var img = ctx.createImageData(cw, ch), d = img.data;
       var hx = w / 2, hy = h / 2, rr = Math.min(r, hx, hy);
-      var edgeX = hx - rr - bezel, edgeY = hy - rr - bezel;
       for (var y = 0; y < ch; y++) {
-        var py = (y + 0.5) / k - hy;
-        var apy = py < 0 ? -py : py;
-        var qy = apy - (hy - rr);
-        var inY = apy <= edgeY;
         for (var x = 0; x < cw; x++) {
+          var px = (x + 0.5) / k - hx, py = (y + 0.5) / k - hy;
+          var qx = Math.abs(px) - (hx - rr), qy = Math.abs(py) - (hy - rr);
+          var ox = Math.max(qx, 0), oy = Math.max(qy, 0), len = Math.sqrt(ox * ox + oy * oy);
+          var depth = -(len + Math.min(Math.max(qx, qy), 0) - rr);      // khoảng cách vào trong từ mép
+          var nx = 0, ny = 0, m = 0;                                    // pháp tuyến hướng ra ngoài
+          if (len > 0) { nx = ox / len * Math.sign(px); ny = oy / len * Math.sign(py); }
+          else if (qx > qy) nx = Math.sign(px); else ny = Math.sign(py);
+          if (depth < bezel) m = Math.pow(1 - Math.max(depth, 0) / bezel, 1.5);
           var i = (y * cw + x) * 4;
-          var px = (x + 0.5) / k - hx;
-          var apx = px < 0 ? -px : px;
-          if (inY && apx <= edgeX) {
-            d[i] = 128; d[i + 1] = 128; d[i + 2] = 128; d[i + 3] = 255;
-            continue;
-          }
-          var qx = apx - (hx - rr);
-          var ox = qx > 0 ? qx : 0, oy = qy > 0 ? qy : 0;
-          var len = ox || oy ? Math.sqrt(ox * ox + oy * oy) : 0;
-          var depth = -(len + (qx > qy ? (qx < 0 ? qx : 0) : (qy < 0 ? qy : 0)) - rr);
-          if (depth >= bezel) {
-            d[i] = 128; d[i + 1] = 128; d[i + 2] = 128; d[i + 3] = 255;
-            continue;
-          }
-          var nx = 0, ny = 0;
-          if (len > 0) { nx = (ox / len) * (px < 0 ? -1 : 1); ny = (oy / len) * (py < 0 ? -1 : 1); }
-          else if (qx > qy) nx = px < 0 ? -1 : 1;
-          else ny = py < 0 ? -1 : 1;
-          var m = Math.pow(1 - (depth > 0 ? depth : 0) / bezel, 1.5);
           d[i] = 128 - nx * m * 127; d[i + 1] = 128 - ny * m * 127; d[i + 2] = 128; d[i + 3] = 255;
         }
       }
@@ -542,7 +526,7 @@
       if (w < 8 || h < 8 || w * h > MAX_AREA) return;
       var rs = getComputedStyle(el).borderTopLeftRadius;
       var r = /%/.test(rs) ? parseFloat(rs) / 100 * Math.min(w, h) : (parseFloat(rs) || h / 2);
-      var bezel = Math.max(4, Math.min(Math.min(w, h) * 0.18, 24));
+      var bezel = Math.max(3, Math.min(Math.min(w, h) * 0.18, 18));
       var S = Math.min(parseFloat(el.getAttribute('data-refraction')) || REFRACT, Math.min(w, h) * 0.9);
       var disp = el.matches(DISP) ? DISP_AMOUNT : 0;
       var id = filterFor(w, h, r, bezel, S, disp);
@@ -574,9 +558,9 @@
         if (e.isIntersecting) { if (!active.has(el)) { active.add(el); if (!el.__lgId) try { apply(el); } catch (err) {} if (ro) ro.observe(el); } }
         else if (active.has(el)) { active.delete(el); if (ro) ro.unobserve(el); release(el); }
       });
-    }, { rootMargin: '250px' });
+    }, { rootMargin: '400px' });
 
-    function near(el) { var r = el.getBoundingClientRect(); return r.bottom > -250 && r.top < window.innerHeight + 250; }
+    function near(el) { var r = el.getBoundingClientRect(); return r.bottom > -400 && r.top < window.innerHeight + 400; }
     document.querySelectorAll(SEL).forEach(function (el) {
       if (near(el)) { active.add(el); if (ro) ro.observe(el); try { apply(el); } catch (e) {} }  // phần tử đang thấy: bật ngay, không nháy
       io.observe(el);
