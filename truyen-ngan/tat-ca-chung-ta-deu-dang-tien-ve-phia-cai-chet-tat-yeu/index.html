@@ -8,7 +8,7 @@
     var theme = saved === 'dark' || saved === 'light'
       ? saved
       : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent) && !(window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches);
+    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent);
     if (canLiquid) document.documentElement.classList.add('lg-can');
     var glass = canLiquid ? (localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid') : 'classic';
     document.documentElement.setAttribute('data-theme', theme);
@@ -638,7 +638,7 @@
         <p><em>Tách.</em></p>
         <p>Chấm giấy tròn màu vàng chanh rơi gọn vào lòng bàn tay. Chị nhìn nó, lần này không bỏ vào hộp bánh quy nữa. Chị giơ tờ phiếu lên ngang tầm mắt, hướng về phía ô cửa sổ đang hửng sáng sau cơn mưa. Qua cái lỗ tròn nhỏ xíu ở góc giấy, tia sáng nhạt của buổi sớm mai xuyên qua, in lên bức tường trắng đối diện một đốm sáng tròn như đồng xu, rung nhè nhẹ theo nhịp tay chị.</p>
       </div>
-      <p class="story-end" data-i18n data-vi="— HẾT —" data-en="— THE END —">— HẾT —</p>
+      <p class="story-end" data-i18n data-vi="HẾT" data-en="THE END">HẾT</p>
     </article>
   </section>
 
@@ -648,7 +648,7 @@
       <div class="split-row">
         <div class="split-row__body">
           <h3 class="split-row__title" data-i18n data-vi="Ngọn hải đăng cuối cùng" data-en="The Last Lighthouse">Ngọn hải đăng cuối cùng</h3>
-          <p class="split-row__blurb" data-i18n data-vi="Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng — cho đến ngày cơn bão số Chín ập xuống." data-en="For nearly half a century, Old Tu has climbed forty-two laterite steps to light Mũi Đá Dựng — until Typhoon Nine strikes.">Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng — cho đến ngày cơn bão số Chín ập xuống.</p>
+          <p class="split-row__blurb" data-i18n data-vi="Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng, cho đến ngày cơn bão số Chín ập xuống." data-en="For nearly half a century, Old Tu has climbed forty-two laterite steps to light Mũi Đá Dựng, until Typhoon Nine strikes.">Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng, cho đến ngày cơn bão số Chín ập xuống.</p>
           <span class="split-row__cta">
             <span data-i18n data-vi="Đọc truyện này" data-en="Read this story">Đọc truyện này</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>

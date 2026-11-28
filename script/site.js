@@ -428,7 +428,6 @@
   // Chế độ "Cổ điển" (html[data-glass-mode="classic"]) tắt hẳn khúc xạ và trả về kính CSS.
   (function () {
     if (!root.classList.contains('lg-can')) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
 
     var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link';
     var BIG = '.mast-pill, .emblem, .settings-popover';   // nhóm này dùng --glass-blur, còn lại --glass-blur-sm

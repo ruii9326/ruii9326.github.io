@@ -8,7 +8,7 @@
     var theme = saved === 'dark' || saved === 'light'
       ? saved
       : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent) && !(window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches);
+    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent);
     if (canLiquid) document.documentElement.classList.add('lg-can');
     var glass = canLiquid ? (localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid') : 'classic';
     document.documentElement.setAttribute('data-theme', theme);

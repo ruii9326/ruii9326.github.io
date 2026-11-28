@@ -8,7 +8,7 @@
     var theme = saved === 'dark' || saved === 'light'
       ? saved
       : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent) && !(window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches);
+    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent);
     if (canLiquid) document.documentElement.classList.add('lg-can');
     var glass = canLiquid ? (localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid') : 'classic';
     document.documentElement.setAttribute('data-theme', theme);
@@ -621,7 +621,7 @@ a.split-row__link.is-launch { transform: scale(1.025); }
     </div>
     <figure class="hero__figure">
       <div class="emblem">
-        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Biểu tượng ruii9326 — The World of Nine Continents">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Biểu tượng ruii9326 - The World of Nine Continents">
 <defs>
 <linearGradient id="ncRim" gradientUnits="userSpaceOnUse" x1="200" y1="14" x2="200" y2="386"><stop offset="0" stop-color="#F3D488"/><stop offset=".42" stop-color="#C99A3E"/><stop offset="1" stop-color="#A8532A"/></linearGradient>
 <radialGradient id="ncPlate" gradientUnits="userSpaceOnUse" cx="200" cy="188" r="178"><stop offset="0" stop-color="#4A3220"/><stop offset=".55" stop-color="#2A1E14"/><stop offset="1" stop-color="#160F0A"/></radialGradient>
@@ -659,7 +659,7 @@ a.split-row__link.is-launch { transform: scale(1.025); }
   <section class="section" id="tacpham" aria-labelledby="worksHeading">
     <div class="section-head">
       <h2 id="worksHeading" data-i18n data-vi="Tác phẩm &amp; Thế giới" data-en="Works &amp; Worlds">Tác phẩm &amp; Thế giới</h2>
-      <p data-i18n data-vi="Từ vũ trụ giả tưởng dài kỳ đang kiến tạo cho đến những truyện ngắn độc lập — mỗi trang viết là một mảnh ghép của thế giới quan mà mình gửi gắm." data-en="From an ongoing long-form fantasy universe to standalone short stories — each piece reflects a corner of the worlds I build.">Từ vũ trụ giả tưởng dài kỳ đang kiến tạo cho đến những truyện ngắn độc lập — mỗi trang viết là một mảnh ghép của thế giới quan mà mình gửi gắm.</p>
+      <p data-i18n data-vi="Từ vũ trụ giả tưởng dài kỳ đang kiến tạo cho đến những truyện ngắn độc lập, mỗi trang viết là một mảnh ghép của thế giới quan mà mình gửi gắm." data-en="From an ongoing long-form fantasy universe to standalone short stories, each piece reflects a corner of the worlds I build.">Từ vũ trụ giả tưởng dài kỳ đang kiến tạo cho đến những truyện ngắn độc lập, mỗi trang viết là một mảnh ghép của thế giới quan mà mình gửi gắm.</p>
     </div>
 
     <div class="work-grid">

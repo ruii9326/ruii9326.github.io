@@ -8,7 +8,7 @@
     var theme = saved === 'dark' || saved === 'light'
       ? saved
       : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent) && !(window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches);
+    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent);
     if (canLiquid) document.documentElement.classList.add('lg-can');
     var glass = canLiquid ? (localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid') : 'classic';
     document.documentElement.setAttribute('data-theme', theme);
@@ -303,7 +303,7 @@
         <p>"Sao trước giờ ba con không kể mấy chuyện này cho con nghe vậy ông?"</p>
         <p>Ông Tư rít một hơi trà nguội, mắt nhìn ra bãi cát tối đen: "Chuyện buồn quá, người ta hay cất kỹ. Lôi ra kể lại chỉ tổ xót ruột thêm."</p>
         <p>Mấy bữa sau, Linh bắt đầu lôi điện thoại ra không phải để canh sóng nữa mà để chụp hình. Nó chụp đôi tay nhăn nheo của ông đang châm dầu vô bánh răng đồng, chụp mấy trang sổ thời tiết viết bằng nét bút bi run rẩy, chụp tấm ảnh bà Nguyệt, chụp cả quầng đèn vàng quét ngang trời đêm. Tối về giường, nó mở phần ghi chú gõ lại lặt vặt mấy chuyện ông kể. Nó chẳng biết viết để làm gì, chỉ thấy nếu mình không ghi lại thì mai mốt mấy thứ này sẽ trôi tuột đi hết.</p>
-        <p>Chiều thứ năm, ông Sáu — bạn chài cũ của ông Tư, giờ nghỉ biển vì thoái hóa cột sống — xách qua mấy con mực khô mới phơi. Hai ông già ngồi nhâm nhi trà nóng, kể cho Linh nghe chuyện xóm Gành hồi xưa có những trận bão lớn phải chạy cả làng lên chùa trên đồi, chuyện lễ cúng cá Ông, chuyện chia từng rổ cá cơm sau đêm kéo lưới.</p>
+        <p>Chiều thứ năm, ông Sáu, bạn chài cũ của ông Tư, giờ nghỉ biển vì thoái hóa cột sống, xách qua mấy con mực khô mới phơi. Hai ông già ngồi nhâm nhi trà nóng, kể cho Linh nghe chuyện xóm Gành hồi xưa có những trận bão lớn phải chạy cả làng lên chùa trên đồi, chuyện lễ cúng cá Ông, chuyện chia từng rổ cá cơm sau đêm kéo lưới.</p>
         <p>"Ông nội cháu giỏi lắm à nha," ông Sáu vỗ vai ông Tư, giọng hào hứng. "Năm bão lớn hồi trước, cái tháp tự động ngoài kia mất điện tối thui, có mỗi đèn nhà ổng sáng trưng. Cả mấy chục chiếc ghe nhờ ngó vô đó mà tránh được bãi ngầm. Xóm này ai cũng mang ơn ổng."</p>
         <p>Khen xong, giọng ông Sáu bỗng hạ xuống, ngập ngừng: "Mà nghe mấy đứa trên xã xì xào sắp giải tỏa mỏm đá này làm resort gì đó. Cháu có nghe ba cháu nói gì không?"</p>
         <p>Linh khựng tay rót trà. "Giải tỏa làm resort nào ạ?"</p>
@@ -422,7 +422,7 @@
         <p>Sơn cúi đầu, che đi giọt nước mắt vừa kịp ứa ra nơi khóe mắt. "Con xin lỗi ba. Xin lỗi vì chuyện hồi má mất, xin lỗi vì bao nhiêu năm để ba lủi thủi một mình."</p>
         <p>"Ba nói rồi, đừng ôm chuyện cũ nữa. Con người ta lớn lên ai cũng phải chọn đường mình đi. Con chọn ra thành phố làm ăn không có gì sai hết. Ba chỉ mong con đừng quên đường về nhà là được."</p>
         <p>Hai cha con ngồi im lặng nghe tiếng sóng vỗ đều ngoài bãi đá. Khoảng lặng đêm nay khác hẳn hai mươi sáu năm qua, nhẹ nhõm và ấm áp đến lạ.</p>
-        <p>Lát sau, Linh từ trong nhà chạy ra, chìa chiếc điện thoại cho hai người xem. Tranh thủ lúc có sóng mạnh trở lại, nó đã đăng hết loạt ảnh nó chụp suốt tuần qua — từ đôi tay vá lưới, dàn bánh răng thời Pháp, cuốn sổ thời tiết, tấm ảnh trắng đen của bà nội cho đến cảnh ngọn đèn xuyên qua màn mưa bão — kèm một bài viết ngắn kể về người giữ đèn cuối cùng của Mũi Đá Dựng lên trang cá nhân và một diễn đàn nhiếp ảnh. Mới hơn hai tiếng mà bài viết đã có hàng ngàn lượt chia sẻ, cả mấy nhà báo địa phương cũng nhắn tin hỏi thăm.</p>
+        <p>Lát sau, Linh từ trong nhà chạy ra, chìa chiếc điện thoại cho hai người xem. Tranh thủ lúc có sóng mạnh trở lại, nó đã đăng hết loạt ảnh nó chụp suốt tuần qua, từ đôi tay vá lưới, dàn bánh răng thời Pháp, cuốn sổ thời tiết, tấm ảnh trắng đen của bà nội cho đến cảnh ngọn đèn xuyên qua màn mưa bão, kèm một bài viết ngắn kể về người giữ đèn cuối cùng của Mũi Đá Dựng lên trang cá nhân và một diễn đàn nhiếp ảnh. Mới hơn hai tiếng mà bài viết đã có hàng ngàn lượt chia sẻ, cả mấy nhà báo địa phương cũng nhắn tin hỏi thăm.</p>
         <p>"Con viết thiệt tình những gì con thấy thôi," Linh hơi ngượng ngùng gãi đầu. "Con nghĩ nhiều người biết chuyện ngọn đèn này cứu tàu đêm qua, biết đâu mấy chú trong công ty ba cũng ủng hộ giữ nó lại."</p>
         <p>Ông Tư đeo cặp kính lão đã trầy xước, cầm chiếc điện thoại bằng đôi tay run run, nhờ Sơn chỉ cách vuốt từng tấm hình. Tới tấm ảnh trắng đen của bà Nguyệt nằm gọn giữa những dòng chữ nắn nót của đứa cháu gái, mắt ông lại nhòe đi. Bà đã mất hơn mười năm, vậy mà qua ống kính của đứa cháu nhỏ, câu chuyện của hai vợ chồng ông vẫn còn ở lại giữa đời.</p>
         <p>"Cảm ơn con gái của ông," ông Tư nói, giọng nghèn nghẹn.</p>
@@ -435,7 +435,7 @@
         <p>Mùa hè năm sau, khi nắng chiều lại xiên qua rặng phi lao phía tây xóm Gành, Linh và mẹ đứng dưới chân tháp ngước nhìn lên. Phía trên dãy cửa sổ nhỏ chạy vòng quanh thân tháp, bóng dáng ông Tư đang chậm rãi bước lên từng bậc đá, ngay sát phía sau là Sơn tay xách can dầu nhớt bước theo phụ cha.</p>
         <p>Trời sập tối. Dàn bánh răng đồng lại ken két chuyển động. Một luồng sáng vàng ấm từ đỉnh Mũi Đá Dựng vươn dài ra mặt biển, đều đặn, bền bỉ, soi rõ lối về cho những chiếc ghe nhỏ đang rẽ sóng vào bờ.</p>
       </div>
-      <p class="story-end" data-i18n data-vi="— HẾT —" data-en="— THE END —">— HẾT —</p>
+      <p class="story-end" data-i18n data-vi="HẾT" data-en="THE END">HẾT</p>
     </article>
   </section>
 
