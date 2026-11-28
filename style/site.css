@@ -127,19 +127,12 @@ body::after {
    Không có gì đi theo vị trí con trỏ.
    ============================================================ */
 @media (hover: hover) {
-  .now-card:hover, .split-row--solo:hover {
-    transform: translateY(var(--hover-lift-card));
-    box-shadow: var(--glass-shadow-hover), var(--glass-inner);
-    background-color: var(--glass-fill-hover);
-    --rim-o: 1;
-  }
   .menu-toggle:hover, .back-link-icon:hover, .to-top.show:hover { transform: scale(1.09); --rim-o: 1; background-color: var(--glass-fill-hover); }
   .btn-primary:hover, .btn-link:hover { transform: translateY(-2px) scale(1.035); --rim-o: 1; }
   .btn-link:hover { background-color: var(--glass-fill-hover); }
   .haunt:hover { transform: translateX(5px) scale(1.01); background-color: var(--glass-fill-hover); }
   .emblem:hover { transform: scale(1.035); --rim-o: 1; }
 }
-.now-card.is-pressed, .split-row--solo.is-pressed { transform: scale(var(--press-card)); --rim-o: 1; }
 .menu-toggle.is-pressed, .back-link-icon.is-pressed, .to-top.is-pressed { transform: scale(var(--press-small)); --rim-o: 1; background-color: var(--glass-fill-hover); }
 .btn-primary.is-pressed, .btn-link.is-pressed { transform: scale(var(--press-small), calc(var(--press-small) + .03)); --rim-o: 1; }
 .haunt.is-pressed { transform: scale(.97); }

@@ -316,7 +316,7 @@
   // Chỉ phần tử trong cùng được ép (không dùng :active vì :active lan lên cả các phần tử cha).
   // Hiệu ứng nằm trọn trong CSS (.is-pressed); JS chỉ bật/tắt lớp này khi nhấn / thả / hủy.
   var LIQUID = [
-    '.now-card', 'a.split-row__link', '.split-row--solo', '.haunt', '.btn-primary', '.btn-link',
+    'a.split-row__link', '.haunt', '.btn-primary', '.btn-link',
     '.menu-toggle', '.back-link-icon', '.to-top', '.toc-link', '.emblem', '.mast-line a',
     '.stories-head', '.story-item'
   ].join(',');
