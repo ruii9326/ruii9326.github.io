@@ -317,7 +317,8 @@
   // Hiệu ứng nằm trọn trong CSS (.is-pressed); JS chỉ bật/tắt lớp này khi nhấn / thả / hủy.
   var LIQUID = [
     '.now-card', 'a.split-row__link', '.split-row--solo', '.haunt', '.btn-primary', '.btn-link',
-    '.menu-toggle', '.back-link-icon', '.to-top', '.toc-link', '.emblem', '.mast-line a', '.story-toggle'
+    '.menu-toggle', '.back-link-icon', '.to-top', '.toc-link', '.emblem', '.mast-line a',
+    '.stories-head', '.story-item'
   ].join(',');
 
   var pressedEl = null;
@@ -429,7 +430,7 @@
     if (!root.classList.contains('lg-can')) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
 
-    var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link, .story-toggle';
+    var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link';
     var BIG = '.mast-pill, .emblem, .settings-popover';   // nhóm này dùng --glass-blur, còn lại --glass-blur-sm
     var DISP = '.menu-toggle, .settings-popover, .btn-primary';
     var DISP_AMOUNT = 0.035;                                // tán sắc nhẹ trên nút/hộp nhỏ; .mast-pill dùng 1 pass để giữ 120fps khi cuộn
@@ -684,7 +685,7 @@
       var open = btn.getAttribute('aria-expanded') !== 'true';
       sync(open);
       if (open && glassEngine) {
-        setTimeout(function () { glassEngine.refresh(); }, 60);
+        setTimeout(function () { glassEngine.refresh(); }, 480);
       }
     });
   })();
