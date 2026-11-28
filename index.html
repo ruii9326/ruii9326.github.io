@@ -10,6 +10,7 @@
       : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     document.documentElement.setAttribute('data-theme', theme); document.documentElement.setAttribute('data-glass-mode', localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid');
   } catch (e) {}
+  if (/Chrome\/\d+/.test(navigator.userAgent)) document.documentElement.classList.add('lg-can');
 })();
 </script>
 <meta charset="UTF-8">
@@ -31,7 +32,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="shared/tokens.css">
+<link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="style/site.css">
 <style>
 /* Trang chủ = trang tác giả. Thanh viên thuốc kính → hero (lời chào + quả cầu kính chứa biểu tượng)
@@ -94,8 +95,8 @@ main { display: block; position: relative; }
 .btn-primary {
   color: var(--color-icon-on-accent);
   background-color: var(--glass-tint);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(1.9);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(1.9);
   box-shadow: 0 16px 28px -14px oklch(40% 0.13 45 / 0.75), inset 0 1px 0 oklch(100% 0 0 / 0.55), inset 0 -1px 0 oklch(25% 0.08 40 / 0.4), inset 0 0 20px oklch(100% 0 0 / 0.14);
 }
 .btn-primary svg { width: 16px; height: 16px; flex: none; transition: transform var(--dur-spring) var(--spring); }
@@ -373,12 +374,12 @@ a.split-row__link.is-launch { transform: scale(1.025); }
 <body>
 
   <div class="settings-menu" id="settingsMenu">
-    <button class="menu-toggle" type="button" id="settingsMenuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="settingsPopover" aria-label="Cài đặt" data-aria="common.settings">
+    <button class="menu-toggle" type="button" id="settingsMenuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="settingsPopover" aria-label="Cài đặt" data-aria-vi="Cài đặt" data-aria-en="Settings">
       <span class="menu-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
     <div class="settings-popover" id="settingsPopover" role="menu">
       <div class="settings-group">
-        <p class="settings-group-label" data-i18n="common.language">Ngôn ngữ</p>
+        <p class="settings-group-label" data-i18n data-vi="Ngôn ngữ" data-en="Language">Ngôn ngữ</p>
         <div class="language-switcher" id="languageSwitcher" role="group" aria-label="Ngôn ngữ / Language">
           <button class="lang-btn active" type="button" data-lang="vi" aria-pressed="true">VI</button>
           <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -386,29 +387,30 @@ a.split-row__link.is-launch { transform: scale(1.025); }
       </div>
       <div class="settings-divider" role="separator"></div>
       <div class="settings-group">
-        <p class="settings-group-label" data-i18n="common.theme">Giao diện</p>
-        <div class="theme-switcher" id="themeSwitcher" role="group" aria-label="Giao diện sáng / tối" data-aria="common.light_dark_theme">
+        <p class="settings-group-label" data-i18n data-vi="Giao diện" data-en="Theme">Giao diện</p>
+        <div class="theme-switcher" id="themeSwitcher" role="group" aria-label="Giao diện sáng / tối" data-aria-vi="Giao diện sáng / tối" data-aria-en="Light / dark theme">
           <button class="theme-btn active" type="button" data-theme-choice="light" aria-pressed="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-            <span data-i18n="common.light">Sáng</span>
+            <span data-i18n data-vi="Sáng" data-en="Light">Sáng</span>
           </button>
           <button class="theme-btn" type="button" data-theme-choice="dark" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
-            <span data-i18n="common.dark">Tối</span>
+            <span data-i18n data-vi="Tối" data-en="Dark">Tối</span>
           </button>
         </div>
       </div>
-<div class="settings-divider glass-opt" role="separator"></div>
-<div class="settings-group glass-opt">
-<p class="settings-group-label" data-i18n="common.glass_effect">Hiệu ứng kính</p>
-<div class="glass-switcher" id="glassSwitcher" role="group" aria-label="Hiệu ứng kính" data-aria="common.glass_effect">
+<div class="settings-divider" role="separator"></div>
+<div class="settings-group">
+<p class="settings-group-label" data-i18n data-vi="Hiệu ứng kính" data-en="Glass effect">Hiệu ứng kính</p>
+<div class="glass-switcher" id="glassSwitcher" role="group" aria-label="Hiệu ứng kính" data-aria-vi="Hiệu ứng kính" data-aria-en="Glass effect">
+<span class="lg-thumb" aria-hidden="true"></span>
 <button class="glass-btn active" type="button" data-glass-choice="liquid" aria-pressed="true">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5s6 6.2 6 10.5a6 6 0 0 1-12 0C6 8.7 12 2.5 12 2.5Z"/></svg>
-<span data-i18n="common.liquid">Liquid</span>
+<span data-i18n data-vi="Liquid" data-en="Liquid">Liquid</span>
 </button>
 <button class="glass-btn" type="button" data-glass-choice="classic" aria-pressed="false">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>
-<span data-i18n="common.classic">Cổ điển</span>
+<span data-i18n data-vi="Cổ điển" data-en="Classic">Cổ điển</span>
 </button>
 </div>
 </div>
@@ -420,25 +422,25 @@ a.split-row__link.is-launch { transform: scale(1.025); }
   <header class="mast">
     <div class="mast-pill">
       <p class="mast-name">ruii9326</p>
-      <nav class="mast-nav" aria-label="Điều hướng trang" data-aria="home.main.mast-nav">
-        <a href="#tacpham" data-i18n="home.main.a">Tác phẩm</a>
-        <a href="#tacgia" data-i18n="home.main.a_2">Tác giả</a>
-        <a href="#lienhe" data-i18n="home.main.a_3">Liên hệ</a>
+      <nav class="mast-nav" aria-label="Điều hướng trang" data-aria-vi="Điều hướng trang" data-aria-en="Page navigation">
+        <a href="#tacpham" data-i18n data-vi="Tác phẩm" data-en="Works">Tác phẩm</a>
+        <a href="#tacgia" data-i18n data-vi="Tác giả" data-en="Author">Tác giả</a>
+        <a href="#lienhe" data-i18n data-vi="Liên hệ" data-en="Contact">Liên hệ</a>
       </nav>
     </div>
   </header>
 
   <section class="hero" aria-labelledby="pageTitle">
     <div class="hero__body reveal" style="--i:0">
-      <h1 id="pageTitle" data-i18n="home.main.pageTitle">Xin chào, mình là ruii9326.</h1>
-      <p class="hero__role" data-i18n="home.main.hero__role">Người chấp bút và kiến tạo vũ trụ giả tưởng The World of Nine Continents</p>
-      <p class="hero__lead" data-i18n="home.main.hero__lead">Mình tự tay kiến tạo từng mảnh ghép của vũ trụ này: từ những quy luật ma pháp đầu tiên, bản đồ các đại lục cho đến từng dòng mã nguồn.</p>
+      <h1 id="pageTitle" data-i18n data-vi="Xin chào, mình là ruii9326." data-en="Hello, I&#x27;m ruii9326.">Xin chào, mình là ruii9326.</h1>
+      <p class="hero__role" data-i18n data-vi="Người chấp bút và kiến tạo vũ trụ giả tưởng The World of Nine Continents" data-en="Author and architect of the fantasy universe The World of Nine Continents">Người chấp bút và kiến tạo vũ trụ giả tưởng The World of Nine Continents</p>
+      <p class="hero__lead" data-i18n data-vi="Mình tự tay kiến tạo từng mảnh ghép của vũ trụ này: từ những quy luật ma pháp đầu tiên, bản đồ các đại lục cho đến từng dòng mã nguồn." data-en="I craft every piece of this universe by hand: from its first laws of magic and the maps of its continents to every line of code.">Mình tự tay kiến tạo từng mảnh ghép của vũ trụ này: từ những quy luật ma pháp đầu tiên, bản đồ các đại lục cho đến từng dòng mã nguồn.</p>
       <div class="hero__actions">
-        <a class="btn-primary" href="theworldofninecontinents/">
-          <span data-i18n="home.main.span">Khám phá The World of Nine Continents</span>
+        <a class="btn-primary" href="https://ruii9326.github.io/theworldofninecontinents/">
+          <span data-i18n data-vi="Khám phá The World of Nine Continents" data-en="Explore The World of Nine Continents">Khám phá The World of Nine Continents</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a class="btn-link" href="#lienhe" data-i18n="home.main.btn-link">Gửi thư cho mình</a>
+        <a class="btn-link" href="#lienhe" data-i18n data-vi="Gửi thư cho mình" data-en="Write to me">Gửi thư cho mình</a>
       </div>
     </div>
     <figure class="hero__figure">
@@ -480,25 +482,25 @@ a.split-row__link.is-launch { transform: scale(1.025); }
 
   <section class="section" id="tacpham" aria-labelledby="worksHeading">
     <div class="section-head">
-      <h2 id="worksHeading" data-i18n="home.tacpham.worksHeading">Một thế giới, hai hình hài</h2>
-      <p data-i18n="home.tacpham.p">Khởi đầu từ những trang văn, và hướng tới một không gian sống động nơi người đọc có thể trực tiếp đặt chân vào.</p>
+      <h2 id="worksHeading" data-i18n data-vi="Một thế giới, hai hình hài" data-en="One world, two forms">Một thế giới, hai hình hài</h2>
+      <p data-i18n data-vi="Khởi đầu từ những trang văn, và hướng tới một không gian sống động nơi người đọc có thể trực tiếp đặt chân vào." data-en="Beginning on the written page, and growing toward a living space you can step right into.">Khởi đầu từ những trang văn, và hướng tới một không gian sống động nơi người đọc có thể trực tiếp đặt chân vào.</p>
     </div>
 
     <div class="work-grid">
-      <a class="split-row__link" href="theworldofninecontinents/">
+      <a class="split-row__link" href="https://ruii9326.github.io/theworldofninecontinents/">
         <div class="split-row">
           <div class="split-row__body">
             <div class="split-row__top">
               <span class="split-row__figure" aria-hidden="true">
                 <svg class="icon-on-accent" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
               </span>
-              <h3 class="split-row__title" data-i18n="home.tacpham.split-row__title">Tiểu thuyết</h3>
-              <span class="split-row__tag tag-writing" data-i18n="home.tacpham.split-row__tag">Đang kiến tạo</span>
+              <h3 class="split-row__title" data-i18n data-vi="Tiểu thuyết" data-en="The Novel">Tiểu thuyết</h3>
+              <span class="split-row__tag tag-writing" data-i18n data-vi="Đang kiến tạo" data-en="In development">Đang kiến tạo</span>
             </div>
             <p class="split-row__meta">The World of Nine Continents</p>
-            <p class="split-row__blurb" data-i18n="home.tacpham.split-row__blurb">Chín đại lục, bảy chủng tộc, mười bảy vương quốc cùng vòng tuần hoàn bất tận giữa các trạng thái năng lượng. Khung thiết lập đã hoàn chỉnh, sẵn sàng cho hành trình dài kỳ sắp mở màn.</p>
+            <p class="split-row__blurb" data-i18n data-vi="Chín đại lục, bảy chủng tộc, mười bảy vương quốc cùng vòng tuần hoàn bất tận giữa các trạng thái năng lượng. Khung thiết lập đã hoàn chỉnh, sẵn sàng cho hành trình dài kỳ sắp mở màn." data-en="Nine continents, seven races, seventeen kingdoms, and the endless cycle between states of energy. The framework is complete, ready for the long journey about to begin.">Chín đại lục, bảy chủng tộc, mười bảy vương quốc cùng vòng tuần hoàn bất tận giữa các trạng thái năng lượng. Khung thiết lập đã hoàn chỉnh, sẵn sàng cho hành trình dài kỳ sắp mở màn.</p>
             <span class="split-row__cta">
-              <span data-i18n="home.tacpham.span">Khám phá thiết lập thế giới</span>
+              <span data-i18n data-vi="Khám phá thiết lập thế giới" data-en="Explore the world">Khám phá thiết lập thế giới</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </span>
           </div>
@@ -511,11 +513,11 @@ a.split-row__link.is-launch { transform: scale(1.025); }
             <span class="split-row__figure" aria-hidden="true">
               <svg class="icon-on-accent" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9 9 3h6l5 6-8 12Z"/><path d="M4 9h16"/><path d="M9 3 7 9l5 12"/><path d="M15 3l2 6-5 12"/></svg>
             </span>
-            <h3 class="split-row__title" data-i18n="home.tacpham.split-row__title_2">Game</h3>
-            <span class="split-row__tag tag-soon" data-i18n="home.tacpham.split-row__tag_2">Đang ấp ủ</span>
+            <h3 class="split-row__title" data-i18n data-vi="Game" data-en="Game">Game</h3>
+            <span class="split-row__tag tag-soon" data-i18n data-vi="Đang ấp ủ" data-en="In incubation">Đang ấp ủ</span>
           </div>
-          <p class="split-row__meta" data-i18n="home.tacpham.split-row__meta">Dự án chuyển thể tương tác</p>
-          <p class="split-row__blurb" data-i18n="home.tacpham.split-row__blurb_2">Ước vọng đưa chín đại lục bước ra khỏi trang viết thành một thế giới mở giàu tính thẩm mỹ, lấy cảm hứng từ phong cách của Genshin Impact và Wuthering Waves.</p>
+          <p class="split-row__meta" data-i18n data-vi="Dự án chuyển thể tương tác" data-en="Interactive adaptation">Dự án chuyển thể tương tác</p>
+          <p class="split-row__blurb" data-i18n data-vi="Ước vọng đưa chín đại lục bước ra khỏi trang viết thành một thế giới mở giàu tính thẩm mỹ, lấy cảm hứng từ phong cách của Genshin Impact và Wuthering Waves." data-en="An ambition to bring the nine continents beyond the page into an expressive open world, inspired by the aesthetics of Genshin Impact and Wuthering Waves.">Ước vọng đưa chín đại lục bước ra khỏi trang viết thành một thế giới mở giàu tính thẩm mỹ, lấy cảm hứng từ phong cách của Genshin Impact và Wuthering Waves.</p>
         </div>
       </div>
     </div>
@@ -524,54 +526,54 @@ a.split-row__link.is-launch { transform: scale(1.025); }
   <section class="section" id="tacgia" aria-labelledby="aboutHeading">
     <div class="about">
       <div class="about__head">
-        <h2 id="aboutHeading" data-i18n="home.tacgia.aboutHeading">Người chấp bút</h2>
-        <blockquote class="about__quote" data-i18n="home.tacgia.about__quote">“Gieo từng con chữ xuống trang trắng, kiên tâm dựng nên một thế giới có nhịp thở của riêng mình.”</blockquote>
+        <h2 id="aboutHeading" data-i18n data-vi="Người chấp bút" data-en="The author">Người chấp bút</h2>
+        <blockquote class="about__quote" data-i18n data-vi="“Gieo từng con chữ xuống trang trắng, kiên tâm dựng nên một thế giới có nhịp thở của riêng mình.”" data-en="“Sowing words upon the blank page, patiently raising a world that breathes by laws of its own.”">“Gieo từng con chữ xuống trang trắng, kiên tâm dựng nên một thế giới có nhịp thở của riêng mình.”</blockquote>
       </div>
       <div class="about__text">
-        <p class="about__dateline" data-i18n="home.tacgia.about__dateline">Viết từ Thành phố Hồ Chí Minh.</p>
-        <p class="about__para" data-i18n="home.tacgia.about__para">Mình tên thật là Nguyễn Duy Anh, còn ruii9326 là bút danh gắn liền với những thế giới mình tạo ra. Mình yêu cảm giác tự tay nhào nặn một ý tưởng từ lúc nó còn là vài nét phác thảo mơ hồ cho đến khi thành hình trọn vẹn, nơi mỗi chi tiết nhỏ đều có lý do để tồn tại. Với mình, một thế giới dù là hư cấu vẫn cần sự chặt chẽ và rạch ròi: mọi thứ sinh ra đều phải có căn nguyên, có vay có trả, và suy cho cùng luôn phải giữ được thế cân bằng.</p>
-        <p class="about__para" data-i18n="home.tacgia.about__para_2">Tâm huyết lớn nhất của mình hiện tại đều gửi gắm vào <a href="theworldofninecontinents/">The World of Nine Continents</a>, một bộ tiểu thuyết giả tưởng dài kỳ đặt trên hành tinh rộng 2.550 triệu km², tách biệt hoàn toàn với thế giới thực. Ở nơi đó, chín đại lục nổi lên giữa biển khơi, bảy chủng tộc cùng chung sống dưới một bầu trời, và ma lực vốn không nằm sẵn trong con người mà chảy giữa cây cỏ, đất đá, sông nước cùng gió trời. Mỗi vùng đất lại có một nhịp bồi hoàn riêng: nơi trù phú thì dư dả, còn nơi cằn cỗi, con người buộc phải trả giá đắt cho từng lần vận dụng ma pháp.</p>
-        <p class="about__para" data-i18n="home.tacgia.about__para_3">Mạch truyện được đan cài từ nhiều ngả rẽ khác nhau. Đó là hành trình của một cậu bé bình thường lớn lên nơi thành phố tự do, từng mắc sai lầm, từng vấp ngã rồi được những người thương yêu nâng dậy. Đó còn là cuộc tranh giành ma lực giữa các vương quốc trước những miền đất đang dần cạn kiệt, hay đức tin gửi vào một Đấng Sáng Thế mà chẳng ai dám chắc còn dõi theo thế gian. Mỗi đại lục tự kể câu chuyện của riêng mình, để rồi tất cả dần hội tụ về chung một điểm.</p>
-        <p class="about__para" data-i18n="home.tacgia.about__para_4">Hiện tại, toàn bộ nền móng về địa lý, lịch sử, đức tin cùng hệ thống ma pháp đã được đặt định vững chắc, và dàn nhân vật cũng đang dần hoàn thiện để chuẩn bị cho những chương truyện đầu tiên. Xa hơn những trang văn, mình còn ấp ủ ước vọng chuyển thể vũ trụ này thành một tựa game thế giới mở giàu tính thẩm mỹ, lấy cảm hứng từ phong cách của Genshin Impact và Wuthering Waves.</p>
+        <p class="about__dateline" data-i18n data-vi="Viết từ Thành phố Hồ Chí Minh." data-en="Written from Ho Chi Minh City.">Viết từ Thành phố Hồ Chí Minh.</p>
+        <p class="about__para" data-i18n data-vi="Mình tên thật là Nguyễn Duy Anh, còn ruii9326 là bút danh gắn liền với những thế giới mình tạo ra. Mình yêu cảm giác tự tay nhào nặn một ý tưởng từ lúc nó còn là vài nét phác thảo mơ hồ cho đến khi thành hình trọn vẹn, nơi mỗi chi tiết nhỏ đều có lý do để tồn tại. Với mình, một thế giới dù là hư cấu vẫn cần sự chặt chẽ và rạch ròi: mọi thứ sinh ra đều phải có căn nguyên, có vay có trả, và suy cho cùng luôn phải giữ được thế cân bằng." data-en="My given name is Nguyen Duy Anh, though ruii9326 is the name bound to the worlds I create. I love the craft of shaping an idea by hand, from the moment it is only a faint sketch until it takes full form, where every small detail has a reason to exist. To me, even an imagined world demands rigor and clarity: everything that comes into being must have its origin, what is borrowed must be repaid, and in the end the balance must hold.">Mình tên thật là Nguyễn Duy Anh, còn ruii9326 là bút danh gắn liền với những thế giới mình tạo ra. Mình yêu cảm giác tự tay nhào nặn một ý tưởng từ lúc nó còn là vài nét phác thảo mơ hồ cho đến khi thành hình trọn vẹn, nơi mỗi chi tiết nhỏ đều có lý do để tồn tại. Với mình, một thế giới dù là hư cấu vẫn cần sự chặt chẽ và rạch ròi: mọi thứ sinh ra đều phải có căn nguyên, có vay có trả, và suy cho cùng luôn phải giữ được thế cân bằng.</p>
+        <p class="about__para" data-i18n data-vi="Tâm huyết lớn nhất của mình hiện tại đều gửi gắm vào &lt;a href=&quot;https://ruii9326.github.io/theworldofninecontinents/&quot;&gt;The World of Nine Continents&lt;/a&gt;, một bộ tiểu thuyết giả tưởng dài kỳ đặt trên hành tinh rộng 2.550 triệu km², tách biệt hoàn toàn với thế giới thực. Ở nơi đó, chín đại lục nổi lên giữa biển khơi, bảy chủng tộc cùng chung sống dưới một bầu trời, và ma lực vốn không nằm sẵn trong con người mà chảy giữa cây cỏ, đất đá, sông nước cùng gió trời. Mỗi vùng đất lại có một nhịp bồi hoàn riêng: nơi trù phú thì dư dả, còn nơi cằn cỗi, con người buộc phải trả giá đắt cho từng lần vận dụng ma pháp." data-en="My greatest dedication right now belongs to &lt;a href=&quot;https://ruii9326.github.io/theworldofninecontinents/&quot;&gt;The World of Nine Continents&lt;/a&gt;, a long-form fantasy novel set on a planet spanning 2,550 million km², entirely separate from our own world. There, nine continents rise from vast oceans, seven races share a single sky, and mana does not rest within people but flows through plants, earth, rivers, and wind. Each land has its own rhythm of replenishment: where it is bountiful there is plenty, and where it is barren, people must pay dearly for every act of magic.">Tâm huyết lớn nhất của mình hiện tại đều gửi gắm vào <a href="https://ruii9326.github.io/theworldofninecontinents/">The World of Nine Continents</a>, một bộ tiểu thuyết giả tưởng dài kỳ đặt trên hành tinh rộng 2.550 triệu km², tách biệt hoàn toàn với thế giới thực. Ở nơi đó, chín đại lục nổi lên giữa biển khơi, bảy chủng tộc cùng chung sống dưới một bầu trời, và ma lực vốn không nằm sẵn trong con người mà chảy giữa cây cỏ, đất đá, sông nước cùng gió trời. Mỗi vùng đất lại có một nhịp bồi hoàn riêng: nơi trù phú thì dư dả, còn nơi cằn cỗi, con người buộc phải trả giá đắt cho từng lần vận dụng ma pháp.</p>
+        <p class="about__para" data-i18n data-vi="Mạch truyện được đan cài từ nhiều ngả rẽ khác nhau. Đó là hành trình của một cậu bé bình thường lớn lên nơi thành phố tự do, từng mắc sai lầm, từng vấp ngã rồi được những người thương yêu nâng dậy. Đó còn là cuộc tranh giành ma lực giữa các vương quốc trước những miền đất đang dần cạn kiệt, hay đức tin gửi vào một Đấng Sáng Thế mà chẳng ai dám chắc còn dõi theo thế gian. Mỗi đại lục tự kể câu chuyện của riêng mình, để rồi tất cả dần hội tụ về chung một điểm." data-en="The story is woven from many threads. There is the journey of an ordinary boy who grows up in a free city, who makes mistakes and stumbles, then is lifted back up by those who love him. There is the struggle over mana among kingdoms, set against lands slowly drained dry, and a faith placed in a Creator whom no one can be sure still watches over the world. Each continent tells its own story, until they all gradually converge on a single point.">Mạch truyện được đan cài từ nhiều ngả rẽ khác nhau. Đó là hành trình của một cậu bé bình thường lớn lên nơi thành phố tự do, từng mắc sai lầm, từng vấp ngã rồi được những người thương yêu nâng dậy. Đó còn là cuộc tranh giành ma lực giữa các vương quốc trước những miền đất đang dần cạn kiệt, hay đức tin gửi vào một Đấng Sáng Thế mà chẳng ai dám chắc còn dõi theo thế gian. Mỗi đại lục tự kể câu chuyện của riêng mình, để rồi tất cả dần hội tụ về chung một điểm.</p>
+        <p class="about__para" data-i18n data-vi="Hiện tại, toàn bộ nền móng về địa lý, lịch sử, đức tin cùng hệ thống ma pháp đã được đặt định vững chắc, và dàn nhân vật cũng đang dần hoàn thiện để chuẩn bị cho những chương truyện đầu tiên. Xa hơn những trang văn, mình còn ấp ủ ước vọng chuyển thể vũ trụ này thành một tựa game thế giới mở giàu tính thẩm mỹ, lấy cảm hứng từ phong cách của Genshin Impact và Wuthering Waves." data-en="For now, the foundations of its geography, history, faiths, and magic system have been firmly laid, and its ensemble cast is taking shape ahead of the first chapters. Beyond the written page, I also harbor the ambition of adapting this universe into an expressive open-world game, inspired by the aesthetics of Genshin Impact and Wuthering Waves.">Hiện tại, toàn bộ nền móng về địa lý, lịch sử, đức tin cùng hệ thống ma pháp đã được đặt định vững chắc, và dàn nhân vật cũng đang dần hoàn thiện để chuẩn bị cho những chương truyện đầu tiên. Xa hơn những trang văn, mình còn ấp ủ ước vọng chuyển thể vũ trụ này thành một tựa game thế giới mở giàu tính thẩm mỹ, lấy cảm hứng từ phong cách của Genshin Impact và Wuthering Waves.</p>
       </div>
     </div>
   </section>
 
-  <section class="section" id="capnhat" aria-label="Nhật ký và liên hệ" data-aria="home.capnhat.capnhat">
+  <section class="section" id="capnhat" aria-label="Nhật ký và liên hệ" data-aria-vi="Nhật ký và liên hệ" data-aria-en="Log and contact">
     <div class="panel-grid">
       <div class="now-card" id="nhatky">
-        <h2 class="now-card__title" data-i18n="home.nhatky.now-card__title">Nhật ký kiến tạo</h2>
+        <h2 class="now-card__title" data-i18n data-vi="Nhật ký kiến tạo" data-en="Creation log">Nhật ký kiến tạo</h2>
         <!-- Thêm mục mới: sao chép một .log-item, đặt lên đầu danh sách (mới nhất trước). -->
         <ul class="log-list">
           <li class="log-item">
             <span class="log-dot" aria-hidden="true"></span>
-            <span class="log-text" data-i18n="home.nhatky.log-text">Hoàn tất hồ sơ nền tảng của thế giới: bản đồ chín đại lục, bảy chủng tộc, mười bảy vương quốc, định luật ma pháp, đức tin và biên niên sử Thánh Lịch.</span>
+            <span class="log-text" data-i18n data-vi="Hoàn tất hồ sơ nền tảng của thế giới: bản đồ chín đại lục, bảy chủng tộc, mười bảy vương quốc, định luật ma pháp, đức tin và biên niên sử Thánh Lịch." data-en="Completed the world&#x27;s foundational lore: nine continents, seven races, seventeen kingdoms, laws of magic, faiths, and the Sacred Calendar chronicle.">Hoàn tất hồ sơ nền tảng của thế giới: bản đồ chín đại lục, bảy chủng tộc, mười bảy vương quốc, định luật ma pháp, đức tin và biên niên sử Thánh Lịch.</span>
           </li>
           <li class="log-item">
             <span class="log-dot" aria-hidden="true"></span>
-            <span class="log-text" data-i18n="home.nhatky.log-text_2">Khởi động dự án tiểu thuyết dài kỳ The World of Nine Continents - đặt nền móng cho một vũ trụ giả tưởng nguyên bản, tách biệt hoàn toàn với Trái Đất.</span>
+            <span class="log-text" data-i18n data-vi="Khởi động dự án tiểu thuyết dài kỳ The World of Nine Continents - đặt nền móng cho một vũ trụ giả tưởng nguyên bản, tách biệt hoàn toàn với Trái Đất." data-en="Launched the long-form novel project The World of Nine Continents - laying the cornerstone for an original fantasy universe completely separate from Earth.">Khởi động dự án tiểu thuyết dài kỳ The World of Nine Continents - đặt nền móng cho một vũ trụ giả tưởng nguyên bản, tách biệt hoàn toàn với Trái Đất.</span>
           </li>
         </ul>
       </div>
 
       <div class="now-card now-card--contact" id="lienhe">
         <div class="contact-letter">
-          <h2 class="now-card__title" data-i18n="home.lienhe.now-card__title">Liên hệ</h2>
-          <p class="now-card__blurb" data-i18n="home.lienhe.now-card__blurb">Nếu bạn muốn gửi đôi dòng tâm sự - một cảm nhận về thế giới trong truyện, một góp ý nhỏ, hay đơn giản chỉ là một lời chào - hòm thư của mình luôn rộng mở, và mình luôn tự tay đọc từng bức thư gửi đến.</p>
+          <h2 class="now-card__title" data-i18n data-vi="Liên hệ" data-en="Get in touch">Liên hệ</h2>
+          <p class="now-card__blurb" data-i18n data-vi="Nếu bạn muốn gửi đôi dòng tâm sự - một cảm nhận về thế giới trong truyện, một góp ý nhỏ, hay đơn giản chỉ là một lời chào - hòm thư của mình luôn rộng mở, và mình luôn tự tay đọc từng bức thư gửi đến." data-en="If you would like to leave a message - a thought on the world and its stories, a note, or simply a warm hello - my inbox is always open, and I personally read every letter that arrives.">Nếu bạn muốn gửi đôi dòng tâm sự - một cảm nhận về thế giới trong truyện, một góp ý nhỏ, hay đơn giản chỉ là một lời chào - hòm thư của mình luôn rộng mở, và mình luôn tự tay đọc từng bức thư gửi đến.</p>
           <div class="contact-row">
             <span class="contact-icon" aria-hidden="true">
               <svg class="icon-on-accent" viewBox="0 0 24 24" fill="none" stroke="var(--color-icon-on-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
             </span>
             <span class="contact-mail__text">
-              <span class="contact-mail__label" data-i18n="home.lienhe.contact-mail__label">Hòm thư</span>
+              <span class="contact-mail__label" data-i18n data-vi="Hòm thư" data-en="Mailbox">Hòm thư</span>
               <a class="contact-email" href="mailto:methesky.mending@gmail.com">methesky.mending@gmail.com</a>
             </span>
           </div>
         </div>
 
         <div class="contact-find" role="group" aria-labelledby="hauntsTitle">
-          <h3 class="contact-find__title" id="hauntsTitle" data-i18n="home.lienhe.hauntsTitle">Những nơi bạn có thể gặp mình</h3>
-          <p class="contact-find__blurb" data-i18n="home.lienhe.contact-find__blurb">Mình không đi đâu xa, chỉ quanh quẩn ở vài góc này thôi. Ghé qua chào mình một tiếng nhé.</p>
+          <h3 class="contact-find__title" id="hauntsTitle" data-i18n data-vi="Những nơi bạn có thể gặp mình" data-en="Where you can find me">Những nơi bạn có thể gặp mình</h3>
+          <p class="contact-find__blurb" data-i18n data-vi="Mình không đi đâu xa, chỉ quanh quẩn ở vài góc này thôi. Ghé qua chào mình một tiếng nhé." data-en="I don&#x27;t wander far, just these few corners. Drop by and say hi.">Mình không đi đâu xa, chỉ quanh quẩn ở vài góc này thôi. Ghé qua chào mình một tiếng nhé.</p>
           <ul class="contact-find__list">
             <li>
               <a class="haunt" href="https://youtube.com/@ruii9326">
@@ -601,35 +603,28 @@ a.split-row__link.is-launch { transform: scale(1.025); }
   </section>
 
   <footer class="foot-letter">
-    <p class="foot-letter__close" data-i18n="home.lienhe.foot-letter__close">
+    <p class="foot-letter__close" data-i18n data-vi="Cảm ơn bạn vì đã đọc đến những dòng cuối này." data-en="Thank you for reading all the way to the end.">
       Cảm ơn bạn vì đã đọc đến những dòng cuối này.<br>
-      <span class="foot-letter__sign" data-i18n="common.ruii9326">- ruii9326</span>
+      <span class="foot-letter__sign" data-i18n data-vi="- ruii9326" data-en="- ruii9326">- ruii9326</span>
     </p>
 
-    <p class="letter-ps" data-i18n="home.lienhe.letter-ps">P.S. Nếu bạn tò mò về vũ trụ mà mình đang ngày đêm kiến tạo, <a href="theworldofninecontinents/">The World of Nine Continents</a> đang đợi bạn khám phá tại đây →</p>
+    <p class="letter-ps" data-i18n data-vi="P.S. Nếu bạn tò mò về vũ trụ mà mình đang ngày đêm kiến tạo, &lt;a href=&quot;https://ruii9326.github.io/theworldofninecontinents/&quot;&gt;The World of Nine Continents&lt;/a&gt; đang đợi bạn khám phá tại đây →" data-en="P.S. If you&#x27;re curious about the universe I am building day by day, &lt;a href=&quot;https://ruii9326.github.io/theworldofninecontinents/&quot;&gt;The World of Nine Continents&lt;/a&gt; is waiting for you to explore right here →">P.S. Nếu bạn tò mò về vũ trụ mà mình đang ngày đêm kiến tạo, <a href="https://ruii9326.github.io/theworldofninecontinents/">The World of Nine Continents</a> đang đợi bạn khám phá tại đây →</p>
 
-    <div class="foot-letter__copyright" data-i18n="common.2026_nguyen_duy_anh_pen">
+    <div class="foot-letter__copyright" data-i18n data-vi="© 2026 Nguyễn Duy Anh (bút danh: ruii9326)." data-en="© 2026 Nguyen Duy Anh (pen name: ruii9326).">
       © 2026 Nguyễn Duy Anh (bút danh: ruii9326).
     </div>
   </footer>
 
 </main>
 
-<!-- Bộ lọc SVG dùng chung cho kính Liquid (chỉ nhân Chromium dùng, xem style/site.css). Khai báo một lần, không cần JS. -->
-<svg style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
-  <defs>
-    <filter id="liquid-glass" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
-      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="1" seed="5" result="noise" />
-      <feGaussianBlur in="noise" stdDeviation="2.5" result="smoothNoise" />
-      <feDisplacementMap in="SourceGraphic" in2="smoothNoise" scale="22" xChannelSelector="R" yChannelSelector="G" />
-    </filter>
-  </defs>
-</svg>
-
 <script>
-  window.RUII9326_PAGE = { titleKey: 'home.meta.title', descKey: 'home.meta.desc' };
+  window.RUII9326_PAGE = {
+    titleVi: 'ruii9326 - Tác giả của The World of Nine Continents',
+    titleEn: 'ruii9326 - Author of The World of Nine Continents',
+    descVi: 'ruii9326 (Nguyễn Duy Anh) - người chấp bút và kiến tạo vũ trụ giả tưởng The World of Nine Continents. Tiểu thuyết đang kiến tạo, dự án game đang ấp ủ và thông tin liên hệ.',
+    descEn: 'ruii9326 (Nguyen Duy Anh) - author and architect of the fantasy universe The World of Nine Continents. A novel in development, a game in incubation, and how to get in touch.'
+  };
 </script>
-<script src="shared/i18n.js"></script>
-<script src="shared/core.js"></script>
+<script src="script/site.js"></script>
 </body>
 </html>

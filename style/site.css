@@ -67,8 +67,6 @@ body::after {
    ============================================================ */
 :is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .btn-primary, .btn-link) {
   position: relative;
-  isolation: isolate;
-  transform: translateZ(0);
   background-color: var(--glass-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
@@ -471,30 +469,17 @@ footer { position: relative; z-index: 1; }
 }
 
 /* ============================================================
-   CHẾ ĐỘ KÍNH: Liquid / Cổ điển
-   - Mặc định (Safari, Firefox, iOS, và chế độ Cổ điển): kính mờ CSS ở nhóm 1 phía trên.
-   - Liquid chỉ bật trên nhân Chromium, nhận biết bằng @supports (không dò User-Agent): url(#liquid-glass) trỏ tới
-     bộ lọc SVG duy nhất khai báo cuối <body> của mỗi trang. Safari / Firefox không hỗ trợ url() trong backdrop-filter.
-   - Chế độ đang chọn lưu ở html[data-glass-mode] (script đầu <head> + công tắc trong shared/core.js).
+   CHẾ ĐỘ KÍNH: Liquid (khúc xạ, ít mờ) / Cổ điển (kính CSS như trước)
+   html.lg-can  = trình duyệt có khúc xạ (đặt sớm bởi script ở <head>); chế độ lưu ở data-glass-mode.
    ============================================================ */
-:root { --lg-blur: 10px; --lg-sat: 175%; }   /* chỉnh độ mờ / bão hòa của kính Liquid ở đây */
-
-@supports (not (-moz-appearance: none)) and (not (background: -webkit-named-image(i))) {
-  html[data-glass-mode="liquid"] :is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .btn-primary, .btn-link) {
-    -webkit-backdrop-filter: url(#liquid-glass) blur(var(--lg-blur)) saturate(var(--lg-sat));
-    backdrop-filter: url(#liquid-glass) blur(var(--lg-blur)) saturate(var(--lg-sat));
-  }
+html:not(.lg-can) .glass-opt { display: none; }               /* Safari / Firefox: không có gì để chuyển */
+html.lg-can[data-glass-mode="liquid"][data-theme],
+html.lg-can[data-glass-mode="liquid"][data-theme] :is(.mast-pill, .settings-popover) {   /* Liquid: kính trong hơn, để mép khúc xạ lộ rõ */
+  --glass-blur: 0.1px;
+  --glass-blur-sm: 0.1px;
 }
-/* người dùng bật "giảm độ trong suốt": bỏ hẳn bộ lọc, giữ nền đặc từ tokens.css */
-@media (prefers-reduced-transparency: reduce) {
-  html[data-glass-mode] :is(.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .btn-primary, .btn-link) { -webkit-backdrop-filter: none; backdrop-filter: none; }
-}
-/* Safari / Firefox chỉ có một kiểu kính, nên ẩn công tắc Liquid / Cổ điển */
-@supports not ((not (-moz-appearance: none)) and (not (background: -webkit-named-image(i)))) {
-  .glass-opt { display: none; }
-}
-
 /* hiệu ứng loang khi chuyển chế độ (chỉ chạy lúc đang chuyển, không đụng tới nơi khác) */
 html.lg-vt::view-transition-old(root), html.lg-vt::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 html.lg-vt::view-transition-old(root) { z-index: 1; }
 html.lg-vt::view-transition-new(root) { z-index: 2; }
+
