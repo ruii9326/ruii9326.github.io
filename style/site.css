@@ -409,16 +409,19 @@ html[data-theme="dark"] {
   --glass-fill-nav: oklch(98% .012 85 / .10);
 }
 html[data-glass-mode="classic"] {
-  --glass-fill-nav: oklch(99.2% 0.008 85 / 0.68);
-  --lens-fill: oklch(100% 0 0 / 0.88);
+  --glass-fill-nav: oklch(99.2% 0.008 85 / 0.22);
+  --lens-fill: oklch(100% 0 0 / 0.78);
   --lens-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 oklch(65% 0.06 70 / 0.12), 0 4px 12px -4px oklch(40% 0.06 55 / 0.18);
   --glass-track: oklch(40% 0.04 60 / 0.11);
 }
 html[data-glass-mode="classic"][data-theme="dark"] {
-  --glass-fill-nav: oklch(21% 0.022 68 / 0.72);
-  --lens-fill: oklch(95% 0.04 82 / 0.16);
+  --glass-fill-nav: oklch(21% 0.022 68 / 0.22);
+  --lens-fill: oklch(95% 0.04 82 / 0.18);
   --lens-shadow: inset 0 1px 0 oklch(95% 0.05 82 / 0.34), inset 0 -1px 0 oklch(0% 0 0 / 0.35), 0 4px 12px -4px oklch(0% 0 0 / 0.45);
   --glass-track: oklch(0% 0 0 / 0.36);
+}
+html[data-glass-mode="classic"] :is(.mast-pill, .settings-popover) {
+  --glass-blur: 6px;
 }
 
 /* ============================================================
