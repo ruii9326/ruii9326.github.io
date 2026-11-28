@@ -177,27 +177,27 @@ html[data-theme="dark"] {
 
 /* ---- chế độ Cổ điển (kính trong trẻo, giảm 70% độ mờ đục, sắc nét, tối ưu) ---- */
 html[data-glass-mode="classic"] {
-  --glass-fill:        oklch(99.2% 0.008 85 / 0.16);
-  --glass-fill-strong: oklch(99.2% 0.008 85 / 0.22);
-  --glass-fill-lite:   oklch(99.5% 0.006 85 / 0.13);
-  --glass-fill-hover:  oklch(99.5% 0.008 85 / 0.24);
-  --glass-blur: 4.5px;
-  --glass-blur-sm: 3.5px;
+  --glass-fill:        oklch(99.2% 0.008 85 / 0.14);
+  --glass-fill-strong: oklch(99.2% 0.008 85 / 0.19);
+  --glass-fill-lite:   oklch(99.5% 0.006 85 / 0.11);
+  --glass-fill-hover:  oklch(99.5% 0.008 85 / 0.21);
+  --glass-blur: 4px;
+  --glass-blur-sm: 3px;
   --glass-sat: 1.65;
   --glass-rim-hi:  oklch(100% 0 0 / 0.94);
   --glass-rim-mid: oklch(88% 0.05 80 / 0.28);
   --glass-rim-lo:  oklch(68% 0.08 70 / 0.32);
-  --glass-sheen:   oklch(100% 0 0 / 0.34);
+  --glass-sheen:   oklch(100% 0 0 / 0.30);
   --glass-shadow:  0 10px 28px -10px oklch(32% 0.05 55 / 0.18), 0 2px 6px oklch(32% 0.05 55 / 0.06);
   --glass-shadow-hover: 0 18px 38px -12px oklch(32% 0.06 50 / 0.24), 0 4px 12px oklch(32% 0.05 55 / 0.08);
   --glass-inner:   inset 0 1px 0 oklch(100% 0 0 / 0.88), inset 0 -1px 0 oklch(65% 0.06 70 / 0.14), inset 0 0 0 1px oklch(100% 0 0 / 0.22);
   --rim-o: 0.95;
 }
 html[data-glass-mode="classic"][data-theme="dark"] {
-  --glass-fill:        oklch(22% 0.022 68 / 0.18);
-  --glass-fill-strong: oklch(24% 0.024 68 / 0.24);
-  --glass-fill-lite:   oklch(26% 0.022 68 / 0.14);
-  --glass-fill-hover:  oklch(27% 0.026 68 / 0.25);
+  --glass-fill:        oklch(22% 0.022 68 / 0.15);
+  --glass-fill-strong: oklch(24% 0.024 68 / 0.21);
+  --glass-fill-lite:   oklch(26% 0.022 68 / 0.12);
+  --glass-fill-hover:  oklch(27% 0.026 68 / 0.22);
   --glass-rim-hi:  oklch(92% 0.06 80 / 0.42);
   --glass-rim-mid: oklch(80% 0.04 75 / 0.12);
   --glass-rim-lo:  oklch(75% 0.05 70 / 0.20);
