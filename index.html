@@ -174,8 +174,106 @@ main { display: block; position: relative; }
   color: var(--color-accent);
   margin: 0 0 var(--space-md);
 }
-.work-group-label--sub {
+.story-toggle-wrap {
   margin-top: var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.story-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.65rem 1.15rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background-color: var(--glass-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow: var(--glass-shadow), var(--glass-inner);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--dur-spring) var(--spring), background-color var(--dur-short) ease;
+}
+.story-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(165deg, var(--glass-sheen) 0%, transparent 42%);
+}
+.story-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1.25px;
+  pointer-events: none;
+  background: linear-gradient(135deg, var(--glass-rim-hi) 0%, var(--glass-rim-mid) 30%, var(--glass-rim-mid) 62%, var(--glass-rim-lo) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: var(--rim-o);
+}
+.story-toggle__count {
+  padding: 0.18rem 0.55rem;
+  border-radius: var(--radius-pill);
+  background: oklch(53.9% 0.124 45 / 0.14);
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+}
+.story-toggle__chev {
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent);
+  transition: transform var(--dur-spring) var(--spring);
+}
+.story-toggle[aria-expanded="true"] .story-toggle__chev {
+  transform: rotate(180deg);
+}
+@media (hover: hover) {
+  .story-toggle:hover {
+    transform: translateY(-2px) scale(1.02);
+    background-color: var(--glass-fill-hover);
+    --rim-o: 1;
+  }
+}
+.story-toggle:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.story-toggle.is-pressed { transform: scale(var(--press-small)); transition-duration: var(--dur-press); }
+
+.story-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows 0.45s var(--ease-out), opacity 0.3s ease, visibility 0s linear 0.45s;
+}
+.story-drawer.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition: grid-template-rows 0.5s var(--ease-out), opacity 0.35s ease 0.05s, visibility 0s linear 0s;
+}
+.story-drawer__inner {
+  min-height: 0;
+  overflow: hidden;
+}
+.story-drawer.is-open .story-drawer__inner {
+  padding-top: var(--space-md);
+  padding-bottom: 6px;
 }
 .work-grid {
   display: grid;
@@ -552,48 +650,59 @@ a.split-row__link.is-launch { transform: scale(1.025); }
       </div>
     </div>
 
-    <p class="work-group-label work-group-label--sub" data-i18n data-vi="Truyện ngắn" data-en="Short Stories">Truyện ngắn</p>
-    <!-- Thêm truyện ngắn mới: sao chép một thẻ <a class="split-row__link" href="truyen-ngan/<slug>/"> đặt vào trong .story-grid. -->
-    <div class="story-grid">
-      <a class="split-row__link" href="truyen-ngan/tat-ca-chung-ta-deu-dang-tien-ve-phia-cai-chet-tat-yeu/">
-        <div class="split-row">
-          <div class="split-row__body">
-            <div class="split-row__top">
-              <span class="split-row__figure" aria-hidden="true">
-                <svg class="icon-on-accent" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              </span>
-              <h3 class="split-row__title" data-i18n data-vi="Tất cả chúng ta đều đang tiến về phía cái chết tất yếu" data-en="We Are All Moving Toward Inevitable Death">Tất cả chúng ta đều đang tiến về phía cái chết tất yếu</h3>
-              <span class="split-row__tag tag-story" data-i18n data-vi="15 phần" data-en="15 parts">15 phần</span>
-            </div>
-            <p class="split-row__meta" data-i18n data-vi="Truyện ngắn · Nhiều bối cảnh" data-en="Short story · Anthology">Truyện ngắn · Nhiều bối cảnh</p>
-            <p class="split-row__blurb" data-i18n data-vi="Từ hành lang một toa tàu đêm không bao giờ chạy đến mười bốn lát cắt phận người khắp thế giới — nơi cái chết hiện hữu như một trạm dừng, để rồi ai cũng tự hỏi mình đang sống vì điều gì." data-en="From the corridor of a night train that never leaves the station to fourteen human portraits across the globe — where mortality becomes a mirror for what makes life worth living.">Từ hành lang một toa tàu đêm không bao giờ chạy đến mười bốn lát cắt phận người khắp thế giới — nơi cái chết hiện hữu như một trạm dừng, để rồi ai cũng tự hỏi mình đang sống vì điều gì.</p>
-            <span class="split-row__cta">
-              <span data-i18n data-vi="Đọc truyện" data-en="Read story">Đọc truyện</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </span>
-          </div>
-        </div>
-      </a>
+    <div class="story-toggle-wrap">
+      <button class="story-toggle" type="button" id="storyToggle" aria-expanded="false" aria-controls="storyDrawer">
+        <span data-i18n data-vi="Truyện ngắn" data-en="Short Stories">Truyện ngắn</span>
+        <span class="story-toggle__count" data-i18n data-vi="2 truyện" data-en="2 stories">2 truyện</span>
+        <svg class="story-toggle__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
 
-      <a class="split-row__link" href="truyen-ngan/ngon-hai-dang-cuoi-cung/">
-        <div class="split-row">
-          <div class="split-row__body">
-            <div class="split-row__top">
-              <span class="split-row__figure" aria-hidden="true">
-                <svg class="icon-on-accent" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v3"/><path d="M4.9 4.9l2.1 2.1"/><path d="M19.1 4.9l-2.1 2.1"/><path d="M9 11h6l1 11H8l1-11Z"/><path d="M9 11a3 3 0 0 1 6 0"/></svg>
-              </span>
-              <h3 class="split-row__title" data-i18n data-vi="Ngọn hải đăng cuối cùng" data-en="The Last Lighthouse">Ngọn hải đăng cuối cùng</h3>
-              <span class="split-row__tag tag-story" data-i18n data-vi="9 phần" data-en="9 parts">9 phần</span>
+    <!-- Thêm truyện ngắn mới: sao chép một thẻ <a class="split-row__link" href="truyen-ngan/<slug>/"> đặt vào trong .story-grid. -->
+    <div class="story-drawer" id="storyDrawer" aria-hidden="true">
+      <div class="story-drawer__inner">
+        <div class="story-grid">
+          <a class="split-row__link" href="truyen-ngan/tat-ca-chung-ta-deu-dang-tien-ve-phia-cai-chet-tat-yeu/">
+            <div class="split-row">
+              <div class="split-row__body">
+                <div class="split-row__top">
+                  <span class="split-row__figure" aria-hidden="true">
+                    <svg class="icon-on-accent" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </span>
+                  <h3 class="split-row__title" data-i18n data-vi="Tất cả chúng ta đều đang tiến về phía cái chết tất yếu" data-en="We Are All Moving Toward Inevitable Death">Tất cả chúng ta đều đang tiến về phía cái chết tất yếu</h3>
+                  <span class="split-row__tag tag-story" data-i18n data-vi="15 phần" data-en="15 parts">15 phần</span>
+                </div>
+                <p class="split-row__meta" data-i18n data-vi="Truyện ngắn · Nhiều bối cảnh" data-en="Short story · Anthology">Truyện ngắn · Nhiều bối cảnh</p>
+                <p class="split-row__blurb" data-i18n data-vi="Từ hành lang một toa tàu đêm không bao giờ chạy đến mười bốn lát cắt phận người khắp thế giới — nơi cái chết hiện hữu như một trạm dừng, để rồi ai cũng tự hỏi mình đang sống vì điều gì." data-en="From the corridor of a night train that never leaves the station to fourteen human portraits across the globe — where mortality becomes a mirror for what makes life worth living.">Từ hành lang một toa tàu đêm không bao giờ chạy đến mười bốn lát cắt phận người khắp thế giới — nơi cái chết hiện hữu như một trạm dừng, để rồi ai cũng tự hỏi mình đang sống vì điều gì.</p>
+                <span class="split-row__cta">
+                  <span data-i18n data-vi="Đọc truyện" data-en="Read story">Đọc truyện</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+              </div>
             </div>
-            <p class="split-row__meta" data-i18n data-vi="Truyện ngắn · Miền biển" data-en="Short story · Coastal drama">Truyện ngắn · Miền biển</p>
-            <p class="split-row__blurb" data-i18n data-vi="Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng — cho đến ngày chính đứa con trai đi xa trở về cùng bản vẽ giải tỏa, và cơn bão số Chín ập xuống." data-en="For nearly half a century, Old Tu has climbed forty-two laterite steps to light the Mũi Đá Dựng tower — until his estranged son returns with demolition plans, and Typhoon Nine strikes.">Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng — cho đến ngày chính đứa con trai đi xa trở về cùng bản vẽ giải tỏa, và cơn bão số Chín ập xuống.</p>
-            <span class="split-row__cta">
-              <span data-i18n data-vi="Đọc truyện" data-en="Read story">Đọc truyện</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </span>
-          </div>
+          </a>
+
+          <a class="split-row__link" href="truyen-ngan/ngon-hai-dang-cuoi-cung/">
+            <div class="split-row">
+              <div class="split-row__body">
+                <div class="split-row__top">
+                  <span class="split-row__figure" aria-hidden="true">
+                    <svg class="icon-on-accent" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v3"/><path d="M4.9 4.9l2.1 2.1"/><path d="M19.1 4.9l-2.1 2.1"/><path d="M9 11h6l1 11H8l1-11Z"/><path d="M9 11a3 3 0 0 1 6 0"/></svg>
+                  </span>
+                  <h3 class="split-row__title" data-i18n data-vi="Ngọn hải đăng cuối cùng" data-en="The Last Lighthouse">Ngọn hải đăng cuối cùng</h3>
+                  <span class="split-row__tag tag-story" data-i18n data-vi="9 phần" data-en="9 parts">9 phần</span>
+                </div>
+                <p class="split-row__meta" data-i18n data-vi="Truyện ngắn · Miền biển" data-en="Short story · Coastal drama">Truyện ngắn · Miền biển</p>
+                <p class="split-row__blurb" data-i18n data-vi="Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng — cho đến ngày chính đứa con trai đi xa trở về cùng bản vẽ giải tỏa, và cơn bão số Chín ập xuống." data-en="For nearly half a century, Old Tu has climbed forty-two laterite steps to light the Mũi Đá Dựng tower — until his estranged son returns with demolition plans, and Typhoon Nine strikes.">Gần nửa thế kỷ ông Tư leo bốn mươi hai bậc thang đá ong thắp đèn ở Mũi Đá Dựng — cho đến ngày chính đứa con trai đi xa trở về cùng bản vẽ giải tỏa, và cơn bão số Chín ập xuống.</p>
+                <span class="split-row__cta">
+                  <span data-i18n data-vi="Đọc truyện" data-en="Read story">Đọc truyện</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
         </div>
-      </a>
+      </div>
     </div>
   </section>
 

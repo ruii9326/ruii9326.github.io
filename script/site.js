@@ -317,7 +317,7 @@
   // Hiệu ứng nằm trọn trong CSS (.is-pressed); JS chỉ bật/tắt lớp này khi nhấn / thả / hủy.
   var LIQUID = [
     '.now-card', 'a.split-row__link', '.split-row--solo', '.haunt', '.btn-primary', '.btn-link',
-    '.menu-toggle', '.back-link-icon', '.to-top', '.toc-link', '.emblem', '.mast-line a'
+    '.menu-toggle', '.back-link-icon', '.to-top', '.toc-link', '.emblem', '.mast-line a', '.story-toggle'
   ].join(',');
 
   var pressedEl = null;
@@ -429,7 +429,7 @@
     if (!root.classList.contains('lg-can')) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
 
-    var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link';
+    var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link, .story-toggle';
     var BIG = '.mast-pill, .emblem, .settings-popover';   // nhóm này dùng --glass-blur, còn lại --glass-blur-sm
     var DISP = '.menu-toggle, .settings-popover, .btn-primary';
     var DISP_AMOUNT = 0.035;                                // tán sắc nhẹ trên nút/hộp nhỏ; .mast-pill dùng 1 pass để giữ 120fps khi cuộn
@@ -663,6 +663,29 @@
       var offset = parseFloat(getComputedStyle(tocEl).scrollMarginTop) || 0;
       var y = tocEl.getBoundingClientRect().top + currentY() - offset;
       scrollToY(y, function () { setHash('#toc'); });
+    });
+  })();
+
+  // ===== ĐÓNG / MỞ MỤC TRUYỆN NGẮN TRÊN TRANG CHỦ =====
+  (function () {
+    var btn = document.getElementById('storyToggle');
+    var drawer = document.getElementById('storyDrawer');
+    if (!btn || !drawer) return;
+
+    function sync(open) {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      drawer.classList.toggle('is-open', open);
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if ('inert' in drawer) drawer.inert = !open;
+    }
+
+    sync(false);
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') !== 'true';
+      sync(open);
+      if (open && glassEngine) {
+        setTimeout(function () { glassEngine.refresh(); }, 60);
+      }
     });
   })();
 })();
