@@ -42,6 +42,8 @@ body::before, body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
 }
 body::before {
   background:
@@ -71,14 +73,17 @@ body::after {
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
   box-shadow: var(--glass-shadow), var(--glass-inner);
-  transition: transform var(--dur-spring) var(--spring), box-shadow var(--dur-short) ease, background-color var(--dur-short) ease;
+  transition: transform var(--dur-spring) var(--spring), background-color var(--dur-short) ease;
+}
+:is(.now-card, .split-row, .toc-card, .about__text) {
+  contain: layout style;
 }
 :is(.haunt, .contact-row, .mini-pill, .about__quote) {
   position: relative;
   isolation: isolate;
   background-color: var(--glass-fill-lite);
   box-shadow: inset 0 1px 0 var(--glass-rim-hi), inset 0 -1px 0 var(--glass-rim-lo), inset 0 0 12px oklch(100% 0 0 / .08);
-  transition: transform var(--dur-spring) var(--spring), box-shadow var(--dur-short) ease, background-color var(--dur-short) ease;
+  transition: transform var(--dur-spring) var(--spring), background-color var(--dur-short) ease;
 }
 
 /* ánh bóng chéo bên trong kính */
@@ -372,6 +377,7 @@ html[data-theme="dark"] .glass-switcher.classic::before { background: linear-gra
   pointer-events: none;
   background: var(--lens-fill);
   box-shadow: var(--lens-shadow);
+  will-change: translate, width, scale;
   transition: translate .6s var(--spring-soft), width .6s var(--spring-soft), scale .5s var(--spring), opacity .22s ease;
 }
 .mast-lens.on { opacity: 1; }
@@ -409,6 +415,18 @@ html[data-theme="dark"] {
   --lens-shadow: inset 0 1px 0 oklch(100% 0 0 / .38), inset 0 -1px 0 oklch(0% 0 0 / .3), inset 0 0 12px oklch(100% 0 0 / .08), 0 5px 14px -4px oklch(0% 0 0 / .5);
   --glass-track: oklch(0% 0 0 / .32);
   --glass-fill-nav: oklch(98% .012 85 / .10);
+}
+html[data-glass-mode="classic"] {
+  --glass-fill-nav: oklch(99.2% 0.008 85 / 0.68);
+  --lens-fill: oklch(100% 0 0 / 0.88);
+  --lens-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 oklch(65% 0.06 70 / 0.12), 0 4px 12px -4px oklch(40% 0.06 55 / 0.18);
+  --glass-track: oklch(40% 0.04 60 / 0.11);
+}
+html[data-glass-mode="classic"][data-theme="dark"] {
+  --glass-fill-nav: oklch(21% 0.022 68 / 0.72);
+  --lens-fill: oklch(95% 0.04 82 / 0.16);
+  --lens-shadow: inset 0 1px 0 oklch(95% 0.05 82 / 0.34), inset 0 -1px 0 oklch(0% 0 0 / 0.35), 0 4px 12px -4px oklch(0% 0 0 / 0.45);
+  --glass-track: oklch(0% 0 0 / 0.36);
 }
 
 /* ============================================================
@@ -474,9 +492,9 @@ footer { position: relative; z-index: 1; }
    ============================================================ */
 html:not(.lg-can) .glass-opt { display: none; }               /* Safari / Firefox: không có gì để chuyển */
 html.lg-can[data-glass-mode="liquid"][data-theme],
-html.lg-can[data-glass-mode="liquid"][data-theme] :is(.mast-pill, .settings-popover) {   /* Liquid: kính trong hơn, để mép khúc xạ lộ rõ */
-  --glass-blur: 0.1px;
-  --glass-blur-sm: 0.1px;
+html.lg-can[data-glass-mode="liquid"][data-theme] :is(.mast-pill, .settings-popover) {   /* Liquid: kính trong hơn, để mép khúc xạ lộ rõ; blur nhẹ thay AA_BLUR bằng GPU */
+  --glass-blur: 0.45px;
+  --glass-blur-sm: 0.35px;
 }
 /* hiệu ứng loang khi chuyển chế độ (chỉ chạy lúc đang chuyển, không đụng tới nơi khác) */
 html.lg-vt::view-transition-old(root), html.lg-vt::view-transition-new(root) { animation: none; mix-blend-mode: normal; }

@@ -8,9 +8,14 @@
     var theme = saved === 'dark' || saved === 'light'
       ? saved
       : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme); document.documentElement.setAttribute('data-glass-mode', localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid');
-  } catch (e) {}
-  if (/Chrome\/\d+/.test(navigator.userAgent)) document.documentElement.classList.add('lg-can');
+    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent) && !(window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches);
+    if (canLiquid) document.documentElement.classList.add('lg-can');
+    var glass = canLiquid ? (localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid') : 'classic';
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-glass-mode', glass);
+  } catch (e) {
+    document.documentElement.setAttribute('data-glass-mode', 'classic');
+  }
 })();
 </script>
 <meta charset="UTF-8">
@@ -122,11 +127,13 @@ main { display: block; position: relative; }
   width: 100%;
   height: 100%;
   border-radius: 50%;
+  filter: drop-shadow(0 0 12px oklch(71.4% 0.121 81 / 0.5));
+  will-change: transform;
   animation: breathe 7s ease-in-out infinite;
 }
 @keyframes breathe {
-  0%, 100% { transform: scale(1);     filter: drop-shadow(0 0 8px oklch(71.4% 0.121 81 / 0.45)); }
-  50%      { transform: scale(1.025); filter: drop-shadow(0 0 16px oklch(71.4% 0.121 81 / 0.6)); }
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.025); }
 }
 @media (prefers-reduced-motion: reduce) {
   .emblem { animation: reveal .25s ease backwards; }
@@ -399,8 +406,8 @@ a.split-row__link.is-launch { transform: scale(1.025); }
           </button>
         </div>
       </div>
-<div class="settings-divider" role="separator"></div>
-<div class="settings-group">
+<div class="settings-divider glass-opt" role="separator"></div>
+<div class="settings-group glass-opt">
 <p class="settings-group-label" data-i18n data-vi="Hiệu ứng kính" data-en="Glass effect">Hiệu ứng kính</p>
 <div class="glass-switcher" id="glassSwitcher" role="group" aria-label="Hiệu ứng kính" data-aria-vi="Hiệu ứng kính" data-aria-en="Glass effect">
 <span class="lg-thumb" aria-hidden="true"></span>

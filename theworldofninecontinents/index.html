@@ -8,9 +8,14 @@
     var theme = saved === 'dark' || saved === 'light'
       ? saved
       : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme); document.documentElement.setAttribute('data-glass-mode', localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid');
-  } catch (e) {}
-  if (/Chrome\/\d+/.test(navigator.userAgent)) document.documentElement.classList.add('lg-can');
+    var canLiquid = /Chrome\/\d+/.test(navigator.userAgent) && !(window.matchMedia && window.matchMedia('(prefers-reduced-transparency: reduce)').matches);
+    if (canLiquid) document.documentElement.classList.add('lg-can');
+    var glass = canLiquid ? (localStorage.getItem('ruii9326-glass') === 'classic' ? 'classic' : 'liquid') : 'classic';
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-glass-mode', glass);
+  } catch (e) {
+    document.documentElement.setAttribute('data-glass-mode', 'classic');
+  }
 })();
 </script>
 <meta charset="UTF-8">
@@ -275,8 +280,8 @@ h1 {
           </button>
         </div>
       </div>
-<div class="settings-divider" role="separator"></div>
-<div class="settings-group">
+<div class="settings-divider glass-opt" role="separator"></div>
+<div class="settings-group glass-opt">
 <p class="settings-group-label" data-i18n data-vi="Hiệu ứng kính" data-en="Glass effect">Hiệu ứng kính</p>
 <div class="glass-switcher" id="glassSwitcher" role="group" aria-label="Hiệu ứng kính" data-aria-vi="Hiệu ứng kính" data-aria-en="Glass effect">
 <span class="lg-thumb" aria-hidden="true"></span>

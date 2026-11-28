@@ -175,6 +175,38 @@ html[data-theme="dark"] {
   --rim-o: 0.85;
 }
 
+/* ---- chế độ Cổ điển (nền kính satin tinh thể sáng trong, sắc nét, tối ưu) ---- */
+html[data-glass-mode="classic"] {
+  --glass-fill:        oklch(99.2% 0.008 85 / 0.56);
+  --glass-fill-strong: oklch(99.2% 0.008 85 / 0.72);
+  --glass-fill-lite:   oklch(99.5% 0.006 85 / 0.44);
+  --glass-fill-hover:  oklch(99.5% 0.008 85 / 0.72);
+  --glass-blur: 14px;
+  --glass-blur-sm: 12px;
+  --glass-sat: 1.5;
+  --glass-rim-hi:  oklch(100% 0 0 / 0.94);
+  --glass-rim-mid: oklch(88% 0.05 80 / 0.28);
+  --glass-rim-lo:  oklch(68% 0.08 70 / 0.32);
+  --glass-sheen:   oklch(100% 0 0 / 0.48);
+  --glass-shadow:  0 10px 28px -10px oklch(32% 0.05 55 / 0.18), 0 2px 6px oklch(32% 0.05 55 / 0.06);
+  --glass-shadow-hover: 0 18px 38px -12px oklch(32% 0.06 50 / 0.24), 0 4px 12px oklch(32% 0.05 55 / 0.08);
+  --glass-inner:   inset 0 1px 0 oklch(100% 0 0 / 0.92), inset 0 -1px 0 oklch(65% 0.06 70 / 0.14), inset 0 0 0 1px oklch(100% 0 0 / 0.25);
+  --rim-o: 0.95;
+}
+html[data-glass-mode="classic"][data-theme="dark"] {
+  --glass-fill:        oklch(22% 0.022 68 / 0.62);
+  --glass-fill-strong: oklch(24% 0.024 68 / 0.76);
+  --glass-fill-lite:   oklch(26% 0.022 68 / 0.48);
+  --glass-fill-hover:  oklch(27% 0.026 68 / 0.74);
+  --glass-rim-hi:  oklch(92% 0.06 80 / 0.36);
+  --glass-rim-mid: oklch(80% 0.04 75 / 0.10);
+  --glass-rim-lo:  oklch(75% 0.05 70 / 0.18);
+  --glass-sheen:   oklch(95% 0.04 82 / 0.14);
+  --glass-shadow:  0 14px 32px -12px oklch(5% 0.01 60 / 0.55), 0 2px 8px oklch(5% 0.01 60 / 0.24);
+  --glass-shadow-hover: 0 22px 42px -12px oklch(5% 0.01 60 / 0.65), 0 4px 12px oklch(5% 0.01 60 / 0.30);
+  --glass-inner:   inset 0 1px 0 oklch(95% 0.05 82 / 0.22), inset 0 -1px 0 oklch(0% 0 0 / 0.35), inset 0 0 20px oklch(85% 0.06 80 / 0.04);
+}
+
 /* người dùng bật "giảm độ trong suốt": đổi sang nền đặc, bỏ blur */
 @media (prefers-reduced-transparency: reduce) {
   :root {
@@ -185,6 +217,19 @@ html[data-theme="dark"] {
     --glass-blur: 0px; --glass-blur-sm: 0px; --glass-sat: 1;
   }
   html[data-theme="dark"] {
+    --glass-fill:        oklch(21% 0.02 64 / 0.97);
+    --glass-fill-strong: oklch(22% 0.02 64 / 0.99);
+    --glass-fill-lite:   oklch(25% 0.02 64 / 0.9);
+    --glass-fill-hover:  oklch(27% 0.022 64 / 1);
+  }
+  html[data-glass-mode="classic"] {
+    --glass-fill:        oklch(97% 0.014 85 / 0.96);
+    --glass-fill-strong: oklch(97% 0.014 85 / 0.98);
+    --glass-fill-lite:   oklch(95% 0.016 84 / 0.9);
+    --glass-fill-hover:  oklch(98% 0.012 85 / 1);
+    --glass-blur: 0px; --glass-blur-sm: 0px; --glass-sat: 1;
+  }
+  html[data-glass-mode="classic"][data-theme="dark"] {
     --glass-fill:        oklch(21% 0.02 64 / 0.97);
     --glass-fill-strong: oklch(22% 0.02 64 / 0.99);
     --glass-fill-lite:   oklch(25% 0.02 64 / 0.9);
