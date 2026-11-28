@@ -431,14 +431,14 @@
 
     var SEL = '.mast-pill, .menu-toggle, .back-link-icon, .settings-popover, .now-card, .split-row, .emblem, .to-top, .toc-card, .about__text, .about__quote, .btn-primary, .btn-link';
     var BIG = '.mast-pill, .emblem, .settings-popover';   // nhóm này dùng --glass-blur, còn lại --glass-blur-sm
-    var DISP = '.menu-toggle, .settings-popover, .btn-primary';
-    var DISP_AMOUNT = 0.035;                                // tán sắc nhẹ trên nút/hộp nhỏ; .mast-pill dùng 1 pass để giữ 120fps khi cuộn
+    var DISP = '.mast-pill, .menu-toggle, .settings-popover, .btn-primary';
+    var DISP_AMOUNT = 0.1;                                  // tán sắc đầy đủ trên desktop
     var REFRACT = 40;                                    // độ khúc xạ (px) — chỉnh số này để tăng/giảm
     var MAX_AREA = 900000;                                // bỏ qua phần tử quá lớn (px²)
-    var MAP_PX = 80000;                                   // ngân sách điểm ảnh bản đồ dịch (đủ mịn với bilinear + MAP_BLUR, nhanh hơn ~4x)
-    var AA_BLUR = 0;                                      // khử răng cưa chuyển sang CSS backdrop-filter GPU (--glass-blur)
-    var MAP_BLUR = 0.4;                                   // làm mịn bản đồ (px CSS): xóa bậc thang 8-bit; 0 = tắt
-    function dprNow() { return Math.min(window.devicePixelRatio || 1, 2); }
+    var MAP_PX = 280000;                                  // ngân sách điểm ảnh bản đồ dịch (nét, vẫn nhanh nhờ bỏ qua vùng lõi phẳng)
+    var AA_BLUR = 0.5;                                    // khử răng cưa cho nền sau khi bẻ cong (px CSS)
+    var MAP_BLUR = 0.5;                                   // làm mịn bản đồ (px CSS): xóa bậc thang 8-bit
+    function dprNow() { return Math.min(window.devicePixelRatio || 1, 3); }
 
     var NS = 'http://www.w3.org/2000/svg';
     var svg = document.createElementNS(NS, 'svg');

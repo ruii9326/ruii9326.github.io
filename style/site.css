@@ -42,8 +42,6 @@ body::before, body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  will-change: transform;
-  transform: translateZ(0);
 }
 body::before {
   background:
@@ -74,9 +72,6 @@ body::after {
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
   box-shadow: var(--glass-shadow), var(--glass-inner);
   transition: transform var(--dur-spring) var(--spring), background-color var(--dur-short) ease;
-}
-:is(.now-card, .split-row, .toc-card, .about__text) {
-  contain: layout style;
 }
 :is(.haunt, .contact-row, .mini-pill, .about__quote) {
   position: relative;
@@ -492,9 +487,9 @@ footer { position: relative; z-index: 1; }
    ============================================================ */
 html:not(.lg-can) .glass-opt { display: none; }               /* Safari / Firefox: không có gì để chuyển */
 html.lg-can[data-glass-mode="liquid"][data-theme],
-html.lg-can[data-glass-mode="liquid"][data-theme] :is(.mast-pill, .settings-popover) {   /* Liquid: kính trong hơn, để mép khúc xạ lộ rõ; blur nhẹ thay AA_BLUR bằng GPU */
-  --glass-blur: 0.45px;
-  --glass-blur-sm: 0.35px;
+html.lg-can[data-glass-mode="liquid"][data-theme] :is(.mast-pill, .settings-popover) {   /* Liquid: kính trong hơn, để mép khúc xạ lộ rõ */
+  --glass-blur: 0.1px;
+  --glass-blur-sm: 0.1px;
 }
 /* hiệu ứng loang khi chuyển chế độ (chỉ chạy lúc đang chuyển, không đụng tới nơi khác) */
 html.lg-vt::view-transition-old(root), html.lg-vt::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
