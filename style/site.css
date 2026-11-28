@@ -8,11 +8,11 @@
  * ============================================================ */
 
 /* màu nền chuyển mượt khi đổi sáng/tối (gradient không tự chuyển được, nên đăng ký kiểu <color>) */
-@property --bg-base { syntax: '<color>'; inherits: true; initial-value: #F7F0E1; }
-@property --orb-a   { syntax: '<color>'; inherits: true; initial-value: #F6C28A; }
-@property --orb-b   { syntax: '<color>'; inherits: true; initial-value: #F6CFC4; }
-@property --orb-c   { syntax: '<color>'; inherits: true; initial-value: #C9EBE2; }
-@property --orb-d   { syntax: '<color>'; inherits: true; initial-value: #F3DE9A; }
+@property --bg-base { syntax: '<color>'; inherits: true; initial-value: #FAF7F0; }
+@property --orb-a   { syntax: '<color>'; inherits: true; initial-value: #F4C89A; }
+@property --orb-b   { syntax: '<color>'; inherits: true; initial-value: #F4CFCB; }
+@property --orb-c   { syntax: '<color>'; inherits: true; initial-value: #BCE6E3; }
+@property --orb-d   { syntax: '<color>'; inherits: true; initial-value: #F3E2AC; }
 
 * { box-sizing: border-box; }
 
@@ -35,7 +35,7 @@ body {
 
 a { color: inherit; }
 
-/* ---- nền: bốn vệt màu mềm + vài vòng mảnh để kính có thứ mà khúc xạ (đứng yên, không chạy) ---- */
+/* ---- nền: ánh sắc trong trẻo + vài vòng cung thiên văn mảnh kiểu ấn phẩm văn học ---- */
 body::before, body::after {
   content: "";
   position: fixed;
@@ -45,21 +45,18 @@ body::before, body::after {
 }
 body::before {
   background:
-    radial-gradient(46vmax 46vmax at 10% 6%,  var(--orb-a), transparent 70%),
-    radial-gradient(40vmax 40vmax at 92% 12%, var(--orb-b), transparent 70%),
-    radial-gradient(50vmax 50vmax at 84% 96%, var(--orb-c), transparent 72%),
-    radial-gradient(44vmax 44vmax at 6% 90%,  var(--orb-d), transparent 70%),
-    radial-gradient(30vmax 26vmax at 34% 50%, var(--orb-b), transparent 72%),
-    radial-gradient(28vmax 28vmax at 66% 58%, var(--orb-c), transparent 72%),
+    radial-gradient(52vmax 48vmax at 8% 8%,   var(--orb-a), transparent 68%),
+    radial-gradient(46vmax 44vmax at 92% 10%, var(--orb-b), transparent 68%),
+    radial-gradient(56vmax 50vmax at 86% 92%, var(--orb-c), transparent 70%),
+    radial-gradient(48vmax 46vmax at 10% 92%, var(--orb-d), transparent 70%),
+    radial-gradient(38vmax 32vmax at 52% 46%, var(--orb-c), transparent 76%),
     var(--bg-base);
 }
 body::after {
-  background:
-    repeating-radial-gradient(circle at 82% 34%, transparent 0 58px, var(--orb-ring) 58px 59px),
-    repeating-radial-gradient(circle at 12% 78%, transparent 0 76px, var(--orb-ring) 76px 77px);
-  -webkit-mask-image: radial-gradient(60vmax 60vmax at 82% 34%, #000, transparent 70%), radial-gradient(50vmax 50vmax at 12% 78%, #000, transparent 70%);
-  mask-image: radial-gradient(60vmax 60vmax at 82% 34%, #000, transparent 70%), radial-gradient(50vmax 50vmax at 12% 78%, #000, transparent 70%);
-  opacity: .8;
+  background: var(--orb-ring);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Ccircle cx='1320' cy='180' r='260' stroke-width='1.1'/%3E%3Ccircle cx='1320' cy='180' r='360' stroke-width='0.8' stroke-dasharray='4 10'/%3E%3Ccircle cx='1320' cy='180' r='470' stroke-width='0.9'/%3E%3Ccircle cx='240' cy='740' r='240' stroke-width='1'/%3E%3Ccircle cx='240' cy='740' r='350' stroke-width='0.8' stroke-dasharray='3 9'/%3E%3Cpath d='M-40 220 Q 420 120 820 340 T 1660 280' stroke-width='0.85'/%3E%3Cpath d='M-40 620 Q 520 740 960 540 T 1660 660' stroke-width='0.85'/%3E%3Cpath d='M480 -20 Q 540 440 420 920' stroke-width='0.7' stroke-dasharray='2 8'/%3E%3Cpath d='M1140 -20 Q 1080 460 1200 920' stroke-width='0.7' stroke-dasharray='2 8'/%3E%3Cpath d='M1320 180 L1560 40 M1320 180 L1080 320 M240 740 L480 560' stroke-width='0.75' stroke-dasharray='3 7'/%3E%3C/g%3E%3Cg fill='%23000'%3E%3Cpath d='M1320 168l3 9 9 3-9 3-3 9-3-9-9-3 9-3z'/%3E%3Cpath d='M240 731l2.2 6.8 6.8 2.2-6.8 2.2-2.2 6.8-2.2-6.8-6.8-2.2 6.8-2.2z'/%3E%3Cpath d='M180 150l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z'/%3E%3Cpath d='M1450 690l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z'/%3E%3Cpath d='M780 120l1.6 4.4 4.4 1.6-4.4 1.6-1.6 4.4-1.6-4.4-4.4-1.6 4.4-1.6z'/%3E%3Cpath d='M860 780l1.6 4.4 4.4 1.6-4.4 1.6-1.6 4.4-1.6-4.4-4.4-1.6 4.4-1.6z'/%3E%3Ccircle cx='1320' cy='80' r='2.5'/%3E%3Ccircle cx='1580' cy='180' r='2.5'/%3E%3Ccircle cx='1060' cy='180' r='2.5'/%3E%3Ccircle cx='1136' cy='364' r='2.2'/%3E%3Ccircle cx='1504' cy='364' r='2.2'/%3E%3Ccircle cx='1136' cy='-4' r='2.2'/%3E%3Ccircle cx='1504' cy='-4' r='2.2'/%3E%3Ccircle cx='155' cy='46' r='2.2'/%3E%3Ccircle cx='1485' cy='46' r='2.2'/%3E%3Ccircle cx='120' cy='380' r='2'/%3E%3Ccircle cx='340' cy='460' r='1.8'/%3E%3Ccircle cx='1420' cy='520' r='2'/%3E%3Ccircle cx='1260' cy='610' r='1.8'/%3E%3Ccircle cx='620' cy='260' r='1.8'/%3E%3Ccircle cx='980' cy='640' r='1.8'/%3E%3C/g%3E%3C/svg%3E") center / cover no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Ccircle cx='1320' cy='180' r='260' stroke-width='1.1'/%3E%3Ccircle cx='1320' cy='180' r='360' stroke-width='0.8' stroke-dasharray='4 10'/%3E%3Ccircle cx='1320' cy='180' r='470' stroke-width='0.9'/%3E%3Ccircle cx='240' cy='740' r='240' stroke-width='1'/%3E%3Ccircle cx='240' cy='740' r='350' stroke-width='0.8' stroke-dasharray='3 9'/%3E%3Cpath d='M-40 220 Q 420 120 820 340 T 1660 280' stroke-width='0.85'/%3E%3Cpath d='M-40 620 Q 520 740 960 540 T 1660 660' stroke-width='0.85'/%3E%3Cpath d='M480 -20 Q 540 440 420 920' stroke-width='0.7' stroke-dasharray='2 8'/%3E%3Cpath d='M1140 -20 Q 1080 460 1200 920' stroke-width='0.7' stroke-dasharray='2 8'/%3E%3Cpath d='M1320 180 L1560 40 M1320 180 L1080 320 M240 740 L480 560' stroke-width='0.75' stroke-dasharray='3 7'/%3E%3C/g%3E%3Cg fill='%23000'%3E%3Cpath d='M1320 168l3 9 9 3-9 3-3 9-3-9-9-3 9-3z'/%3E%3Cpath d='M240 731l2.2 6.8 6.8 2.2-6.8 2.2-2.2 6.8-2.2-6.8-6.8-2.2 6.8-2.2z'/%3E%3Cpath d='M180 150l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z'/%3E%3Cpath d='M1450 690l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z'/%3E%3Cpath d='M780 120l1.6 4.4 4.4 1.6-4.4 1.6-1.6 4.4-1.6-4.4-4.4-1.6 4.4-1.6z'/%3E%3Cpath d='M860 780l1.6 4.4 4.4 1.6-4.4 1.6-1.6 4.4-1.6-4.4-4.4-1.6 4.4-1.6z'/%3E%3Ccircle cx='1320' cy='80' r='2.5'/%3E%3Ccircle cx='1580' cy='180' r='2.5'/%3E%3Ccircle cx='1060' cy='180' r='2.5'/%3E%3Ccircle cx='1136' cy='364' r='2.2'/%3E%3Ccircle cx='1504' cy='364' r='2.2'/%3E%3Ccircle cx='1136' cy='-4' r='2.2'/%3E%3Ccircle cx='1504' cy='-4' r='2.2'/%3E%3Ccircle cx='155' cy='46' r='2.2'/%3E%3Ccircle cx='1485' cy='46' r='2.2'/%3E%3Ccircle cx='120' cy='380' r='2'/%3E%3Ccircle cx='340' cy='460' r='1.8'/%3E%3Ccircle cx='1420' cy='520' r='2'/%3E%3Ccircle cx='1260' cy='610' r='1.8'/%3E%3Ccircle cx='620' cy='260' r='1.8'/%3E%3Ccircle cx='980' cy='640' r='1.8'/%3E%3C/g%3E%3C/svg%3E") center / cover no-repeat;
+  opacity: .9;
 }
 
 /* ============================================================
