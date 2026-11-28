@@ -177,6 +177,13 @@ main { display: block; position: relative; }
   padding: 0;
   overflow: hidden;
 }
+.stories-panel:hover,
+.stories-panel.is-pressed {
+  transform: none;
+  background-color: var(--glass-fill);
+  box-shadow: var(--glass-shadow), var(--glass-inner);
+  --rim-o: 0.9;
+}
 .stories-head {
   position: relative;
   z-index: 2;

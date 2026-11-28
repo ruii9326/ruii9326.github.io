@@ -192,6 +192,13 @@ main { display: block; position: relative; }
   background-color: var(--glass-fill-strong);
   scroll-margin-top: var(--nav-offset);
 }
+.story-part:hover,
+.story-part.is-pressed {
+  transform: none;
+  background-color: var(--glass-fill-strong);
+  box-shadow: var(--glass-shadow), var(--glass-inner);
+  --rim-o: 0.9;
+}
 .story-part__head {
   margin: 0 0 var(--space-lg);
   padding-bottom: var(--space-md);

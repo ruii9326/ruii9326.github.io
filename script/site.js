@@ -316,7 +316,7 @@
   // Chỉ phần tử trong cùng được ép (không dùng :active vì :active lan lên cả các phần tử cha).
   // Hiệu ứng nằm trọn trong CSS (.is-pressed); JS chỉ bật/tắt lớp này khi nhấn / thả / hủy.
   var LIQUID = [
-    'a.split-row__link', '.haunt', '.btn-primary', '.btn-link',
+    '.now-card', 'a.split-row__link', '.split-row--solo', '.haunt', '.btn-primary', '.btn-link',
     '.menu-toggle', '.back-link-icon', '.to-top', '.toc-link', '.emblem', '.mast-line a',
     '.stories-head', '.story-item'
   ].join(',');
@@ -329,7 +329,7 @@
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     var el = e.target.closest && e.target.closest(LIQUID);
     release();
-    if (!el) return;
+    if (!el || el.classList.contains('story-part') || el.classList.contains('stories-panel') || (el.classList.contains('now-card') && el.closest('.card-grid'))) return;
     pressedEl = el;
     el.classList.add('is-pressed');
   }, { passive: true });

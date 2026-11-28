@@ -103,6 +103,13 @@ h1 {
   gap: var(--space-lg);
   align-items: stretch;
 }
+.card-grid .now-card:hover,
+.card-grid .now-card.is-pressed {
+  transform: none;
+  background-color: var(--glass-fill);
+  box-shadow: var(--glass-shadow), var(--glass-inner);
+  --rim-o: 0.9;
+}
 .now-card--full { grid-column: 1 / -1; }
 @media (min-width: 64rem) { .now-card--span2 { grid-column: span 2; } }
 .card-kicker { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-accent); margin: 0 0 var(--space-xs); }
