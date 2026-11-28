@@ -207,29 +207,16 @@ html[data-glass-mode="classic"][data-theme="dark"] {
   --glass-inner:   inset 0 1px 0 oklch(95% 0.05 82 / 0.22), inset 0 -1px 0 oklch(0% 0 0 / 0.35), inset 0 0 20px oklch(85% 0.06 80 / 0.04);
 }
 
-/* người dùng bật "giảm độ trong suốt": đổi sang nền đặc, bỏ blur */
+/* người dùng bật "giảm độ trong suốt": đổi sang nền đặc ở chế độ Cổ điển; chế độ Liquid vẫn giữ kính trong */
 @media (prefers-reduced-transparency: reduce) {
-  :root {
+  html:not([data-glass-mode="liquid"]) {
     --glass-fill:        oklch(97% 0.014 85 / 0.96);
     --glass-fill-strong: oklch(97% 0.014 85 / 0.98);
     --glass-fill-lite:   oklch(95% 0.016 84 / 0.9);
     --glass-fill-hover:  oklch(98% 0.012 85 / 1);
     --glass-blur: 0px; --glass-blur-sm: 0px; --glass-sat: 1;
   }
-  html[data-theme="dark"] {
-    --glass-fill:        oklch(21% 0.02 64 / 0.97);
-    --glass-fill-strong: oklch(22% 0.02 64 / 0.99);
-    --glass-fill-lite:   oklch(25% 0.02 64 / 0.9);
-    --glass-fill-hover:  oklch(27% 0.022 64 / 1);
-  }
-  html[data-glass-mode="classic"] {
-    --glass-fill:        oklch(97% 0.014 85 / 0.96);
-    --glass-fill-strong: oklch(97% 0.014 85 / 0.98);
-    --glass-fill-lite:   oklch(95% 0.016 84 / 0.9);
-    --glass-fill-hover:  oklch(98% 0.012 85 / 1);
-    --glass-blur: 0px; --glass-blur-sm: 0px; --glass-sat: 1;
-  }
-  html[data-glass-mode="classic"][data-theme="dark"] {
+  html[data-theme="dark"]:not([data-glass-mode="liquid"]) {
     --glass-fill:        oklch(21% 0.02 64 / 0.97);
     --glass-fill-strong: oklch(22% 0.02 64 / 0.99);
     --glass-fill-lite:   oklch(25% 0.02 64 / 0.9);
